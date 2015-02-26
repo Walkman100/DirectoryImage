@@ -8,7 +8,7 @@
         End If
     End Sub
     
-    Sub ParseFiles(Optional Directors As String = Nothing)
+    Sub ParseFiles(Optional Directory As String = Nothing)
         
     End Sub
     
@@ -20,7 +20,42 @@
         grpLinuxRel.Enabled = optLinuxRel.Checked
     End Sub
     
+    Sub WindowsOptionSelected() Handles optWindowsAbsolute.CheckedChanged, optWindowsRel.CheckedChanged, optWindowsRelContained.CheckedChanged, optWindowsRelExternal.CheckedChanged
+        If optWindowsAbsolute.Checked = True Then
+            btnWindowsIconSet.Enabled = True
+        ElseIf optWindowsRel.Checked = True Then
+            If optWindowsRelContained.Checked = True Then
+                btnWindowsIconSet.Enabled = True
+            ElseIf optWindowsRelExternal.Checked = True
+                btnWindowsIconSet.Enabled = True
+            Else
+                btnWindowsIconSet.Enabled = False
+            End If
+        Else
+            btnWindowsIconSet.Enabled = False
+        End If
+    End Sub
+    
+    Sub LinuxOptionSelected() Handles optLinuxAbsolute.CheckedChanged, optLinuxRel.CheckedChanged, optLinuxRelContained.CheckedChanged, optLinuxRelExternal.CheckedChanged
+        If optLinuxAbsolute.Checked = True Then
+            btnLinuxIconSet.Enabled = True
+        ElseIf optLinuxRel.Checked = True Then
+            If optLinuxRelContained.Checked = True Then
+                btnLinuxIconSet.Enabled = True
+            ElseIf optLinuxRelExternal.Checked = True
+                btnLinuxIconSet.Enabled = True
+            Else
+                btnLinuxIconSet.Enabled = False
+            End If
+        Else
+            btnLinuxIconSet.Enabled = False
+        End If
+    End Sub
+    
     Sub btnWindowsIconSet_Click(sender As Object, e As EventArgs) Handles btnWindowsIconSet.Click
+        If OpenFileDialogWindows.InitialDirectory = "" Then
+            OpenFileDialogWindows.InitialDirectory = txtDirectoryPath.Text
+        End If
         If OpenFileDialogWindows.ShowDialog = DialogResult.OK Then
             If optWindowsAbsolute.Checked = True Then
                 txtWindowsIconPath.Text = OpenFileDialogWindows.FileName
@@ -31,6 +66,7 @@
             Else
                 MsgBox("Please select an option!", MsgBoxStyle.Exclamation)
             End If
+            imgWindowsCurrent.ImageLocation = OpenFileDialogWindows.FileName
         End If
     End Sub
     
@@ -39,6 +75,9 @@
     End Sub
     
     Sub btnLinuxIconSet_Click(sender As Object, e As EventArgs) Handles btnLinuxIconSet.Click
+        If OpenFileDialogLinux.InitialDirectory = "" Then
+            OpenFileDialogLinux.InitialDirectory = txtDirectoryPath.Text
+        End If
         If OpenFileDialogLinux.ShowDialog = DialogResult.OK Then
             If optLinuxAbsolute.Checked = True Then
                 txtLinuxImagePath.Text = OpenFileDialogLinux.FileName
@@ -49,6 +88,7 @@
             Else
                 MsgBox("Please select an option!", MsgBoxStyle.Exclamation)
             End If
+            imgLinuxCurrent.ImageLocation = OpenFileDialogLinux.FileName
         End If
     End Sub
     

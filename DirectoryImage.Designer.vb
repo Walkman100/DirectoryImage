@@ -155,6 +155,7 @@ Partial Class DirectoryImage
         '
         Me.btnWindowsIconSet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnWindowsIconSet.AutoSize = true
+        Me.btnWindowsIconSet.Enabled = false
         Me.btnWindowsIconSet.Location = New System.Drawing.Point(431, 42)
         Me.btnWindowsIconSet.Name = "btnWindowsIconSet"
         Me.btnWindowsIconSet.Size = New System.Drawing.Size(75, 23)
@@ -184,9 +185,11 @@ Partial Class DirectoryImage
         '
         'imgWindowsCurrent
         '
+        Me.imgWindowsCurrent.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.imgWindowsCurrent.Location = New System.Drawing.Point(6, 32)
         Me.imgWindowsCurrent.Name = "imgWindowsCurrent"
         Me.imgWindowsCurrent.Size = New System.Drawing.Size(128, 128)
+        Me.imgWindowsCurrent.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.imgWindowsCurrent.TabIndex = 1
         Me.imgWindowsCurrent.TabStop = false
         '
@@ -278,6 +281,7 @@ Partial Class DirectoryImage
         '
         Me.btnLinuxIconSet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnLinuxIconSet.AutoSize = true
+        Me.btnLinuxIconSet.Enabled = false
         Me.btnLinuxIconSet.Location = New System.Drawing.Point(431, 42)
         Me.btnLinuxIconSet.Name = "btnLinuxIconSet"
         Me.btnLinuxIconSet.Size = New System.Drawing.Size(75, 23)
@@ -307,9 +311,11 @@ Partial Class DirectoryImage
         '
         'imgLinuxCurrent
         '
+        Me.imgLinuxCurrent.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.imgLinuxCurrent.Location = New System.Drawing.Point(6, 32)
         Me.imgLinuxCurrent.Name = "imgLinuxCurrent"
         Me.imgLinuxCurrent.Size = New System.Drawing.Size(128, 128)
+        Me.imgLinuxCurrent.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.imgLinuxCurrent.TabIndex = 3
         Me.imgLinuxCurrent.TabStop = false
         '
@@ -322,11 +328,16 @@ Partial Class DirectoryImage
         Me.lblLinuxCurrent.TabIndex = 2
         Me.lblLinuxCurrent.Text = "Current Image:"
         '
+        'FolderBrowserDialog
+        '
+        Me.FolderBrowserDialog.Description = "Select a folder to set or view icons for"
+        '
         'OpenFileDialogWindows
         '
         Me.OpenFileDialogWindows.DefaultExt = "ico"
         Me.OpenFileDialogWindows.Filter = "Icon Files|*.ico"
         Me.OpenFileDialogWindows.ReadOnlyChecked = true
+        Me.OpenFileDialogWindows.Title = "Select an icon to be displayed on Windows"
         '
         'OpenFileDialogLinux
         '
@@ -334,6 +345,7 @@ Partial Class DirectoryImage
         Me.OpenFileDialogLinux.DefaultExt = "png"
         Me.OpenFileDialogLinux.Filter = "Image files|*.png; *.bmp; *.jpg; *.jpeg; *.ico"
         Me.OpenFileDialogLinux.ReadOnlyChecked = true
+        Me.OpenFileDialogLinux.Title = "Select on icon to be displayed on Linux"
         '
         'DirectoryImage
         '
