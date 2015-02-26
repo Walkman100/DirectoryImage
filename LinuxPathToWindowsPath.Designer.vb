@@ -59,6 +59,7 @@ Partial Class LinuxPathToWindowsPath
         Me.txtMntLen.Name = "txtMntLen"
         Me.txtMntLen.Size = New System.Drawing.Size(255, 20)
         Me.txtMntLen.TabIndex = 1
+        Me.txtMntLen.Value = New Decimal(New Integer() {24, 0, 0, 0})
         '
         'txtMnt
         '

@@ -14,7 +14,7 @@ Public Class DirectoryImage
         Next
     End Sub
     
-    Sub txtDirectoryBrowse_Click(sender As Object, e As EventArgs) Handles txtDirectoryBrowse.Click
+    Sub txtDirectoryBrowse_Click() Handles txtDirectoryBrowse.Click
         If FolderBrowserDialog.ShowDialog = DialogResult.OK Then
             txtDirectoryPath.Text = FolderBrowserDialog.SelectedPath
             
@@ -114,7 +114,7 @@ Public Class DirectoryImage
             imgLinuxCurrent.ImageLocation = txtDirectoryPath.Text & txtLinuxImagePath.Text.Remove(0,1).Replace("/", "\")
         ElseIf txtLinuxImagePath.Text.StartsWith("/", True, Nothing) Then
             optLinuxAbsolute.Checked = True
-            LinuxPathToWindowsPath.Show
+            LinuxPathToWindowsPath.Show '<- That sets the image
         Else
             'optLinuxSystemIcon.Checked = True
         End If
