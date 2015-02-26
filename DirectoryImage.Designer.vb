@@ -325,14 +325,14 @@ Partial Class DirectoryImage
         'OpenFileDialogWindows
         '
         Me.OpenFileDialogWindows.DefaultExt = "ico"
-        Me.OpenFileDialogWindows.Filter = "Icon Files (.ico)|*.ico"
+        Me.OpenFileDialogWindows.Filter = "Icon Files|*.ico"
         Me.OpenFileDialogWindows.ReadOnlyChecked = true
         '
         'OpenFileDialogLinux
         '
         Me.OpenFileDialogLinux.AddExtension = false
         Me.OpenFileDialogLinux.DefaultExt = "png"
-        Me.OpenFileDialogLinux.Filter = "Image files (.png, .bmp, .jpg, .ico)|*.png; *.bmp; *.jpg; *.ico"
+        Me.OpenFileDialogLinux.Filter = "Image files|*.png; *.bmp; *.jpg; *.jpeg; *.ico"
         Me.OpenFileDialogLinux.ReadOnlyChecked = true
         '
         'DirectoryImage
