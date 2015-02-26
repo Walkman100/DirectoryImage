@@ -4,7 +4,7 @@
     End Sub
     
     Sub LinuxPathToWindowsPath_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        txtMntLen.Maximum = DirectoryImage.txtLinuxImagePath.Text.Length
+        txtMntLen.Maximum = DirectoryImage.txtLinuxImagePath.Text.Length-1
         txtMntLen_ValueChanged()
     End Sub
     
@@ -12,9 +12,16 @@
         txtMnt.Text = DirectoryImage.txtLinuxImagePath.Text.Remove(txtMntLen.Value)
     End Sub
     
+    Sub cbxWinLetter_SelectedIndexChanged() Handles cbxWinLetter.SelectedIndexChanged
+        If cbxWinLetter.SelectedIndex <> -1 Then
+            cbxWinLetter.DropDownStyle = ComboBoxStyle.DropDown
+            btnSave.Enabled = True
+        End If
+    End Sub
+    
     Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
+        DirectoryImage.imgLinuxCurrent.ImageLocation = cbxWinLetter.Text & DirectoryImage.txtLinuxImagePath.Text.Remove(0,txtMntLen.Value).Replace("/", "\")
         Me.Close
-        DirectoryImage.imgLinuxCurrent.ImageLocation = cbxWinLetter.SelectedItem & DirectoryImage.txtLinuxImagePath.Text.Remove(0,txtMntLen.Value).Replace("/", "\")
     End Sub
     
     Sub btnBrowse_Click(sender As Object, e As EventArgs) Handles btnBrowse.Click

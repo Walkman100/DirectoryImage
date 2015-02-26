@@ -37,6 +37,7 @@ Partial Class DirectoryImage
         Me.imgWindowsCurrent = New System.Windows.Forms.PictureBox()
         Me.lblWindowsCurrent = New System.Windows.Forms.Label()
         Me.grpLinux = New System.Windows.Forms.GroupBox()
+        Me.optLinuxSystemImage = New System.Windows.Forms.RadioButton()
         Me.btnLinuxOpenDataFile = New System.Windows.Forms.Button()
         Me.optLinuxRel = New System.Windows.Forms.RadioButton()
         Me.grpLinuxRel = New System.Windows.Forms.GroupBox()
@@ -64,6 +65,7 @@ Partial Class DirectoryImage
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.txtDirectoryPath.Location = New System.Drawing.Point(12, 12)
         Me.txtDirectoryPath.Name = "txtDirectoryPath"
+        Me.txtDirectoryPath.ReadOnly = true
         Me.txtDirectoryPath.Size = New System.Drawing.Size(431, 20)
         Me.txtDirectoryPath.TabIndex = 0
         '
@@ -134,6 +136,7 @@ Partial Class DirectoryImage
         'optWindowsRelContained
         '
         Me.optWindowsRelContained.AutoSize = true
+        Me.optWindowsRelContained.Checked = true
         Me.optWindowsRelContained.Location = New System.Drawing.Point(6, 19)
         Me.optWindowsRelContained.Name = "optWindowsRelContained"
         Me.optWindowsRelContained.Size = New System.Drawing.Size(113, 17)
@@ -210,6 +213,7 @@ Partial Class DirectoryImage
         '
         Me.grpLinux.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.grpLinux.Controls.Add(Me.optLinuxSystemImage)
         Me.grpLinux.Controls.Add(Me.btnLinuxOpenDataFile)
         Me.grpLinux.Controls.Add(Me.optLinuxRel)
         Me.grpLinux.Controls.Add(Me.grpLinuxRel)
@@ -225,6 +229,17 @@ Partial Class DirectoryImage
         Me.grpLinux.TabIndex = 3
         Me.grpLinux.TabStop = false
         Me.grpLinux.Text = "Linux Image"
+        '
+        'optLinuxSystemImage
+        '
+        Me.optLinuxSystemImage.AutoSize = true
+        Me.optLinuxSystemImage.Location = New System.Drawing.Point(140, 135)
+        Me.optLinuxSystemImage.Name = "optLinuxSystemImage"
+        Me.optLinuxSystemImage.Size = New System.Drawing.Size(91, 17)
+        Me.optLinuxSystemImage.TabIndex = 15
+        Me.optLinuxSystemImage.TabStop = true
+        Me.optLinuxSystemImage.Text = "System Image"
+        Me.optLinuxSystemImage.UseVisualStyleBackColor = true
         '
         'btnLinuxOpenDataFile
         '
@@ -263,6 +278,7 @@ Partial Class DirectoryImage
         'optLinuxRelContained
         '
         Me.optLinuxRelContained.AutoSize = true
+        Me.optLinuxRelContained.Checked = true
         Me.optLinuxRelContained.Location = New System.Drawing.Point(6, 19)
         Me.optLinuxRelContained.Name = "optLinuxRelContained"
         Me.optLinuxRelContained.Size = New System.Drawing.Size(113, 17)
@@ -378,6 +394,7 @@ Partial Class DirectoryImage
         Me.ResumeLayout(false)
         Me.PerformLayout
     End Sub
+    Friend WithEvents optLinuxSystemImage As System.Windows.Forms.RadioButton
     Friend WithEvents OpenFileDialogLinux As System.Windows.Forms.OpenFileDialog
     Friend WithEvents OpenFileDialogWindows As System.Windows.Forms.OpenFileDialog
     Friend WithEvents FolderBrowserDialog As System.Windows.Forms.FolderBrowserDialog

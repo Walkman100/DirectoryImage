@@ -24,15 +24,17 @@ Public Class DirectoryImage
             txtWindowsIconPath.Text = ""
             optWindowsAbsolute.Checked = False
             optWindowsRel.Checked = False
-            optWindowsRelContained.Checked = False
+            optWindowsRelContained.Checked = True
             optWindowsRelExternal.Checked = False
             imgWindowsCurrent.Image = CType(ComponentResourcesManagerFromDesigner.GetObject("imgWindowsCurrent.Image"),System.Drawing.Image)
             txtLinuxImagePath.Text = ""
             optLinuxAbsolute.Checked = False
             optLinuxRel.Checked = False
-            optLinuxRelContained.Checked = False
+            optLinuxRelContained.Checked = True
             optLinuxRelExternal.Checked = False
-            'Me.imgLinuxCurrent.Image = CType(ComponentResourcesManagerFromDesigner.GetObject("imgLinuxCurrent.Image"),System.Drawing.Image)
+            optLinuxSystemImage.Checked = False
+            imgLinuxCurrent.ImageLocation = Nothing
+            'imgLinuxCurrent.Image = CType(ComponentResourcesManagerFromDesigner.GetObject("imgLinuxCurrent.Image"),System.Drawing.Image)
             
             ParseFiles(txtDirectoryPath.Text)
         End If
@@ -49,32 +51,34 @@ Public Class DirectoryImage
                 If line.StartsWith("IconResource=", True, Nothing) Then
                     txtWindowsIconPath.Text = line.Remove(0, 13)
                     alreadyGotIcon = True
+                    ParseWindows()
                 ElseIf line.StartsWith("IconFile=", True, Nothing) And alreadyGotIcon = False Then
                     txtWindowsIconPath.Text = line.Remove(0, 9)
                     lookingForIconIndex = True
+                    ParseWindows()
                 ElseIf line.StartsWith("IconIndex=", True, Nothing) And lookingForIconIndex Then
                     txtWindowsIconPath.Text = txtWindowsIconPath.Text & "," & line.Remove(0, 10)
                 End If
             Next
-            ParseWindows()
         Else
             btnWindowsOpenDataFile.Enabled = False
         End If
+        
         If File.Exists(Directory & "\.directory") Then
             btnLinuxOpenDataFile.Enabled = True
             For Each line In ReadLines(Directory & "\.directory")
                 If line.StartsWith("Icon=", True, Nothing) Then
                     txtLinuxImagePath.Text = line.remove(0, 5)
+                    ParseLinux()
                 End If
             Next
-            ParseLinux()
         Else
             btnLinuxOpenDataFile.Enabled = False
         End If
     End Sub
     
     Sub ParseWindows
-        If txtWindowsIconPath.Text.StartsWith("%", True, Nothing) Or _
+        If txtWindowsIconPath.Text.StartsWith("%") Or _
                 txtWindowsIconPath.Text.StartsWith("A:\") Or _
                 txtWindowsIconPath.Text.StartsWith("B:\") Or _
                 txtWindowsIconPath.Text.StartsWith("C:\") Or _
@@ -116,7 +120,7 @@ Public Class DirectoryImage
             optLinuxAbsolute.Checked = True
             LinuxPathToWindowsPath.Show '<- That sets the image
         Else
-            'optLinuxSystemIcon.Checked = True
+            optLinuxSystemImage.Checked = True
         End If
     End Sub
     
@@ -144,7 +148,7 @@ Public Class DirectoryImage
         End If
     End Sub
     
-    Sub LinuxOptionSelected() Handles optLinuxAbsolute.CheckedChanged, optLinuxRel.CheckedChanged, optLinuxRelContained.CheckedChanged, optLinuxRelExternal.CheckedChanged
+    Sub LinuxOptionSelected() Handles optLinuxAbsolute.CheckedChanged, optLinuxRel.CheckedChanged, optLinuxRelContained.CheckedChanged, optLinuxRelExternal.CheckedChanged, optLinuxSystemImage.CheckedChanged
         If optLinuxAbsolute.Checked = True Then
             btnLinuxIconSet.Enabled = True
         ElseIf optLinuxRel.Checked = True Then

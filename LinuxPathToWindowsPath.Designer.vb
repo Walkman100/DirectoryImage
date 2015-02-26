@@ -65,9 +65,9 @@ Partial Class LinuxPathToWindowsPath
         '
         Me.txtMnt.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.txtMnt.Enabled = false
         Me.txtMnt.Location = New System.Drawing.Point(12, 64)
         Me.txtMnt.Name = "txtMnt"
+        Me.txtMnt.ReadOnly = true
         Me.txtMnt.Size = New System.Drawing.Size(255, 20)
         Me.txtMnt.TabIndex = 2
         '
@@ -100,6 +100,7 @@ Partial Class LinuxPathToWindowsPath
         '
         'btnSave
         '
+        Me.btnSave.Enabled = false
         Me.btnSave.Location = New System.Drawing.Point(12, 130)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(75, 23)
