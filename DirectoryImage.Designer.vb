@@ -340,7 +340,7 @@ Partial Class DirectoryImage
         'OpenFileDialogWindows
         '
         Me.OpenFileDialogWindows.DefaultExt = "ico"
-        Me.OpenFileDialogWindows.Filter = "Icon Files|*.ico"
+        Me.OpenFileDialogWindows.Filter = "Icon Files|*.ico; *.exe; *.dll"
         Me.OpenFileDialogWindows.ReadOnlyChecked = true
         Me.OpenFileDialogWindows.Title = "Select an icon to be displayed on Windows"
         '
