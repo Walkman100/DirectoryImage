@@ -114,6 +114,7 @@ Public Class DirectoryImage
             imgLinuxCurrent.ImageLocation = txtDirectoryPath.Text & txtLinuxImagePath.Text.Remove(0,1).Replace("/", "\")
         ElseIf txtLinuxImagePath.Text.StartsWith("/", True, Nothing) Then
             optLinuxAbsolute.Checked = True
+            LinuxPathToWindowsPath.Show
         Else
             'optLinuxSystemIcon.Checked = True
         End If
