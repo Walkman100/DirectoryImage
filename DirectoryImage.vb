@@ -1,4 +1,8 @@
-﻿Public Class DirectoryImage
+﻿Imports System.IO
+Imports System.IO.File
+Imports System.IO.Directory
+
+Public Class DirectoryImage
     Sub txtDirectoryBrowse_Click(sender As Object, e As EventArgs) Handles txtDirectoryBrowse.Click
         If FolderBrowserDialog.ShowDialog = DialogResult.OK Then
             txtDirectoryPath.Text = FolderBrowserDialog.SelectedPath
@@ -9,7 +13,17 @@
     End Sub
     
     Sub ParseFiles(Optional Directory As String = Nothing)
+        If File.Exists(txtDirectoryPath.Text & "\desktop.ini") Then
+            btnWindowsOpenDataFile.Enabled = True
+        Else
+            btnWindowsOpenDataFile.Enabled = False
+        End If
         
+        If File.Exists(txtDirectoryPath.Text & "\.directory") Then
+            btnLinuxOpenDataFile.Enabled = True
+        Else
+            btnLinuxOpenDataFile.Enabled = False
+        End If
     End Sub
     
     Sub optWindowsRel_CheckedChanged(sender As Object, e As EventArgs) Handles optWindowsRel.CheckedChanged
@@ -71,7 +85,11 @@
     End Sub
     
     Sub btnWindowsOpenDataFile_Click(sender As Object, e As EventArgs) Handles btnWindowsOpenDataFile.Click
-        Process.Start(Environment.GetEnvironmentVariable("windir") & "\notepad " & txtDirectoryPath.Text & "\desktop.ini")
+        If File.Exists(txtDirectoryPath.Text & "\desktop.ini") Then
+            Process.Start(Environment.GetEnvironmentVariable("windir") & "\notepad.exe", txtDirectoryPath.Text & "\desktop.ini")
+        Else
+            btnWindowsOpenDataFile.Enabled = False
+        End If
     End Sub
     
     Sub btnLinuxIconSet_Click(sender As Object, e As EventArgs) Handles btnLinuxIconSet.Click
@@ -93,6 +111,10 @@
     End Sub
     
     Sub btnLinuxOpenDataFile_Click(sender As Object, e As EventArgs) Handles btnLinuxOpenDataFile.Click
-        Process.Start(Environment.GetEnvironmentVariable("windir") & "\notepad " & txtDirectoryPath.Text & "\.directory")
+        If File.Exists(txtDirectoryPath.Text & "\.directory") Then
+            Process.Start(Environment.GetEnvironmentVariable("windir") & "\notepad.exe", txtDirectoryPath.Text & "\.directory")
+        Else
+            btnLinuxOpenDataFile.Enabled = False
+        End If
     End Sub
 End Class

@@ -22,6 +22,7 @@ Partial Class DirectoryImage
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(DirectoryImage))
         Me.txtDirectoryPath = New System.Windows.Forms.TextBox()
         Me.txtDirectoryBrowse = New System.Windows.Forms.Button()
         Me.grpWindows = New System.Windows.Forms.GroupBox()
@@ -100,6 +101,7 @@ Partial Class DirectoryImage
         '
         Me.btnWindowsOpenDataFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnWindowsOpenDataFile.AutoSize = true
+        Me.btnWindowsOpenDataFile.Enabled = false
         Me.btnWindowsOpenDataFile.Location = New System.Drawing.Point(400, 137)
         Me.btnWindowsOpenDataFile.Name = "btnWindowsOpenDataFile"
         Me.btnWindowsOpenDataFile.Size = New System.Drawing.Size(106, 23)
@@ -186,6 +188,8 @@ Partial Class DirectoryImage
         'imgWindowsCurrent
         '
         Me.imgWindowsCurrent.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.imgWindowsCurrent.Image = CType(resources.GetObject("imgWindowsCurrent.Image"),System.Drawing.Image)
+        Me.imgWindowsCurrent.InitialImage = CType(resources.GetObject("imgWindowsCurrent.InitialImage"),System.Drawing.Image)
         Me.imgWindowsCurrent.Location = New System.Drawing.Point(6, 32)
         Me.imgWindowsCurrent.Name = "imgWindowsCurrent"
         Me.imgWindowsCurrent.Size = New System.Drawing.Size(128, 128)
@@ -226,6 +230,7 @@ Partial Class DirectoryImage
         '
         Me.btnLinuxOpenDataFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnLinuxOpenDataFile.AutoSize = true
+        Me.btnLinuxOpenDataFile.Enabled = false
         Me.btnLinuxOpenDataFile.Location = New System.Drawing.Point(408, 137)
         Me.btnLinuxOpenDataFile.Name = "btnLinuxOpenDataFile"
         Me.btnLinuxOpenDataFile.Size = New System.Drawing.Size(98, 23)
