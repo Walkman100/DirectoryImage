@@ -136,6 +136,7 @@ Partial Class DirectoryImage
         '
         Me.btnWindowsSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnWindowsSave.AutoSize = true
+        Me.btnWindowsSave.Enabled = false
         Me.btnWindowsSave.Location = New System.Drawing.Point(431, 79)
         Me.btnWindowsSave.Name = "btnWindowsSave"
         Me.btnWindowsSave.Size = New System.Drawing.Size(75, 23)
@@ -304,6 +305,7 @@ Partial Class DirectoryImage
         '
         Me.btnLinuxSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnLinuxSave.AutoSize = true
+        Me.btnLinuxSave.Enabled = false
         Me.btnLinuxSave.Location = New System.Drawing.Point(431, 79)
         Me.btnLinuxSave.Name = "btnLinuxSave"
         Me.btnLinuxSave.Size = New System.Drawing.Size(75, 23)

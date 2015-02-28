@@ -154,6 +154,7 @@ Public Class DirectoryImage
     End Sub
     
     Sub WindowsOptionSelected() Handles optWindowsAbsolute.CheckedChanged, optWindowsRel.CheckedChanged, optWindowsRelContained.CheckedChanged, optWindowsRelExternal.CheckedChanged
+        btnWindowsSave.Enabled = False
         If optWindowsAbsolute.Checked = True Then
             btnWindowsIconSet.Enabled = True
         ElseIf optWindowsRel.Checked = True Then
@@ -169,10 +170,27 @@ Public Class DirectoryImage
         End If
     End Sub
     
+    Sub WindowsIconPathChanged() Handles txtWindowsIconPath.TextChanged
+        If optWindowsAbsolute.Checked = True Then
+            btnWindowsSave.Enabled = True
+        ElseIf optWindowsRel.Checked = True Then
+            If optWindowsRelContained.Checked = True Then
+                btnWindowsSave.Enabled = True
+            ElseIf optWindowsRelExternal.Checked = True
+                btnWindowsSave.Enabled = True
+            Else
+                btnWindowsSave.Enabled = False
+            End If
+        Else
+            btnWindowsSave.Enabled = False
+        End If
+    End Sub
+    
     Sub btnWindowsIconSet_Click(sender As Object, e As EventArgs) Handles btnWindowsIconSet.Click
         SetInitialDirectories
         If OpenFileDialogWindows.ShowDialog = DialogResult.OK Then
             imgWindowsCurrent.ImageLocation = OpenFileDialogWindows.FileName
+            btnWindowsSave.Enabled = True
             If optWindowsAbsolute.Checked = True Then
                 txtWindowsIconPath.Text = OpenFileDialogWindows.FileName
             ElseIf optWindowsRelContained.Checked = True Then
@@ -193,6 +211,7 @@ Public Class DirectoryImage
             SetAttributes(txtDirectoryPath.Text & "\desktop.ini", IO.FileAttributes.Hidden)
             btnWindowsOpenDataFile.Enabled = True
         End If
+        ParseFiles(txtDirectoryPath.Text)
     End Sub
     
     Sub btnWindowsOpenDataFile_Click(sender As Object, e As EventArgs) Handles btnWindowsOpenDataFile.Click
@@ -251,7 +270,9 @@ Public Class DirectoryImage
     Sub LinuxOptionSelected() Handles optLinuxAbsolute.CheckedChanged, optLinuxRel.CheckedChanged, optLinuxRelContained.CheckedChanged, optLinuxRelExternal.CheckedChanged, optLinuxSystemImage.CheckedChanged
         If optLinuxAbsolute.Checked = True Then
             btnLinuxIconSet.Enabled = True
+            btnLinuxSave.Enabled = False
         ElseIf optLinuxRel.Checked = True Then
+            btnLinuxSave.Enabled = False
             If optLinuxRelContained.Checked = True Then
                 btnLinuxIconSet.Enabled = True
             ElseIf optLinuxRelExternal.Checked = True
@@ -259,8 +280,26 @@ Public Class DirectoryImage
             Else
                 btnLinuxIconSet.Enabled = False
             End If
+        ElseIf optLinuxSystemImage.Checked = True
+            btnLinuxIconSet.Enabled = False
+            btnLinuxSave.Enabled = True
         Else
             btnLinuxIconSet.Enabled = False
+            btnLinuxSave.Enabled = False
+        End If
+    End Sub
+    
+    Sub LinuxImagePathChanged() Handles txtLinuxImagePath.TextChanged
+        If optLinuxAbsolute.Checked = True Then
+            btnLinuxSave.Enabled = True
+        ElseIf optLinuxRel.Checked = True Then
+            If optLinuxRelContained.Checked = True Then
+                btnLinuxSave.Enabled = True
+            ElseIf optLinuxRelExternal.Checked = True
+                btnLinuxSave.Enabled = True
+            Else
+                btnLinuxSave.Enabled = False
+            End If
         End If
     End Sub
     
@@ -268,6 +307,7 @@ Public Class DirectoryImage
         SetInitialDirectories
         If OpenFileDialogLinux.ShowDialog = DialogResult.OK Then
             imgLinuxCurrent.ImageLocation = OpenFileDialogLinux.FileName
+            btnWindowsSave.Enabled = True
             If optLinuxAbsolute.Checked = True Then
                 txtLinuxImagePath.Text = OpenFileDialogLinux.FileName.Remove(0,2).Replace("\", "/")
                 txtLinuxImagePath.Text = InputBox("Please enter the path in linux where drive """& OpenFileDialogLinux.FileName.Remove(2)&""" is mounted:", _
@@ -290,6 +330,7 @@ Public Class DirectoryImage
             SetAttributes(txtDirectoryPath.Text & "\.directory", IO.FileAttributes.Hidden)
             btnLinuxOpenDataFile.Enabled = True
         End If
+        ParseFiles(txtDirectoryPath.Text)
     End Sub
     
     Sub btnLinuxOpenDataFile_Click(sender As Object, e As EventArgs) Handles btnLinuxOpenDataFile.Click
