@@ -1,6 +1,4 @@
-﻿Imports System.IO
-Imports System.IO.File
-Imports System.IO.Directory
+﻿Imports System.IO.File
 
 Public Class DirectoryImage
     Dim ComponentResourcesManagerFromDesigner As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(DirectoryImage))
@@ -43,8 +41,18 @@ Public Class DirectoryImage
     Dim alreadyGotIcon, lookingForIconIndex As Boolean
     
     Sub ParseFiles(Directory As String)
-        If File.Exists(Directory & "\desktop.ini") Then
+        If Exists(Directory & "\desktop.ini") Then
             btnWindowsOpenDataFile.Enabled = True
+            If GetAttributes(txtDirectoryPath.Text & "\desktop.ini").HasFlag(IO.FileAttributes.Hidden) Then
+                btnWindowsSetHidden.Enabled = False
+            Else
+                btnWindowsSetHidden.Enabled = True
+            End If
+            If GetAttributes(txtDirectoryPath.Text & "\desktop.ini").HasFlag(IO.FileAttributes.System) Then
+                btnWindowsSetSystem.Enabled = False
+            Else
+                btnWindowsSetSystem.Enabled = True
+            End If
             alreadyGotIcon = False
             lookingForIconIndex = False
             For Each line In ReadLines(Directory & "\desktop.ini")
@@ -62,10 +70,22 @@ Public Class DirectoryImage
             Next
         Else
             btnWindowsOpenDataFile.Enabled = False
+            btnWindowsSetHidden.Enabled = False
+            btnWindowsSetSystem.Enabled = False
         End If
         
-        If File.Exists(Directory & "\.directory") Then
+        If Exists(Directory & "\.directory") Then
             btnLinuxOpenDataFile.Enabled = True
+            If GetAttributes(txtDirectoryPath.Text & "\.directory").HasFlag(IO.FileAttributes.Hidden) Then
+                btnLinuxSetHidden.Enabled = False
+            Else
+                btnLinuxSetHidden.Enabled = True
+            End If
+            If GetAttributes(txtDirectoryPath.Text & "\.directory").HasFlag(IO.FileAttributes.System) Then
+                btnLinuxSetSystem.Enabled = False
+            Else
+                btnLinuxSetSystem.Enabled = True
+            End If
             For Each line In ReadLines(Directory & "\.directory")
                 If line.StartsWith("Icon=", True, Nothing) Then
                     txtLinuxImagePath.Text = line.remove(0, 5)
@@ -74,6 +94,8 @@ Public Class DirectoryImage
             Next
         Else
             btnLinuxOpenDataFile.Enabled = False
+            btnLinuxSetHidden.Enabled = False
+            btnLinuxSetSystem.Enabled = False
         End If
     End Sub
     
@@ -148,24 +170,8 @@ Public Class DirectoryImage
         End If
     End Sub
     
-    Sub LinuxOptionSelected() Handles optLinuxAbsolute.CheckedChanged, optLinuxRel.CheckedChanged, optLinuxRelContained.CheckedChanged, optLinuxRelExternal.CheckedChanged, optLinuxSystemImage.CheckedChanged
-        If optLinuxAbsolute.Checked = True Then
-            btnLinuxIconSet.Enabled = True
-        ElseIf optLinuxRel.Checked = True Then
-            If optLinuxRelContained.Checked = True Then
-                btnLinuxIconSet.Enabled = True
-            ElseIf optLinuxRelExternal.Checked = True
-                btnLinuxIconSet.Enabled = True
-            Else
-                btnLinuxIconSet.Enabled = False
-            End If
-        Else
-            btnLinuxIconSet.Enabled = False
-        End If
-    End Sub
-    
     Sub btnWindowsIconSet_Click(sender As Object, e As EventArgs) Handles btnWindowsIconSet.Click
-        If OpenFileDialogWindows.InitialDirectory = "" Then
+        If OpenFileDialogWindows.InitialDirectory = "" Then ' needs to be improved
             OpenFileDialogWindows.InitialDirectory = txtDirectoryPath.Text
         End If
         If OpenFileDialogWindows.ShowDialog = DialogResult.OK Then
@@ -182,16 +188,55 @@ Public Class DirectoryImage
         End If
     End Sub
     
+    Sub btnWindowsSave_Click() Handles btnWindowsSave.Click
+        If Exists(txtDirectoryPath.Text & "\desktop.ini") Then
+            
+        Else
+            WriteAllText(txtDirectoryPath.Text & "\desktop.ini", "[.ShellClassInfo]" & vbNewLine & "IconResource=" & txtWindowsIconPath.Text)
+            SetAttributes(txtDirectoryPath.Text & "\desktop.ini", IO.FileAttributes.Hidden)
+            btnWindowsOpenDataFile.Enabled = True
+        End If
+    End Sub
+    
     Sub btnWindowsOpenDataFile_Click(sender As Object, e As EventArgs) Handles btnWindowsOpenDataFile.Click
-        If File.Exists(txtDirectoryPath.Text & "\desktop.ini") Then
+        If Exists(txtDirectoryPath.Text & "\desktop.ini") Then
             Process.Start(Environment.GetEnvironmentVariable("windir") & "\notepad.exe", txtDirectoryPath.Text & "\desktop.ini")
         Else
             btnWindowsOpenDataFile.Enabled = False
         End If
     End Sub
     
+    Sub btnWindowsSetHidden_Click() Handles btnWindowsSetHidden.Click
+        'If Not GetAttributes(txtDirectoryPath.Text & "\desktop.ini").HasFlag(IO.FileAttributes.Hidden) Then
+        SetAttributes(txtDirectoryPath.Text & "\desktop.ini", FileAttribute.Hidden)
+        ParseFiles(txtDirectoryPath.Text)
+        'btnWindowsSetHidden.Enabled = False '<= no need since ParseFiles will detect if the flag is set
+        'End If
+    End Sub
+    
+    Sub btnWindowsSetSystem_Click() Handles btnWindowsSetSystem.Click
+        SetAttributes(txtDirectoryPath.Text & "\desktop.ini", FileAttribute.System)
+        ParseFiles(txtDirectoryPath.Text)
+    End Sub
+    
+    Sub LinuxOptionSelected() Handles optLinuxAbsolute.CheckedChanged, optLinuxRel.CheckedChanged, optLinuxRelContained.CheckedChanged, optLinuxRelExternal.CheckedChanged, optLinuxSystemImage.CheckedChanged
+        If optLinuxAbsolute.Checked = True Then
+            btnLinuxIconSet.Enabled = True
+        ElseIf optLinuxRel.Checked = True Then
+            If optLinuxRelContained.Checked = True Then
+                btnLinuxIconSet.Enabled = True
+            ElseIf optLinuxRelExternal.Checked = True
+                btnLinuxIconSet.Enabled = True
+            Else
+                btnLinuxIconSet.Enabled = False
+            End If
+        Else
+            btnLinuxIconSet.Enabled = False
+        End If
+    End Sub
+    
     Sub btnLinuxIconSet_Click(sender As Object, e As EventArgs) Handles btnLinuxIconSet.Click
-        If OpenFileDialogLinux.InitialDirectory = "" Then
+        If OpenFileDialogLinux.InitialDirectory = "" Then ' needs to be improved
             OpenFileDialogLinux.InitialDirectory = txtDirectoryPath.Text
         End If
         If OpenFileDialogLinux.ShowDialog = DialogResult.OK Then
@@ -210,11 +255,31 @@ Public Class DirectoryImage
         End If
     End Sub
     
+    Sub btnLinuxSave_Click() Handles btnLinuxSave.Click
+        If Exists(txtDirectoryPath.Text & "\.directory") Then
+            
+        Else
+            WriteAllText(txtDirectoryPath.Text & "\.directory", "[.ShellClassInfo]" & vbNewLine & "IconResource=" & txtLinuxImagePath.Text)
+            SetAttributes(txtDirectoryPath.Text & "\.directory", IO.FileAttributes.Hidden)
+            btnLinuxOpenDataFile.Enabled = True
+        End If
+    End Sub
+    
     Sub btnLinuxOpenDataFile_Click(sender As Object, e As EventArgs) Handles btnLinuxOpenDataFile.Click
-        If File.Exists(txtDirectoryPath.Text & "\.directory") Then
+        If Exists(txtDirectoryPath.Text & "\.directory") Then
             Process.Start(Environment.GetEnvironmentVariable("windir") & "\notepad.exe", txtDirectoryPath.Text & "\.directory")
         Else
             btnLinuxOpenDataFile.Enabled = False
         End If
+    End Sub
+    
+    Sub btnLinuxSetHidden_Click() Handles btnLinuxSetHidden.Click
+        SetAttributes(txtDirectoryPath.Text & "\.directory", FileAttribute.Hidden)
+        ParseFiles(txtDirectoryPath.Text)
+    End Sub
+    
+    Sub btnLinuxSetSystem_Click() Handles btnLinuxSetSystem.Click
+        SetAttributes(txtDirectoryPath.Text & "\.directory", FileAttribute.System)
+        ParseFiles(txtDirectoryPath.Text)
     End Sub
 End Class
