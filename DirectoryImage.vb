@@ -171,9 +171,7 @@ Public Class DirectoryImage
     End Sub
     
     Sub btnWindowsIconSet_Click(sender As Object, e As EventArgs) Handles btnWindowsIconSet.Click
-        If OpenFileDialogWindows.InitialDirectory = "" Then ' needs to be improved
-            OpenFileDialogWindows.InitialDirectory = txtDirectoryPath.Text
-        End If
+        SetInitialDirectories
         If OpenFileDialogWindows.ShowDialog = DialogResult.OK Then
             imgWindowsCurrent.ImageLocation = OpenFileDialogWindows.FileName
             If optWindowsAbsolute.Checked = True Then
@@ -181,7 +179,7 @@ Public Class DirectoryImage
             ElseIf optWindowsRelContained.Checked = True Then
                 txtWindowsIconPath.Text = OpenFileDialogWindows.FileName.Remove(0, txtDirectoryPath.Text.Length + 1)
             ElseIf optWindowsRelExternal.Checked = True Then
-                txtWindowsIconPath.Text = "../" & OpenFileDialogLinux.FileName.Remove(0, txtDirectoryPath.Text.Length)
+                txtWindowsIconPath.Text = ".." & OpenFileDialogWindows.FileName.Remove(0, OpenFileDialogWindows.FileName.LastIndexOf("\"))
             Else
                 MsgBox("Please select an option!", MsgBoxStyle.Exclamation)
             End If
@@ -219,6 +217,38 @@ Public Class DirectoryImage
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
+    Sub SetInitialDirectories()
+        If optWindowsAbsolute.Checked = True Then
+            If OpenFileDialogWindows.InitialDirectory = "" Then
+                OpenFileDialogWindows.InitialDirectory = txtDirectoryPath.Text
+            End If
+        ElseIf optWindowsRel.Checked = True Then
+            If optWindowsRelContained.Checked = True Then
+                OpenFileDialogWindows.InitialDirectory = txtDirectoryPath.Text
+            ElseIf optWindowsRelExternal.Checked = True
+                OpenFileDialogWindows.InitialDirectory = txtDirectoryPath.Text.Remove(txtDirectoryPath.Text.LastIndexOf("\"))
+            End If
+            If txtWindowsIconPath.Text <> "" Then
+                OpenFileDialogWindows.FileName = txtWindowsIconPath.Text
+            End If
+        End If
+        
+        If optLinuxAbsolute.Checked = True Then
+            If OpenFileDialogLinux.InitialDirectory = "" Then
+                OpenFileDialogLinux.InitialDirectory = txtDirectoryPath.Text
+            End If
+        ElseIf optLinuxRel.Checked = True Then
+            If optLinuxRelContained.Checked = True Then
+                OpenFileDialogLinux.InitialDirectory = txtDirectoryPath.Text
+            ElseIf optLinuxRelExternal.Checked = True
+                OpenFileDialogLinux.InitialDirectory = txtDirectoryPath.Text.Remove(txtDirectoryPath.Text.LastIndexOf("\"))
+            End If
+            If txtLinuxImagePath.Text <> "" Then
+                OpenFileDialogLinux.FileName = txtLinuxImagePath.Text
+            End If
+        End If
+    End Sub
+    
     Sub LinuxOptionSelected() Handles optLinuxAbsolute.CheckedChanged, optLinuxRel.CheckedChanged, optLinuxRelContained.CheckedChanged, optLinuxRelExternal.CheckedChanged, optLinuxSystemImage.CheckedChanged
         If optLinuxAbsolute.Checked = True Then
             btnLinuxIconSet.Enabled = True
@@ -236,9 +266,7 @@ Public Class DirectoryImage
     End Sub
     
     Sub btnLinuxIconSet_Click(sender As Object, e As EventArgs) Handles btnLinuxIconSet.Click
-        If OpenFileDialogLinux.InitialDirectory = "" Then ' needs to be improved
-            OpenFileDialogLinux.InitialDirectory = txtDirectoryPath.Text
-        End If
+        SetInitialDirectories
         If OpenFileDialogLinux.ShowDialog = DialogResult.OK Then
             imgLinuxCurrent.ImageLocation = OpenFileDialogLinux.FileName
             If optLinuxAbsolute.Checked = True Then
