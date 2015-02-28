@@ -31,8 +31,7 @@ Public Class DirectoryImage
             optLinuxRelContained.Checked = True
             optLinuxRelExternal.Checked = False
             optLinuxSystemImage.Checked = False
-            imgLinuxCurrent.ImageLocation = Nothing
-            'imgLinuxCurrent.Image = CType(ComponentResourcesManagerFromDesigner.GetObject("imgLinuxCurrent.Image"),System.Drawing.Image)
+            imgLinuxCurrent.Image = Global.DirectoryImage.My.Resources.Resources.folder128
             
             ParseFiles(txtDirectoryPath.Text)
         End If

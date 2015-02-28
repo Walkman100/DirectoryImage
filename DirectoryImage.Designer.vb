@@ -236,7 +236,6 @@ Partial Class DirectoryImage
         '
         Me.imgWindowsCurrent.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.imgWindowsCurrent.Image = CType(resources.GetObject("imgWindowsCurrent.Image"),System.Drawing.Image)
-        Me.imgWindowsCurrent.InitialImage = CType(resources.GetObject("imgWindowsCurrent.InitialImage"),System.Drawing.Image)
         Me.imgWindowsCurrent.Location = New System.Drawing.Point(6, 32)
         Me.imgWindowsCurrent.Name = "imgWindowsCurrent"
         Me.imgWindowsCurrent.Size = New System.Drawing.Size(128, 128)
@@ -415,6 +414,7 @@ Partial Class DirectoryImage
         'imgLinuxCurrent
         '
         Me.imgLinuxCurrent.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.imgLinuxCurrent.Image = Global.DirectoryImage.My.Resources.Resources.folder128
         Me.imgLinuxCurrent.Location = New System.Drawing.Point(6, 32)
         Me.imgLinuxCurrent.Name = "imgLinuxCurrent"
         Me.imgLinuxCurrent.Size = New System.Drawing.Size(128, 128)
