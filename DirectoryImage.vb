@@ -12,7 +12,7 @@ Public Class DirectoryImage
         Next
     End Sub
     
-    Sub txtDirectoryBrowse_Click() Handles txtDirectoryBrowse.Click
+    Sub btnDirectoryBrowse_Click() Handles btnDirectoryBrowse.Click
         If FolderBrowserDialog.ShowDialog = DialogResult.OK Then
             txtDirectoryPath.Text = FolderBrowserDialog.SelectedPath
             

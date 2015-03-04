@@ -26,7 +26,7 @@
     
     Sub btnBrowse_Click(sender As Object, e As EventArgs) Handles btnBrowse.Click
         Me.Close
-        DirectoryImage.txtDirectoryBrowse_Click()
+        DirectoryImage.btnDirectoryBrowse_Click()
     End Sub
     
     Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click

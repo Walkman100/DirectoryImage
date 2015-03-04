@@ -24,7 +24,7 @@ Partial Class DirectoryImage
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(DirectoryImage))
         Me.txtDirectoryPath = New System.Windows.Forms.TextBox()
-        Me.txtDirectoryBrowse = New System.Windows.Forms.Button()
+        Me.btnDirectoryBrowse = New System.Windows.Forms.Button()
         Me.grpWindows = New System.Windows.Forms.GroupBox()
         Me.btnWindowsSetHidden = New System.Windows.Forms.Button()
         Me.btnWindowsSetSystem = New System.Windows.Forms.Button()
@@ -75,15 +75,15 @@ Partial Class DirectoryImage
         Me.txtDirectoryPath.Size = New System.Drawing.Size(431, 20)
         Me.txtDirectoryPath.TabIndex = 0
         '
-        'txtDirectoryBrowse
+        'btnDirectoryBrowse
         '
-        Me.txtDirectoryBrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.txtDirectoryBrowse.Location = New System.Drawing.Point(449, 10)
-        Me.txtDirectoryBrowse.Name = "txtDirectoryBrowse"
-        Me.txtDirectoryBrowse.Size = New System.Drawing.Size(75, 23)
-        Me.txtDirectoryBrowse.TabIndex = 1
-        Me.txtDirectoryBrowse.Text = "Browse..."
-        Me.txtDirectoryBrowse.UseVisualStyleBackColor = true
+        Me.btnDirectoryBrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnDirectoryBrowse.Location = New System.Drawing.Point(449, 10)
+        Me.btnDirectoryBrowse.Name = "btnDirectoryBrowse"
+        Me.btnDirectoryBrowse.Size = New System.Drawing.Size(75, 23)
+        Me.btnDirectoryBrowse.TabIndex = 1
+        Me.btnDirectoryBrowse.Text = "Browse..."
+        Me.btnDirectoryBrowse.UseVisualStyleBackColor = true
         '
         'grpWindows
         '
@@ -459,7 +459,7 @@ Partial Class DirectoryImage
         Me.ClientSize = New System.Drawing.Size(536, 389)
         Me.Controls.Add(Me.grpLinux)
         Me.Controls.Add(Me.grpWindows)
-        Me.Controls.Add(Me.txtDirectoryBrowse)
+        Me.Controls.Add(Me.btnDirectoryBrowse)
         Me.Controls.Add(Me.txtDirectoryPath)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Name = "DirectoryImage"
@@ -478,6 +478,7 @@ Partial Class DirectoryImage
         Me.ResumeLayout(false)
         Me.PerformLayout
     End Sub
+    Friend WithEvents btnDirectoryBrowse As System.Windows.Forms.Button
     Friend WithEvents btnLinuxSetSystem As System.Windows.Forms.Button
     Friend WithEvents btnLinuxSetHidden As System.Windows.Forms.Button
     Friend WithEvents btnWindowsSetSystem As System.Windows.Forms.Button
@@ -510,7 +511,6 @@ Partial Class DirectoryImage
     Friend WithEvents grpWindowsRel As System.Windows.Forms.GroupBox
     Friend WithEvents grpLinux As System.Windows.Forms.GroupBox
     Friend WithEvents grpWindows As System.Windows.Forms.GroupBox
-    Friend WithEvents txtDirectoryBrowse As System.Windows.Forms.Button
     Friend WithEvents txtDirectoryPath As System.Windows.Forms.TextBox
 
 End Class
