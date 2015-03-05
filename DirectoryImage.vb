@@ -205,12 +205,23 @@ Public Class DirectoryImage
     
     Sub btnWindowsSave_Click() Handles btnWindowsSave.Click
         If Exists(txtDirectoryPath.Text & "\desktop.ini") Then
-            
+            Dim array As String() = ReadAllLines(txtDirectoryPath.Text & "\desktop.ini")
+            For Each line as string In array
+                If line.StartsWith("IconResource=", True, Nothing) Then
+                    line = "IconResource=" & txtWindowsIconPath.Text
+                ElseIf line.StartsWith("IconFile=", True, Nothing) Then
+                    line = nothing
+                ElseIf line.StartsWith("IconIndex=", True, Nothing) Then
+                    line = nothing
+                End If
+            Next
+            setattributes(txtDirectoryPath.Text & "\desktop.ini", io.fileattributes.normal)
+            WriteAllLines(txtDirectoryPath.Text & "\desktop.ini", array)
         Else
             WriteAllText(txtDirectoryPath.Text & "\desktop.ini", "[.ShellClassInfo]" & vbNewLine & "IconResource=" & txtWindowsIconPath.Text)
-            SetAttributes(txtDirectoryPath.Text & "\desktop.ini", IO.FileAttributes.Hidden)
             btnWindowsOpenDataFile.Enabled = True
         End If
+        SetAttributes(txtDirectoryPath.Text & "\desktop.ini", IO.FileAttributes.Hidden)
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
@@ -324,12 +335,19 @@ Public Class DirectoryImage
     
     Sub btnLinuxSave_Click() Handles btnLinuxSave.Click
         If Exists(txtDirectoryPath.Text & "\.directory") Then
-            
+            Dim array As String() = ReadAllLines(txtDirectoryPath.Text & "\.directory")
+            For Each line as string In array
+                If line.StartsWith("Icon=", True, Nothing) Then
+                    line = "Icon=" & txtLinuxImagePath.Text
+                End If
+            Next
+            setattributes(txtDirectoryPath.Text & "\.directory", io.fileattributes.normal)
+            WriteAllLines(txtDirectoryPath.Text & "\.directory", array)
         Else
-            WriteAllText(txtDirectoryPath.Text & "\.directory", "[.ShellClassInfo]" & vbNewLine & "IconResource=" & txtLinuxImagePath.Text)
-            SetAttributes(txtDirectoryPath.Text & "\.directory", IO.FileAttributes.Hidden)
+            WriteAllText(txtDirectoryPath.Text & "\.directory", "[Desktop Entry]" & vbNewLine & "Icon=" & txtLinuxImagePath.Text)
             btnLinuxOpenDataFile.Enabled = True
         End If
+        SetAttributes(txtDirectoryPath.Text & "\.directory", IO.FileAttributes.Hidden)
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
