@@ -203,17 +203,20 @@ Public Class DirectoryImage
         End If
     End Sub
     
+    Dim lineNo As Byte = 0
     Sub btnWindowsSave_Click() Handles btnWindowsSave.Click
         If Exists(txtDirectoryPath.Text & "\desktop.ini") Then
+            lineno = 0
             Dim array As String() = ReadAllLines(txtDirectoryPath.Text & "\desktop.ini")
-            For Each line as string In array
+            For Each line As String In array
                 If line.StartsWith("IconResource=", True, Nothing) Then
-                    line = "IconResource=" & txtWindowsIconPath.Text
+                    array(lineno) = "IconResource=" & txtWindowsIconPath.Text
                 ElseIf line.StartsWith("IconFile=", True, Nothing) Then
-                    line = nothing
+                    array(lineno) = nothing
                 ElseIf line.StartsWith("IconIndex=", True, Nothing) Then
-                    line = nothing
+                    array(lineno) = nothing
                 End If
+                lineno += 1
             Next
             setattributes(txtDirectoryPath.Text & "\desktop.ini", io.fileattributes.normal)
             WriteAllLines(txtDirectoryPath.Text & "\desktop.ini", array)
@@ -335,11 +338,13 @@ Public Class DirectoryImage
     
     Sub btnLinuxSave_Click() Handles btnLinuxSave.Click
         If Exists(txtDirectoryPath.Text & "\.directory") Then
+            lineno = 0
             Dim array As String() = ReadAllLines(txtDirectoryPath.Text & "\.directory")
-            For Each line as string In array
+            For Each line As String In array
                 If line.StartsWith("Icon=", True, Nothing) Then
-                    line = "Icon=" & txtLinuxImagePath.Text
+                    array(lineno) = "Icon=" & txtLinuxImagePath.Text
                 End If
+                lineno += 1
             Next
             setattributes(txtDirectoryPath.Text & "\.directory", io.fileattributes.normal)
             WriteAllLines(txtDirectoryPath.Text & "\.directory", array)
