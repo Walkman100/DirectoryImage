@@ -203,23 +203,49 @@ Public Class DirectoryImage
         End If
     End Sub
     
-    Dim lineNo As Byte = 0
+    Dim lineNo, headerLine As Byte
+    Dim SetIcon, HasHeader As Boolean
     Sub btnWindowsSave_Click() Handles btnWindowsSave.Click
         If Exists(txtDirectoryPath.Text & "\desktop.ini") Then
             lineno = 0
-            Dim array As String() = ReadAllLines(txtDirectoryPath.Text & "\desktop.ini")
-            For Each line As String In array
+            seticon = False
+            hasheader = false
+            Dim FileContents As String() = ReadAllLines(txtDirectoryPath.Text & "\desktop.ini")
+            For Each line As String In FileContents
                 If line.StartsWith("IconResource=", True, Nothing) Then
-                    array(lineno) = "IconResource=" & txtWindowsIconPath.Text
+                    FileContents(lineno) = "IconResource=" & txtWindowsIconPath.Text
+                    seticon = true
                 ElseIf line.StartsWith("IconFile=", True, Nothing) Then
-                    array(lineno) = nothing
+                    FileContents(lineno) = nothing
                 ElseIf line.StartsWith("IconIndex=", True, Nothing) Then
-                    array(lineno) = nothing
+                    FileContents(lineno) = Nothing
+                ElseIf line = "[.ShellClassInfo]" Then
+                    hasheader = True
+                    headerline = lineno
                 End If
                 lineno += 1
             Next
             setattributes(txtDirectoryPath.Text & "\desktop.ini", io.fileattributes.normal)
-            WriteAllLines(txtDirectoryPath.Text & "\desktop.ini", array)
+            If seticon Then
+                WriteAllLines(txtDirectoryPath.Text & "\desktop.ini", FileContents)
+            Else
+                If hasheader Then
+                    If FileContents.length<headerline+2 Then
+                        Array.Resize(FileContents, FileContents.Length+1)
+                    Else
+                        Do Until filecontents(headerline+1) = ""
+                            headerline+=1
+                            If FileContents.length<headerline+2 Then
+                                Array.Resize(FileContents, FileContents.Length+1)
+                            End If
+                        Loop
+                    End If
+                    FileContents(headerline+1) = "IconResource=" & txtWindowsIconPath.Text
+                    WriteAllLines(txtDirectoryPath.Text & "\desktop.ini", FileContents)
+                Else
+                    appendalltext(txtDirectoryPath.Text & "\desktop.ini", vbnewline &"[.ShellClassInfo]"&vbNewLine &"IconResource="& txtWindowsIconPath.Text &vbnewline)
+                End If
+            End If
         Else
             WriteAllText(txtDirectoryPath.Text & "\desktop.ini", "[.ShellClassInfo]" & vbNewLine & "IconResource=" & txtWindowsIconPath.Text)
             btnWindowsOpenDataFile.Enabled = True
@@ -338,16 +364,42 @@ Public Class DirectoryImage
     
     Sub btnLinuxSave_Click() Handles btnLinuxSave.Click
         If Exists(txtDirectoryPath.Text & "\.directory") Then
-            lineno = 0
-            Dim array As String() = ReadAllLines(txtDirectoryPath.Text & "\.directory")
-            For Each line As String In array
+            lineno = 0 ' Actually the index of the line
+            seticon = False  ' Index starts at 0, count/length/number starts at 1
+            hasheader = false
+            Dim FileContents As String() = ReadAllLines(txtDirectoryPath.Text & "\.directory")
+            For Each line As String In FileContents
                 If line.StartsWith("Icon=", True, Nothing) Then
-                    array(lineno) = "Icon=" & txtLinuxImagePath.Text
+                    FileContents(lineno) = "Icon=" & txtLinuxImagePath.Text
+                    seticon = true
+                ElseIf line = "[Desktop Entry]" Then
+                    hasheader = True
+                    headerline = lineno ' therefore it is the header index not line
                 End If
                 lineno += 1
             Next
             setattributes(txtDirectoryPath.Text & "\.directory", io.fileattributes.normal)
-            WriteAllLines(txtDirectoryPath.Text & "\.directory", array)
+            If seticon Then
+                WriteAllLines(txtDirectoryPath.Text & "\.directory", FileContents)
+            Else
+                If hasheader Then
+                    If FileContents.length<headerline+2 Then
+                    ' account for index -> length conversion, and that less than will have to be less than or equal to without another addition
+                        Array.Resize(FileContents, FileContents.Length+1)
+                    Else
+                        Do Until filecontents(headerline+1) = ""
+                            headerline+=1
+                            If FileContents.length<headerline+2 Then
+                                Array.Resize(FileContents, FileContents.Length+1)
+                            End If
+                        Loop
+                    End If
+                    FileContents(headerline+1) = "Icon=" & txtLinuxImagePath.Text
+                    WriteAllLines(txtDirectoryPath.Text & "\.directory", FileContents)
+                Else
+                    appendalltext(txtDirectoryPath.Text & "\.directory", vbnewline &"[Desktop Entry]"&vbNewLine &"Icon="& txtLinuxImagePath.Text &vbnewline)
+                End If
+            End If
         Else
             WriteAllText(txtDirectoryPath.Text & "\.directory", "[Desktop Entry]" & vbNewLine & "Icon=" & txtLinuxImagePath.Text)
             btnLinuxOpenDataFile.Enabled = True
