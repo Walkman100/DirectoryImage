@@ -57,6 +57,11 @@ Partial Class DirectoryImage
         Me.FolderBrowserDialog = New System.Windows.Forms.FolderBrowserDialog()
         Me.OpenFileDialogWindows = New System.Windows.Forms.OpenFileDialog()
         Me.OpenFileDialogLinux = New System.Windows.Forms.OpenFileDialog()
+        Me.chkCustomEditor = New System.Windows.Forms.CheckBox()
+        Me.btnEditorBrowse = New System.Windows.Forms.Button()
+        Me.txtEditorPath = New System.Windows.Forms.TextBox()
+        Me.btnEditorPathCustom = New System.Windows.Forms.Button()
+        Me.OpenFileDialogEditor = New System.Windows.Forms.OpenFileDialog()
         Me.grpWindows.SuspendLayout
         Me.grpWindowsRel.SuspendLayout
         CType(Me.imgWindowsCurrent,System.ComponentModel.ISupportInitialize).BeginInit
@@ -452,11 +457,63 @@ Partial Class DirectoryImage
         Me.OpenFileDialogLinux.ReadOnlyChecked = true
         Me.OpenFileDialogLinux.Title = "Select on icon to be displayed on Linux"
         '
+        'chkCustomEditor
+        '
+        Me.chkCustomEditor.AutoSize = true
+        Me.chkCustomEditor.Location = New System.Drawing.Point(12, 386)
+        Me.chkCustomEditor.Name = "chkCustomEditor"
+        Me.chkCustomEditor.Size = New System.Drawing.Size(91, 17)
+        Me.chkCustomEditor.TabIndex = 4
+        Me.chkCustomEditor.Text = "Custom Editor"
+        Me.chkCustomEditor.UseVisualStyleBackColor = true
+        '
+        'btnEditorBrowse
+        '
+        Me.btnEditorBrowse.Enabled = false
+        Me.btnEditorBrowse.Location = New System.Drawing.Point(109, 382)
+        Me.btnEditorBrowse.Name = "btnEditorBrowse"
+        Me.btnEditorBrowse.Size = New System.Drawing.Size(75, 23)
+        Me.btnEditorBrowse.TabIndex = 5
+        Me.btnEditorBrowse.Text = "Browse..."
+        Me.btnEditorBrowse.UseVisualStyleBackColor = true
+        '
+        'txtEditorPath
+        '
+        Me.txtEditorPath.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+                        Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.txtEditorPath.Enabled = false
+        Me.txtEditorPath.Location = New System.Drawing.Point(190, 384)
+        Me.txtEditorPath.Name = "txtEditorPath"
+        Me.txtEditorPath.Size = New System.Drawing.Size(253, 20)
+        Me.txtEditorPath.TabIndex = 6
+        '
+        'btnEditorPathCustom
+        '
+        Me.btnEditorPathCustom.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnEditorPathCustom.Enabled = false
+        Me.btnEditorPathCustom.Location = New System.Drawing.Point(449, 382)
+        Me.btnEditorPathCustom.Name = "btnEditorPathCustom"
+        Me.btnEditorPathCustom.Size = New System.Drawing.Size(75, 23)
+        Me.btnEditorPathCustom.TabIndex = 7
+        Me.btnEditorPathCustom.Text = "Edit..."
+        Me.btnEditorPathCustom.UseVisualStyleBackColor = true
+        '
+        'OpenFileDialogEditor
+        '
+        Me.OpenFileDialogEditor.DefaultExt = "exe"
+        Me.OpenFileDialogEditor.Filter = "Applications|*.exe"
+        Me.OpenFileDialogEditor.ReadOnlyChecked = true
+        Me.OpenFileDialogEditor.Title = "Select a program to open files in"
+        '
         'DirectoryImage
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(536, 389)
+        Me.ClientSize = New System.Drawing.Size(536, 417)
+        Me.Controls.Add(Me.btnEditorPathCustom)
+        Me.Controls.Add(Me.txtEditorPath)
+        Me.Controls.Add(Me.btnEditorBrowse)
+        Me.Controls.Add(Me.chkCustomEditor)
         Me.Controls.Add(Me.grpLinux)
         Me.Controls.Add(Me.grpWindows)
         Me.Controls.Add(Me.btnDirectoryBrowse)
@@ -478,6 +535,11 @@ Partial Class DirectoryImage
         Me.ResumeLayout(false)
         Me.PerformLayout
     End Sub
+    Friend WithEvents OpenFileDialogEditor As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents chkCustomEditor As System.Windows.Forms.CheckBox
+    Friend WithEvents btnEditorBrowse As System.Windows.Forms.Button
+    Friend WithEvents txtEditorPath As System.Windows.Forms.TextBox
+    Friend WithEvents btnEditorPathCustom As System.Windows.Forms.Button
     Friend WithEvents btnDirectoryBrowse As System.Windows.Forms.Button
     Friend WithEvents btnLinuxSetSystem As System.Windows.Forms.Button
     Friend WithEvents btnLinuxSetHidden As System.Windows.Forms.Button

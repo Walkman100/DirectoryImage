@@ -4,12 +4,19 @@ Public Class DirectoryImage
     Dim ComponentResourcesManagerFromDesigner As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(DirectoryImage))
     
     Sub LoadDirectoryImage() Handles MyBase.Load
+        If My.settings.customeditor <> "" Then
+            txtEditorPath.Text = My.settings.customeditor
+            chkCustomEditor.Checked = True
+        End If
         For Each s As String In My.Application.CommandLineArgs
             txtDirectoryPath.Text = s
             grpLinux.Enabled = True
             grpWindows.Enabled = True
             ParseFiles(txtDirectoryPath.Text)
         Next
+        If My.Application.CommandLineArgs.Count = 0 Then
+            btnDirectoryBrowse_Click
+        End If
     End Sub
     
     Sub btnDirectoryBrowse_Click() Handles btnDirectoryBrowse.Click
@@ -38,7 +45,6 @@ Public Class DirectoryImage
     End Sub
     
     Dim alreadyGotIcon, lookingForIconIndex As Boolean
-    
     Sub ParseFiles(Directory As String)
         If Exists(Directory & "\desktop.ini") Then
             btnWindowsOpenDataFile.Enabled = True
@@ -256,7 +262,11 @@ Public Class DirectoryImage
     
     Sub btnWindowsOpenDataFile_Click(sender As Object, e As EventArgs) Handles btnWindowsOpenDataFile.Click
         If Exists(txtDirectoryPath.Text & "\desktop.ini") Then
-            Process.Start(Environment.GetEnvironmentVariable("windir") & "\notepad.exe", txtDirectoryPath.Text & "\desktop.ini")
+            If chkcustomeditor.checked Then
+                Process.Start(txteditorpath.text, txtDirectoryPath.Text & "\desktop.ini")
+            Else
+                Process.Start(Environment.GetEnvironmentVariable("windir") & "\notepad.exe", txtDirectoryPath.Text & "\desktop.ini")
+            End If
         Else
             btnWindowsOpenDataFile.Enabled = False
         End If
@@ -410,7 +420,11 @@ Public Class DirectoryImage
     
     Sub btnLinuxOpenDataFile_Click(sender As Object, e As EventArgs) Handles btnLinuxOpenDataFile.Click
         If Exists(txtDirectoryPath.Text & "\.directory") Then
-            Process.Start(Environment.GetEnvironmentVariable("windir") & "\notepad.exe", txtDirectoryPath.Text & "\.directory")
+            If chkcustomeditor.checked Then
+                Process.Start(txteditorpath.text, txtDirectoryPath.Text & "\.directory")
+            Else
+                Process.Start(Environment.GetEnvironmentVariable("windir") & "\notepad.exe", txtDirectoryPath.Text & "\.directory")
+            End If
         Else
             btnLinuxOpenDataFile.Enabled = False
         End If
@@ -424,5 +438,36 @@ Public Class DirectoryImage
     Sub btnLinuxSetSystem_Click() Handles btnLinuxSetSystem.Click
         SetAttributes(txtDirectoryPath.Text & "\.directory", FileAttribute.System)
         ParseFiles(txtDirectoryPath.Text)
+    End Sub
+    
+    Sub chkCustomEditor_CheckedChanged(sender As Object, e As EventArgs) handles chkcustomeditor.checkedchanged
+        btneditorbrowse.enabled = chkcustomeditor.checked
+        txteditorpath.enabled = false
+        btneditorpathcustom.enabled = chkcustomeditor.checked
+        btneditorpathcustom.text = "Edit..."
+        If chkcustomeditor.checked Then
+            if txteditorpath.text = "" then btneditorbrowse_click() else my.settings.customeditor = txteditorpath.text
+        Else
+            My.settings.customeditor = ""
+        End If
+    End Sub
+    
+    Sub btnEditorBrowse_Click() handles btneditorbrowse.click
+        openfiledialogeditor.initialdirectory = environment.GetEnvironmentVariable("ProgramFiles")
+        If openfiledialogeditor.showdialog = dialogresult.ok Then
+            txteditorpath.text = openfiledialogeditor.filename
+            my.settings.customeditor = openfiledialogeditor.filename
+        End If
+    End Sub
+    
+    Sub btnEditorPathCustom_Click(sender As Object, e As EventArgs) handles btneditorpathcustom.click
+        If btneditorpathcustom.text = "Edit..." Then
+            txteditorpath.enabled = true
+            btneditorpathcustom.text = "Save"
+        Else
+            My.Settings.CustomEditor = txteditorpath.text
+            txteditorpath.enabled = false
+            btneditorpathcustom.text = "Edit..."
+        End If
     End Sub
 End Class

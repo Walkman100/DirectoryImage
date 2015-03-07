@@ -5,8 +5,6 @@
 '
 '     Changes to this file may cause incorrect behaviour and will be lost if
 '     the code is regenerated.
-
-
 ' </auto-generated>
 '------------------------------------------------------------------------------
 Option Strict On
@@ -44,6 +42,18 @@ Namespace My
                 #End If
                 Return defaultInstance
             End Get
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property CustomEditor() As String
+            Get
+                Return CType(Me("CustomEditor"),String)
+            End Get
+            Set
+                Me("CustomEditor") = value
+            End Set
         End Property
     End Class
     <Global.Microsoft.VisualBasic.HideModuleNameAttribute(), _
