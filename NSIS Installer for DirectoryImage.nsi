@@ -2,7 +2,7 @@
 ; get NSIS at http://nsis.sourceforge.net/Download
 ; As a program that all Power PC users should have, Notepad++ is recommended to edit this file
 
-;Icon "Resources\DirectoryImage.ico"
+Icon "My Project\Shell32(#326).ico"
 Caption "DirectoryImage Installer"
 Name "DirectoryImage"
 AutoCloseWindow true

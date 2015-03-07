@@ -25,6 +25,7 @@
     <SourceAnalysisOverrideSettingsFile>C:\Users\Walkman\AppData\Roaming\ICSharpCode/SharpDevelop4\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
     <OptionExplicit>Off</OptionExplicit>
     <RemoveIntegerChecks>False</RemoveIntegerChecks>
+    <ApplicationIcon>My Project\Shell32%28#326%29.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
