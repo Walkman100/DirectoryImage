@@ -1,8 +1,6 @@
 ﻿Imports System.IO.File
 
 Public Class DirectoryImage
-    Dim ComponentResourcesManagerFromDesigner As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(DirectoryImage))
-    
     Sub LoadDirectoryImage() Handles MyBase.Load
         If My.settings.customeditor <> "" Then
             txtEditorPath.Text = My.settings.customeditor
@@ -31,14 +29,14 @@ Public Class DirectoryImage
             optWindowsRel.Checked = False
             optWindowsRelContained.Checked = True
             optWindowsRelExternal.Checked = False
-            imgWindowsCurrent.Image = CType(ComponentResourcesManagerFromDesigner.GetObject("imgWindowsCurrent.Image"),System.Drawing.Image)
+            imgWindowsCurrent.Image = Global.DirectoryImage.My.Resources.Resources.ImageResIconNo3
             txtLinuxImagePath.Text = ""
             optLinuxAbsolute.Checked = False
             optLinuxRel.Checked = False
             optLinuxRelContained.Checked = True
             optLinuxRelExternal.Checked = False
             optLinuxSystemImage.Checked = False
-            imgLinuxCurrent.Image = Global.DirectoryImage.My.Resources.Resources.folder128
+            imgLinuxCurrent.Image = Global.DirectoryImage.My.Resources.Resources.OxygenFolder128px
             
             ParseFiles(txtDirectoryPath.Text)
         End If

@@ -22,7 +22,6 @@ Partial Class DirectoryImage
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(DirectoryImage))
         Me.txtDirectoryPath = New System.Windows.Forms.TextBox()
         Me.btnDirectoryBrowse = New System.Windows.Forms.Button()
         Me.grpWindows = New System.Windows.Forms.GroupBox()
@@ -241,7 +240,7 @@ Partial Class DirectoryImage
         'imgWindowsCurrent
         '
         Me.imgWindowsCurrent.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.imgWindowsCurrent.Image = CType(resources.GetObject("imgWindowsCurrent.Image"),System.Drawing.Image)
+        Me.imgWindowsCurrent.Image = Global.DirectoryImage.My.Resources.Resources.ImageResIconNo3
         Me.imgWindowsCurrent.Location = New System.Drawing.Point(6, 32)
         Me.imgWindowsCurrent.Name = "imgWindowsCurrent"
         Me.imgWindowsCurrent.Size = New System.Drawing.Size(128, 128)
@@ -421,7 +420,7 @@ Partial Class DirectoryImage
         'imgLinuxCurrent
         '
         Me.imgLinuxCurrent.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.imgLinuxCurrent.Image = Global.DirectoryImage.My.Resources.Resources.folder128
+        Me.imgLinuxCurrent.Image = Global.DirectoryImage.My.Resources.Resources.OxygenFolder128px
         Me.imgLinuxCurrent.Location = New System.Drawing.Point(6, 32)
         Me.imgLinuxCurrent.Name = "imgLinuxCurrent"
         Me.imgLinuxCurrent.Size = New System.Drawing.Size(128, 128)
