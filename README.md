@@ -3,5 +3,22 @@ A program that generates files that set directory images for Windows and Linux
 
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/Walkman100/Walkman?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+## Screenshots
+DirectoryImage Main Window:
+
+[![DirectoryImage Main Window](http://walkman100.github.io/Walkman/Images/WindowsProjectsScreenshots/DirectoryImage/MainWindow.png "DirectoryImage Main Window")](http://walkman100.github.io/Walkman/Images/WindowsProjectsScreenshots/DirectoryImage/MainWindow.png)
+
+and with a folder loaded:
+
+[![DirectoryImage with a folder loaded](http://walkman100.github.io/Walkman/Images/WindowsProjectsScreenshots/DirectoryImage/MainWindowFolderLoaded.png "DirectoryImage with a folder loaded")](http://walkman100.github.io/Walkman/Images/WindowsProjectsScreenshots/DirectoryImage/MainWindowFolderLoaded.png)
+
+DirectoryImage on Linux through Mono:
+
+[![DirectoryImage on Linux through Mono](http://walkman100.github.io/Walkman/Images/WindowsProjectsScreenshots/DirectoryImage/LinuxMono.png "DirectoryImage on Linux through Mono")](http://walkman100.github.io/Walkman/Images/WindowsProjectsScreenshots/DirectoryImage/LinuxMono.png)
+
+and with a folder loaded:
+
+[![DirectoryImage LinuxMono with a folder loaded](http://walkman100.github.io/Walkman/Images/WindowsProjectsScreenshots/DirectoryImage/LinuxMonoFolderLoaded.png "DirectoryImage LinuxMono with a folder loaded")](http://walkman100.github.io/Walkman/Images/WindowsProjectsScreenshots/DirectoryImage/LinuxMonoFolderLoaded.png)
+
 ## Compile requirements
 See [CompileInstructions.md](https://github.com/Walkman100/WinCompile/blob/master/CompileInstructions.md)
