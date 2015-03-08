@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("DirectoryImage")> 
+<Assembly: AssemblyTitle("DirectoryImage-Win")> 
 <Assembly: AssemblyDescription("A program that generates files that set directory images for Windows and Linux")> 
 <Assembly: AssemblyCompany("WalkmanOSS")> 
-<Assembly: AssemblyProduct("DirectoryImage")> 
+<Assembly: AssemblyProduct("DirectoryImage-Win")> 
 <Assembly: AssemblyCopyright("FOSS from Walkman 2015")> 
 <Assembly: AssemblyTrademark("")> 
 
