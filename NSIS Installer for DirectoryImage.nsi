@@ -66,7 +66,7 @@ FunctionEnd
 
 Function .onInstSuccess
     MessageBox MB_YESNO "Install Succeeded! Open ReadMe?" IDNO NoReadme
-      ExecShell "open" "https://github.com/Walkman100/DirectoryImage/blob/master/README.md#filebrowser-"
+      ExecShell "open" "https://github.com/Walkman100/DirectoryImage/blob/master/README.md#directoryimage-"
     NoReadme:
 FunctionEnd
 
