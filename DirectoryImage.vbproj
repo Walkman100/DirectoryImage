@@ -13,17 +13,11 @@
     <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <NoWin32Manifest>False</NoWin32Manifest>
-    <OptionStrict>Off</OptionStrict>
     <OptionCompare>Binary</OptionCompare>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <WarningLevel>4</WarningLevel>
-    <SignAssembly>False</SignAssembly>
-    <DelaySign>False</DelaySign>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <RunCodeAnalysis>False</RunCodeAnalysis>
-    <SourceAnalysisOverrideSettingsFile>C:\Users\Walkman\AppData\Roaming\ICSharpCode/SharpDevelop4\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
-    <OptionExplicit>Off</OptionExplicit>
     <RemoveIntegerChecks>False</RemoveIntegerChecks>
     <ApplicationIcon>My Project\Shell32%28#326%29.ico</ApplicationIcon>
   </PropertyGroup>
@@ -81,6 +75,13 @@
       <DependentUpon>DirectoryImage.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="DirectoryImageLinux.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DirectoryImageLinux.Designer.vb">
+      <DependentUpon>DirectoryImageLinux.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="LinuxPathToWindowsPath.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +108,9 @@
   <ItemGroup>
     <EmbeddedResource Include="DirectoryImage.resx">
       <DependentUpon>DirectoryImage.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DirectoryImageLinux.resx">
+      <DependentUpon>DirectoryImageLinux.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LinuxPathToWindowsPath.resx">
       <DependentUpon>LinuxPathToWindowsPath.vb</DependentUpon>

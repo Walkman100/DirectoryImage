@@ -1,7 +1,8 @@
 ﻿Imports System.IO.File
 
-Public Class DirectoryImage
+Public Class DirectoryImageLinux
     Sub LoadDirectoryImage() Handles MyBase.Load
+        MsgBox("Linux mode")
         If My.settings.customeditor <> "" Then
             txtEditorPath.Text = My.settings.customeditor
             chkCustomEditor.Checked = True
@@ -12,13 +13,8 @@ Public Class DirectoryImage
             grpWindows.Enabled = True
             ParseFiles(txtDirectoryPath.Text)
         Next
-        If Environment.GetEnvironmentVariable("OS") <> "Windows_NT" Then
-            DirectoryImageLinux.Show
-            Me.close
-        Else
-            If My.Application.CommandLineArgs.Count = 0 Then
-                btnDirectoryBrowse_Click
-            End If
+        If My.Application.CommandLineArgs.Count = 0 Then
+            btnDirectoryBrowse_Click
         End If
     End Sub
     
