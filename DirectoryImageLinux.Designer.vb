@@ -105,7 +105,7 @@ Partial Class DirectoryImageLinux
         Me.grpWindows.Controls.Add(Me.imgWindowsCurrent)
         Me.grpWindows.Controls.Add(Me.lblWindowsCurrent)
         Me.grpWindows.Enabled = false
-        Me.grpWindows.Location = New System.Drawing.Point(12, 38)
+        Me.grpWindows.Location = New System.Drawing.Point(12, 210)
         Me.grpWindows.Name = "grpWindows"
         Me.grpWindows.Size = New System.Drawing.Size(512, 166)
         Me.grpWindows.TabIndex = 2
@@ -274,7 +274,7 @@ Partial Class DirectoryImageLinux
         Me.grpLinux.Controls.Add(Me.imgLinuxCurrent)
         Me.grpLinux.Controls.Add(Me.lblLinuxCurrent)
         Me.grpLinux.Enabled = false
-        Me.grpLinux.Location = New System.Drawing.Point(12, 210)
+        Me.grpLinux.Location = New System.Drawing.Point(12, 38)
         Me.grpLinux.Name = "grpLinux"
         Me.grpLinux.Size = New System.Drawing.Size(512, 166)
         Me.grpLinux.TabIndex = 3
@@ -504,7 +504,7 @@ Partial Class DirectoryImageLinux
         Me.OpenFileDialogEditor.ReadOnlyChecked = true
         Me.OpenFileDialogEditor.Title = "Select a program to open files in"
         '
-        'DirectoryImage
+        'DirectoryImageLinux
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -518,7 +518,7 @@ Partial Class DirectoryImageLinux
         Me.Controls.Add(Me.btnDirectoryBrowse)
         Me.Controls.Add(Me.txtDirectoryPath)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Name = "DirectoryImage"
+        Me.Name = "DirectoryImageLinux"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Windows and Linux directory image setter"
         Me.grpWindows.ResumeLayout(false)
