@@ -130,6 +130,7 @@ Public Class DirectoryImage
         ElseIf txtWindowsIconPath.Text.StartsWith("..\", True, Nothing) Then
             optWindowsRel.Checked = True
             optWindowsRelExternal.Checked = True
+            imgWindowsCurrent.ImageLocation = txtDirectoryPath.Text & "\" & txtWindowsIconPath.Text
         Else
             optWindowsRel.Checked = True
             optWindowsRelContained.Checked = True
@@ -368,7 +369,7 @@ Public Class DirectoryImage
             ElseIf optLinuxRelContained.Checked = True Then
                 txtLinuxImagePath.Text = "./" & OpenFileDialogLinux.FileName.Remove(0, txtDirectoryPath.Text.Length + 1).Replace("\", "/")
             ElseIf optLinuxRelExternal.Checked = True Then
-                txtLinuxImagePath.Text = "../" & OpenFileDialogLinux.FileName.Replace("\", "/")
+                txtLinuxImagePath.Text = ".." & OpenFileDialogLinux.FileName.Remove(0, OpenFileDialogLinux.FileName.LastIndexOf("\")).Replace("\", "/")
             Else
                 MsgBox("Please select an option!", MsgBoxStyle.Exclamation)
             End If
