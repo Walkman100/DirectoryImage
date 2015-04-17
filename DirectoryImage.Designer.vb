@@ -22,6 +22,7 @@ Partial Class DirectoryImage
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(DirectoryImage))
         Me.txtDirectoryPath = New System.Windows.Forms.TextBox()
         Me.btnDirectoryBrowse = New System.Windows.Forms.Button()
         Me.grpWindows = New System.Windows.Forms.GroupBox()
@@ -518,6 +519,7 @@ Partial Class DirectoryImage
         Me.Controls.Add(Me.btnDirectoryBrowse)
         Me.Controls.Add(Me.txtDirectoryPath)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Icon = CType(resources.GetObject("$this.Icon"),System.Drawing.Icon)
         Me.Name = "DirectoryImage"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Windows and Linux directory image setter"
