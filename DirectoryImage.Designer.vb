@@ -445,7 +445,7 @@ Partial Class DirectoryImage
         'OpenFileDialogWindows
         '
         Me.OpenFileDialogWindows.DefaultExt = "ico"
-        Me.OpenFileDialogWindows.Filter = "Icon Files|*.ico; *.exe; *.dll"
+        Me.OpenFileDialogWindows.Filter = "Icon Files|*.ico; *.icl; *.exe; *.dll"
         Me.OpenFileDialogWindows.ReadOnlyChecked = true
         Me.OpenFileDialogWindows.Title = "Select an icon to be displayed on Windows"
         '
@@ -453,7 +453,7 @@ Partial Class DirectoryImage
         '
         Me.OpenFileDialogLinux.AddExtension = false
         Me.OpenFileDialogLinux.DefaultExt = "png"
-        Me.OpenFileDialogLinux.Filter = "Image files|*.png; *.bmp; *.jpg; *.jpeg; *.ico"
+        Me.OpenFileDialogLinux.Filter = "Image files|*.png; *.bmp; *.jpg; *.jpeg; *.ico|All files|*.*"
         Me.OpenFileDialogLinux.ReadOnlyChecked = true
         Me.OpenFileDialogLinux.Title = "Select on icon to be displayed on Linux"
         '
