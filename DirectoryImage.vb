@@ -232,6 +232,7 @@ Public Class DirectoryImage
     Dim lineNo, headerLine As Byte
     Dim SetIcon, HasHeader As Boolean
     Sub btnWindowsSave_Click() Handles btnWindowsSave.Click
+        Try
         If Exists(txtDirectoryPath.Text & Op &"desktop.ini") Then
             lineno = 0
             seticon = False
@@ -277,6 +278,9 @@ Public Class DirectoryImage
             btnWindowsOpenDataFile.Enabled = True
         End If
         SetAttributes(txtDirectoryPath.Text & Op &"desktop.ini", IO.FileAttributes.Hidden)
+        Catch ex As exception
+            ErrorParser(ex)
+        End Try
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
@@ -396,6 +400,7 @@ Public Class DirectoryImage
     End Sub
     
     Sub btnLinuxSave_Click() Handles btnLinuxSave.Click
+        Try
         If Exists(txtDirectoryPath.Text & "\.directory") Then
             lineno = 0 ' Actually the index of the line
             seticon = False  ' Index starts at 0, count/length/number starts at 1
@@ -438,6 +443,9 @@ Public Class DirectoryImage
             btnLinuxOpenDataFile.Enabled = True
         End If
         SetAttributes(txtDirectoryPath.Text & "\.directory", IO.FileAttributes.Hidden)
+        Catch ex As exception
+            ErrorParser(ex)
+        End Try
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
@@ -491,6 +499,56 @@ Public Class DirectoryImage
             My.Settings.CustomEditor = txteditorpath.text
             txteditorpath.enabled = false
             btneditorpathcustom.text = "Edit..."
+        End If
+    End Sub
+    
+    Sub ErrorParser(ex As Exception)
+        'Access Denied:
+        'HResult of -2147024891
+        'GetHashCode of 44223604
+        'GetType: System.UnauthorizedAccessException
+        'Message: Access to the path 'filepath' is denied.
+        If ex.GetType.ToString = "System.UnauthorizedAccessException" Then
+        'Neither
+        'If ex.GetType.Equals(System.UnauthorizedAccessException) Then
+        'nor
+        'If System.UnauthorizedAccessException.Equals(ex.GetType) Then
+        'work so i just compared them as strings.
+            If MsgBox(ex.message & vbnewline & vbnewline & "Try launching DirectoryImage As Administrator?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                Dim objShell As Object = CreateObject("Shell.Application")
+                objShell.ShellExecute(Environment.CurrentDirectory & Op & Process.GetCurrentProcess.ProcessName & ".exe", """" & txtDirectoryPath.Text & """", "", "runas")
+                Application.Exit
+            End If
+        Else
+            If MsgBox("There was an error! Error message: " & ex.Message & vbNewLine & vbNewLine & "Show full stacktrace? (For sending to developer/making bugreport)", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Error!") = MsgBoxresult.Yes Then
+                Dim frmBugReport As New Form()
+                frmBugReport.Width = 600
+                frmBugReport.Height = 525
+                frmBugReport.StartPosition = FormStartPosition.CenterParent
+                frmBugReport.WindowState = Me.WindowState
+                frmBugReport.ShowIcon = False
+                frmBugReport.ShowInTaskbar = True
+                frmBugReport.MaximizeBox = false
+                frmBugReport.MinimizeBox = false
+                frmBugReport.Text = "Full error trace"
+                Dim txtBugReport As New TextBox()
+                txtBugReport.Multiline = True
+                txtBugReport.ScrollBars = ScrollBars.Vertical
+                frmBugReport.Controls.Add(txtBugReport)
+                txtBugReport.Dock = DockStyle.Fill
+                txtBugReport.Text = "ToString:" & vbNewLine & ex.ToString & vbNewLine & vbNewLine & _
+                                    "Data:" & vbNewLine & ex.Data.ToString & vbNewLine & vbNewLine & _
+                                    "BaseException:" & vbNewLine & ex.GetBaseException.ToString & vbNewLine & vbNewLine & _
+                                    "HashCode:" & vbNewLine & ex.GetHashCode.ToString & vbNewLine & vbNewLine & _
+                                    "Type:" & vbNewLine & ex.GetType.ToString & vbNewLine & vbNewLine & _
+                                    "HResult:" & vbNewLine & ex.HResult.ToString & vbNewLine & vbNewLine & _
+                                    "Message:" & vbNewLine & ex.Message.ToString & vbNewLine & vbNewLine & _
+                                    "Source:" & vbNewLine & ex.Source.ToString & vbNewLine & vbNewLine & _
+                                    "StackTrace:" & vbNewLine & ex.StackTrace.ToString & vbNewLine & vbNewLine & _
+                                    "TargetSite:" & vbNewLine & ex.TargetSite.ToString
+                                    '"InnerException:" & vbNewLine & ex.InnerException.ToString & vbNewLine & vbNewLine & _
+                frmBugReport.Show()
+            End If
         End If
     End Sub
 End Class
