@@ -75,13 +75,6 @@
       <DependentUpon>DirectoryImage.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DirectoryImageLinux.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DirectoryImageLinux.Designer.vb">
-      <DependentUpon>DirectoryImageLinux.vb</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="LinuxPathToWindowsPath.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -108,9 +101,6 @@
   <ItemGroup>
     <EmbeddedResource Include="DirectoryImage.resx">
       <DependentUpon>DirectoryImage.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DirectoryImageLinux.resx">
-      <DependentUpon>DirectoryImageLinux.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LinuxPathToWindowsPath.resx">
       <DependentUpon>LinuxPathToWindowsPath.vb</DependentUpon>

@@ -1,6 +1,7 @@
 ﻿Imports System.IO.File
 
 Public Class DirectoryImage
+    Dim Op As Char = "\" 'Operator character
     Sub LoadDirectoryImage() Handles MyBase.Load
         If My.settings.customeditor <> "" Then
             txtEditorPath.Text = My.settings.customeditor
@@ -12,13 +13,15 @@ Public Class DirectoryImage
             grpWindows.Enabled = True
             ParseFiles(txtDirectoryPath.Text)
         Next
-        If Environment.GetEnvironmentVariable("OS") <> "Windows_NT" Then
-            DirectoryImageLinux.Show
-            Me.close
+        If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
+            Op = "\"
         Else
-            If My.Application.CommandLineArgs.Count = 0 Then
-                btnDirectoryBrowse_Click
-            End If
+            op = "/"
+            grpWindows.Location = New System.Drawing.Point(12, 210)
+            grpLinux.Location = New System.Drawing.Point(12, 38)
+        End If
+        If My.Application.CommandLineArgs.Count = 0 Then
+            btnDirectoryBrowse_Click
         End If
     End Sub
     
@@ -49,21 +52,21 @@ Public Class DirectoryImage
     
     Dim alreadyGotIcon, lookingForIconIndex As Boolean
     Sub ParseFiles(Directory As String)
-        If Exists(Directory & "\desktop.ini") Then
+        If Exists(Directory & Op &"desktop.ini") Then
             btnWindowsOpenDataFile.Enabled = True
-            If GetAttributes(txtDirectoryPath.Text & "\desktop.ini").HasFlag(IO.FileAttributes.Hidden) Then
+            If GetAttributes(Directory & Op &"desktop.ini").HasFlag(IO.FileAttributes.Hidden) Then
                 btnWindowsSetHidden.Enabled = False
             Else
                 btnWindowsSetHidden.Enabled = True
             End If
-            If GetAttributes(txtDirectoryPath.Text & "\desktop.ini").HasFlag(IO.FileAttributes.System) Then
+            If GetAttributes(Directory & Op &"desktop.ini").HasFlag(IO.FileAttributes.System) Then
                 btnWindowsSetSystem.Enabled = False
             Else
                 btnWindowsSetSystem.Enabled = True
             End If
             alreadyGotIcon = False
             lookingForIconIndex = False
-            For Each line In ReadLines(Directory & "\desktop.ini")
+            For Each line In ReadLines(Directory & Op &"desktop.ini")
                 If line.StartsWith("IconResource=", True, Nothing) Then
                     txtWindowsIconPath.Text = line.Remove(0, 13)
                     alreadyGotIcon = True
@@ -82,14 +85,14 @@ Public Class DirectoryImage
             btnWindowsSetSystem.Enabled = False
         End If
         
-        If Exists(Directory & "\.directory") Then
+        If Exists(Directory & Op &".directory") Then
             btnLinuxOpenDataFile.Enabled = True
-            If GetAttributes(txtDirectoryPath.Text & "\.directory").HasFlag(IO.FileAttributes.Hidden) Then
+            If GetAttributes(txtDirectoryPath.Text & Op &".directory").HasFlag(IO.FileAttributes.Hidden) Then
                 btnLinuxSetHidden.Enabled = False
             Else
                 btnLinuxSetHidden.Enabled = True
             End If
-            If GetAttributes(txtDirectoryPath.Text & "\.directory").HasFlag(IO.FileAttributes.System) Then
+            If GetAttributes(txtDirectoryPath.Text & Op &".directory").HasFlag(IO.FileAttributes.System) Then
                 btnLinuxSetSystem.Enabled = False
             Else
                 btnLinuxSetSystem.Enabled = True
@@ -130,11 +133,11 @@ Public Class DirectoryImage
         ElseIf txtWindowsIconPath.Text.StartsWith("..\", True, Nothing) Then
             optWindowsRel.Checked = True
             optWindowsRelExternal.Checked = True
-            imgWindowsCurrent.ImageLocation = txtDirectoryPath.Text & "\" & txtWindowsIconPath.Text
+            imgWindowsCurrent.ImageLocation = txtDirectoryPath.Text & op & txtWindowsIconPath.Text.Replace("\", "/")
         Else
             optWindowsRel.Checked = True
             optWindowsRelContained.Checked = True
-            imgWindowsCurrent.ImageLocation = txtDirectoryPath.Text & "\" & txtWindowsIconPath.Text
+            imgWindowsCurrent.ImageLocation = txtDirectoryPath.Text & op & txtWindowsIconPath.Text.Replace("\", "/")
         End If
     End Sub
     
@@ -142,16 +145,23 @@ Public Class DirectoryImage
         If txtLinuxImagePath.Text.StartsWith("../", True, Nothing) Then
             optLinuxRel.Checked = True
             optLinuxRelExternal.Checked = True
-            imgLinuxCurrent.ImageLocation = txtDirectoryPath.Text & "\" & txtLinuxImagePath.Text.Replace("/", "\")
+            imgLinuxCurrent.ImageLocation = txtDirectoryPath.Text & Op & txtLinuxImagePath.Text.Replace("/", "\")
         ElseIf txtLinuxImagePath.Text.StartsWith("./", True, Nothing) Then
             optLinuxRel.Checked = True
             optLinuxRelContained.Checked = True
             imgLinuxCurrent.ImageLocation = txtDirectoryPath.Text & txtLinuxImagePath.Text.Remove(0,1).Replace("/", "\")
         ElseIf txtLinuxImagePath.Text.StartsWith("/", True, Nothing) Then
             optLinuxAbsolute.Checked = True
-            LinuxPathToWindowsPath.Show '<- That sets the image
+            If op="\" Then
+                LinuxPathToWindowsPath.Show '<- That sets the image
+            Else
+                imglinuxcurrent.imagelocation = txtlinuximagepath.text
+            End If
         Else
             optLinuxSystemImage.Checked = True
+            If op="/" Then
+                imglinuxcurrent.imagelocation = inputbox("System images location:", "/usr/share/icons/oxygen/256x256/places/") & txtlinuximagepath.text
+            End If
         End If
     End Sub
     
@@ -202,11 +212,17 @@ Public Class DirectoryImage
             imgWindowsCurrent.ImageLocation = OpenFileDialogWindows.FileName
             btnWindowsSave.Enabled = True
             If optWindowsAbsolute.Checked = True Then
-                txtWindowsIconPath.Text = OpenFileDialogWindows.FileName
+                If op="\" Then
+                    txtWindowsIconPath.Text = OpenFileDialogWindows.FileName
+                Else
+                    txtwindowsiconpath.text = openfiledialogwindows.filename.replace("/", "\")
+                    txtwindowsiconpath.text = inputbox("Please enter the Windows drive letter where the path in linux ""/media/"&Environment.GetEnvironmentVariable("UserName")&"/MountPath"" is mounted:", _
+                                                       "Windows Drive Letter","& OpenFileDialogLinux.FileName.Remove(2)&") & txtWindowsIconPath.Text
+                End If
             ElseIf optWindowsRelContained.Checked = True Then
-                txtWindowsIconPath.Text = OpenFileDialogWindows.FileName.Remove(0, txtDirectoryPath.Text.Length + 1)
+                txtWindowsIconPath.Text = OpenFileDialogWindows.FileName.Remove(0, txtDirectoryPath.Text.Length + 1).Replace("/", "\")
             ElseIf optWindowsRelExternal.Checked = True Then
-                txtWindowsIconPath.Text = ".." & OpenFileDialogWindows.FileName.Remove(0, OpenFileDialogWindows.FileName.LastIndexOf("\"))
+                txtWindowsIconPath.Text = ".." & OpenFileDialogWindows.FileName.Remove(0, OpenFileDialogWindows.FileName.Replace("/", "\").LastIndexOf("\"))
             Else
                 MsgBox("Please select an option!", MsgBoxStyle.Exclamation)
             End If
@@ -216,11 +232,11 @@ Public Class DirectoryImage
     Dim lineNo, headerLine As Byte
     Dim SetIcon, HasHeader As Boolean
     Sub btnWindowsSave_Click() Handles btnWindowsSave.Click
-        If Exists(txtDirectoryPath.Text & "\desktop.ini") Then
+        If Exists(txtDirectoryPath.Text & Op &"desktop.ini") Then
             lineno = 0
             seticon = False
             hasheader = false
-            Dim FileContents As String() = ReadAllLines(txtDirectoryPath.Text & "\desktop.ini")
+            Dim FileContents As String() = ReadAllLines(txtDirectoryPath.Text & Op &"desktop.ini")
             For Each line As String In FileContents
                 If line.StartsWith("IconResource=", True, Nothing) Then
                     FileContents(lineno) = "IconResource=" & txtWindowsIconPath.Text
@@ -235,9 +251,9 @@ Public Class DirectoryImage
                 End If
                 lineno += 1
             Next
-            setattributes(txtDirectoryPath.Text & "\desktop.ini", io.fileattributes.normal)
+            setattributes(txtDirectoryPath.Text & Op &"desktop.ini", io.fileattributes.normal)
             If seticon Then
-                WriteAllLines(txtDirectoryPath.Text & "\desktop.ini", FileContents)
+                WriteAllLines(txtDirectoryPath.Text & Op &"desktop.ini", FileContents)
             Else
                 If hasheader Then
                     If FileContents.length<headerline+2 Then
@@ -251,25 +267,29 @@ Public Class DirectoryImage
                         Loop
                     End If
                     FileContents(headerline+1) = "IconResource=" & txtWindowsIconPath.Text
-                    WriteAllLines(txtDirectoryPath.Text & "\desktop.ini", FileContents)
+                    WriteAllLines(txtDirectoryPath.Text & Op &"desktop.ini", FileContents)
                 Else
-                    appendalltext(txtDirectoryPath.Text & "\desktop.ini", vbnewline &"[.ShellClassInfo]"&vbNewLine &"IconResource="& txtWindowsIconPath.Text &vbnewline)
+                    appendalltext(txtDirectoryPath.Text & Op &"desktop.ini", vbnewline &"[.ShellClassInfo]"&vbNewLine &"IconResource="& txtWindowsIconPath.Text &vbnewline)
                 End If
             End If
         Else
-            WriteAllText(txtDirectoryPath.Text & "\desktop.ini", "[.ShellClassInfo]" & vbNewLine & "IconResource=" & txtWindowsIconPath.Text)
+            WriteAllText(txtDirectoryPath.Text & Op &"desktop.ini", "[.ShellClassInfo]" & vbNewLine & "IconResource=" & txtWindowsIconPath.Text)
             btnWindowsOpenDataFile.Enabled = True
         End If
-        SetAttributes(txtDirectoryPath.Text & "\desktop.ini", IO.FileAttributes.Hidden)
+        SetAttributes(txtDirectoryPath.Text & Op &"desktop.ini", IO.FileAttributes.Hidden)
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
     Sub btnWindowsOpenDataFile_Click(sender As Object, e As EventArgs) Handles btnWindowsOpenDataFile.Click
-        If Exists(txtDirectoryPath.Text & "\desktop.ini") Then
+        If Exists(txtDirectoryPath.Text & Op &"desktop.ini") Then
             If chkcustomeditor.checked Then
-                Process.Start(txteditorpath.text, txtDirectoryPath.Text & "\desktop.ini")
+                Process.Start(txteditorpath.text, txtDirectoryPath.Text & Op &"desktop.ini")
             Else
-                Process.Start(Environment.GetEnvironmentVariable("windir") & "\notepad.exe", txtDirectoryPath.Text & "\desktop.ini")
+                If op="\" Then
+                    Process.Start(Environment.GetEnvironmentVariable("windir") & "\notepad.exe", txtDirectoryPath.Text & "\desktop.ini")
+                Else
+                    Process.Start(txtDirectoryPath.Text & "/desktop.ini") 'Environment.GetEnvironmentVariable("windir") & "/notepad.exe", 
+                End If
             End If
         Else
             btnWindowsOpenDataFile.Enabled = False
@@ -277,15 +297,15 @@ Public Class DirectoryImage
     End Sub
     
     Sub btnWindowsSetHidden_Click() Handles btnWindowsSetHidden.Click
-        'If Not GetAttributes(txtDirectoryPath.Text & "\desktop.ini").HasFlag(IO.FileAttributes.Hidden) Then
-        SetAttributes(txtDirectoryPath.Text & "\desktop.ini", FileAttribute.Hidden)
+        'If Not GetAttributes(txtDirectoryPath.Text & Op &"desktop.ini").HasFlag(IO.FileAttributes.Hidden) Then
+        SetAttributes(txtDirectoryPath.Text & Op &"desktop.ini", FileAttribute.Hidden)
         ParseFiles(txtDirectoryPath.Text)
         'btnWindowsSetHidden.Enabled = False '<= no need since ParseFiles will detect if the flag is set
         'End If
     End Sub
     
     Sub btnWindowsSetSystem_Click() Handles btnWindowsSetSystem.Click
-        SetAttributes(txtDirectoryPath.Text & "\desktop.ini", FileAttribute.System)
+        SetAttributes(txtDirectoryPath.Text & Op &"desktop.ini", FileAttribute.System)
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
@@ -322,11 +342,10 @@ Public Class DirectoryImage
     End Sub
     
     Sub LinuxOptionSelected() Handles optLinuxAbsolute.CheckedChanged, optLinuxRel.CheckedChanged, optLinuxRelContained.CheckedChanged, optLinuxRelExternal.CheckedChanged, optLinuxSystemImage.CheckedChanged
+        btnLinuxSave.enabled = false
         If optLinuxAbsolute.Checked = True Then
             btnLinuxIconSet.Enabled = True
-            btnLinuxSave.Enabled = False
         ElseIf optLinuxRel.Checked = True Then
-            btnLinuxSave.Enabled = False
             If optLinuxRelContained.Checked = True Then
                 btnLinuxIconSet.Enabled = True
             ElseIf optLinuxRelExternal.Checked = True
@@ -335,11 +354,9 @@ Public Class DirectoryImage
                 btnLinuxIconSet.Enabled = False
             End If
         ElseIf optLinuxSystemImage.Checked = True
-            btnLinuxIconSet.Enabled = False
-            btnLinuxSave.Enabled = True
+            btnLinuxIconSet.Enabled = True
         Else
             btnLinuxIconSet.Enabled = False
-            btnLinuxSave.Enabled = False
         End If
     End Sub
     
@@ -354,6 +371,8 @@ Public Class DirectoryImage
             Else
                 btnLinuxSave.Enabled = False
             End If
+        ElseIf optlinuxsystemimage.checked = True
+            btnlinuxsave.enabled = True
         End If
     End Sub
     
