@@ -114,23 +114,26 @@ Public Class DirectoryImage
     End Sub
     
     Sub ParseWindows
-        If txtWindowsIconPath.Text.StartsWith("%") Or _
-                txtWindowsIconPath.Text.StartsWith("A:\") Or _
-                txtWindowsIconPath.Text.StartsWith("B:\") Or _
-                txtWindowsIconPath.Text.StartsWith("C:\") Or _
-                txtWindowsIconPath.Text.StartsWith("D:\") Or _
-                txtWindowsIconPath.Text.StartsWith("E:\") Or _
-                txtWindowsIconPath.Text.StartsWith("F:\") Or _
-                txtWindowsIconPath.Text.StartsWith("G:\") Or _
-                txtWindowsIconPath.Text.StartsWith("H:\") Or _
-                txtWindowsIconPath.Text.StartsWith("I:\") Or _
-                txtWindowsIconPath.Text.StartsWith("J:\") Or _
-                txtWindowsIconPath.Text.StartsWith("K:\") Or _
-                txtWindowsIconPath.Text.StartsWith("L:\") Or _
-                txtWindowsIconPath.Text.StartsWith("M:\") Or _
-                txtWindowsIconPath.Text.StartsWith("N:\") Or _
-                txtWindowsIconPath.Text.StartsWith("O:\") Or _
-                txtWindowsIconPath.Text.StartsWith("P:\") Then
+        Dim isAbsolute As New Boolean
+        If txtWindowsIconPath.Text.StartsWith("%") Then
+            isAbsolute = True
+        Else
+            For i = 1 To 26 ' The Chr() below will give all letters from A to Z
+                If txtWindowsIconPath.Text.StartsWith(Chr(i+64) & ":\") Then
+                    isAbsolute = True
+                    Exit for
+                End If
+            Next
+            If isabsolute = False Then
+                For i = 1 To 26 ' The Chr() below will give all letters from a to z
+                    If txtWindowsIconPath.Text.StartsWith(Chr(i+96) & ":\") Then
+                        isAbsolute = True
+                        Exit For
+                    End If
+                Next
+            End If
+        End If
+        If isAbsolute Then
             optWindowsAbsolute.Checked = True
             imgWindowsCurrent.ImageLocation = txtWindowsIconPath.Text
         ElseIf txtWindowsIconPath.Text.StartsWith("..\", True, Nothing) Then
