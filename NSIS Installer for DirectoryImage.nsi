@@ -28,26 +28,32 @@ UninstPage instfiles
 
 ; Sections
 
-Section "DirectoryImage Executable & Uninstaller"
+Section "Executable & Uninstaller"
   SectionIn RO
   SetOutPath $INSTDIR
   File "bin\Release\DirectoryImage.exe"
   WriteUninstaller "DirectoryImage-Uninst.exe"
 SectionEnd
 
-Section "DirectoryImage Start Menu Shortcuts"
+Section "Start Menu Shortcuts"
   CreateDirectory "$SMPROGRAMS\WalkmanOSS"
   CreateShortCut "$SMPROGRAMS\WalkmanOSS\DirectoryImage.lnk" "$INSTDIR\DirectoryImage.exe" "" "$INSTDIR\DirectoryImage.exe" "" "" "" "DirectoryImage"
   CreateShortCut "$SMPROGRAMS\WalkmanOSS\Uninstall DirectoryImage.lnk" "$INSTDIR\DirectoryImage-Uninst.exe" "" "" "" "" "" "Uninstall DirectoryImage"
   ;Syntax for CreateShortCut: link.lnk target.file [parameters [icon.file [icon_index_number [start_options [keyboard_shortcut [description]]]]]]
 SectionEnd
 
-Section "DirectoryImage Desktop Shortcut"
+Section "Desktop Shortcut"
   CreateShortCut "$DESKTOP\DirectoryImage.lnk" "$INSTDIR\DirectoryImage.exe" "" "$INSTDIR\DirectoryImage.exe" "" "" "" "DirectoryImage"
 SectionEnd
 
-Section "DirectoryImage Quick Launch Shortcut"
+Section "Quick Launch Shortcut"
   CreateShortCut "$QUICKLAUNCH\DirectoryImage.lnk" "$INSTDIR\DirectoryImage.exe" "" "$INSTDIR\DirectoryImage.exe" "" "" "" "DirectoryImage"
+SectionEnd
+
+Section "Add DirectoryImage to context menu"
+  WriteRegStr HKCR "Directory\shell\DirImage" "" "Set Directory Image..."
+  WriteRegStr HKCR "Directory\shell\DirImage" "Icon" "$INSTDIR\DirectoryImage.exe"
+  WriteRegStr HKCR "Directory\shell\DirImage\command" "" "$INSTDIR\DirectoryImage.exe$\" $\"%1$\""
 SectionEnd
 
 ;Section "More apps from DeavmiOSS"
@@ -82,7 +88,9 @@ Section "Uninstall"
   RMDir "$SMPROGRAMS\WalkmanOSS"
   
   Delete "$DESKTOP\DirectoryImage.lnk"   ; Remove Desktop Shortcut
-  Delete "$QUICKLAUNCH\DirectoryImage.lnk"   ; Remove Quick Launch shortcut
+  Delete "$QUICKLAUNCH\DirectoryImage.lnk"   ; Remove Quick Launch Shortcut
+  
+  DeleteRegKey HKCR "Directory\shell\DirImage" ; Remove context menu item
 SectionEnd
 
 ; Uninstaller Functions
