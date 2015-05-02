@@ -524,10 +524,17 @@ Public Class DirectoryImage
         'nor
         'If System.UnauthorizedAccessException.Equals(ex.GetType) Then
         'work so i just compared them as strings.
-            If MsgBox(ex.message & vbnewline & vbnewline & "Try launching DirectoryImage As Administrator?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                Dim objShell As Object = CreateObject("Shell.Application")
-                objShell.ShellExecute(Environment.CurrentDirectory & Op & Process.GetCurrentProcess.ProcessName & ".exe", """" & txtDirectoryPath.Text & """", "", "runas")
-                Application.Exit
+            if op = "\" then
+                If MsgBox(ex.message & vbnewline & vbnewline & "Try launching DirectoryImage As Administrator?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                    Dim objShell As Object = CreateObject("Shell.Application")
+                    objShell.ShellExecute(Environment.CurrentDirectory & Op & Process.GetCurrentProcess.ProcessName & ".exe", """" & txtDirectoryPath.Text & """", "", "runas")
+                    Application.Exit
+                End If
+            Else
+                If MsgBox(ex.message & vbnewline & vbnewline & "Try launching DirectoryImage As root?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                    Process.Start("kdesudo", "mono " & Environment.CurrentDirectory & Op & Process.GetCurrentProcess.ProcessName & ".exe """ & txtDirectoryPath.Text & """")
+                    Application.Exit
+                End If
             End If
         Else
             If MsgBox("There was an error! Error message: " & ex.Message & vbNewLine & "Show full stacktrace? (For sending to developer/making bugreport)", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Error!") = MsgBoxresult.Yes Then
