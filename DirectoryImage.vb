@@ -223,7 +223,11 @@ Public Class DirectoryImage
                                                        "Windows Drive Letter","& OpenFileDialogLinux.FileName.Remove(2)&") & txtWindowsIconPath.Text
                 End If
             ElseIf optWindowsRelContained.Checked = True Then
-                txtWindowsIconPath.Text = OpenFileDialogWindows.FileName.Remove(0, txtDirectoryPath.Text.Length + 1).Replace("/", "\")
+                If txtDirectorypath.text.endswith(":\") Then
+                    txtWindowsIconPath.Text = OpenFileDialogWindows.FileName.Remove(0, txtDirectoryPath.Text.Length).Replace("/", "\")
+                Else
+                    txtWindowsIconPath.Text = OpenFileDialogWindows.FileName.Remove(0, txtDirectoryPath.Text.Length + 1).Replace("/", "\")
+                End If
             ElseIf optWindowsRelExternal.Checked = True Then
                 txtWindowsIconPath.Text = ".." & OpenFileDialogWindows.FileName.Remove(0, OpenFileDialogWindows.FileName.Replace("/", "\").LastIndexOf("\"))
             Else
@@ -393,7 +397,11 @@ Public Class DirectoryImage
                 txtLinuxImagePath.Text = InputBox("Please enter the path in linux where drive """& OpenFileDialogLinux.FileName.Remove(2)&""" is mounted:", _
                                                   "Linux Drive Mountpoint","/media/"&Environment.GetEnvironmentVariable("UserName")&"/MountPath") & txtLinuxImagePath.Text
             ElseIf optLinuxRelContained.Checked = True Then
-                txtLinuxImagePath.Text = "./" & OpenFileDialogLinux.FileName.Remove(0, txtDirectoryPath.Text.Length + 1).Replace("\", "/")
+                If txtDirectorypath.text.endswith(":\") Then
+                    txtLinuxImagePath.Text = "./" & OpenFileDialogLinux.FileName.Remove(0, txtDirectoryPath.Text.Length).Replace("\", "/")
+                Else
+                    txtLinuxImagePath.Text = "./" & OpenFileDialogLinux.FileName.Remove(0, txtDirectoryPath.Text.Length + 1).Replace("\", "/")
+                End If
             ElseIf optLinuxRelExternal.Checked = True Then
                 txtLinuxImagePath.Text = ".." & OpenFileDialogLinux.FileName.Remove(0, OpenFileDialogLinux.FileName.LastIndexOf("\")).Replace("\", "/")
             Else
