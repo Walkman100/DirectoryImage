@@ -82,6 +82,13 @@
       <DependentUpon>LinuxPathToWindowsPath.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="LinuxPathToWindowsDrive.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LinuxPathToWindowsDrive.Designer.vb">
+      <DependentUpon>LinuxPathToWindowsDrive.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -101,9 +108,6 @@
   <ItemGroup>
     <EmbeddedResource Include="DirectoryImage.resx">
       <DependentUpon>DirectoryImage.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LinuxPathToWindowsPath.resx">
-      <DependentUpon>LinuxPathToWindowsPath.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

@@ -219,8 +219,7 @@ Public Class DirectoryImage
                     txtWindowsIconPath.Text = OpenFileDialogWindows.FileName
                 Else
                     txtwindowsiconpath.text = openfiledialogwindows.filename.replace("/", "\")
-                    txtwindowsiconpath.text = inputbox("Please enter the Windows drive letter where the path in linux ""/media/"&Environment.GetEnvironmentVariable("UserName")&"/MountPath"" is mounted:", _
-                                                       "Windows Drive Letter","& OpenFileDialogLinux.FileName.Remove(2)&") & txtWindowsIconPath.Text
+                    linuxpathtowindowsdrive.show
                 End If
             ElseIf optWindowsRelContained.Checked = True Then
                 If txtDirectorypath.text.endswith(":\") Then
