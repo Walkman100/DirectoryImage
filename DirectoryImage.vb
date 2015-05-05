@@ -21,8 +21,13 @@ Public Class DirectoryImage
             ParseFiles(txtDirectoryPath.Text)
         Next
         If My.Application.CommandLineArgs.Count = 0 Then
-            btnDirectoryBrowse_Click
+            timerDelayedBrowse.Start
         End If
+    End Sub
+    
+    Sub timerDelayedBrowse_Tick(sender As Object, e As EventArgs) Handles timerDelayedBrowse.Tick
+        timerDelayedBrowse.Stop
+        btnDirectoryBrowse_Click
     End Sub
     
     Sub btnDirectoryBrowse_Click() Handles btnDirectoryBrowse.Click

@@ -22,6 +22,7 @@ Partial Class DirectoryImage
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(DirectoryImage))
         Me.txtDirectoryPath = New System.Windows.Forms.TextBox()
         Me.btnDirectoryBrowse = New System.Windows.Forms.Button()
@@ -62,6 +63,7 @@ Partial Class DirectoryImage
         Me.txtEditorPath = New System.Windows.Forms.TextBox()
         Me.btnEditorPathCustom = New System.Windows.Forms.Button()
         Me.OpenFileDialogEditor = New System.Windows.Forms.OpenFileDialog()
+        Me.timerDelayedBrowse = New System.Windows.Forms.Timer(Me.components)
         Me.grpWindows.SuspendLayout
         Me.grpWindowsRel.SuspendLayout
         CType(Me.imgWindowsCurrent,System.ComponentModel.ISupportInitialize).BeginInit
@@ -505,6 +507,10 @@ Partial Class DirectoryImage
         Me.OpenFileDialogEditor.ReadOnlyChecked = true
         Me.OpenFileDialogEditor.Title = "Select a program to open files in"
         '
+        'timerDelayedBrowse
+        '
+        Me.timerDelayedBrowse.Interval = 500
+        '
         'DirectoryImage
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -536,6 +542,7 @@ Partial Class DirectoryImage
         Me.ResumeLayout(false)
         Me.PerformLayout
     End Sub
+    Friend WithEvents timerDelayedBrowse As System.Windows.Forms.Timer
     Friend WithEvents OpenFileDialogEditor As System.Windows.Forms.OpenFileDialog
     Friend WithEvents chkCustomEditor As System.Windows.Forms.CheckBox
     Friend WithEvents btnEditorBrowse As System.Windows.Forms.Button
@@ -575,5 +582,4 @@ Partial Class DirectoryImage
     Friend WithEvents grpLinux As System.Windows.Forms.GroupBox
     Friend WithEvents grpWindows As System.Windows.Forms.GroupBox
     Friend WithEvents txtDirectoryPath As System.Windows.Forms.TextBox
-
 End Class
