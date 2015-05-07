@@ -534,8 +534,7 @@ Public Class DirectoryImage
         'work so i just compared them as strings.
             if op = "\" then
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching DirectoryImage As Administrator?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    Dim objShell As Object = CreateObject("Shell.Application")
-                    objShell.ShellExecute(Environment.CurrentDirectory & Op & Process.GetCurrentProcess.ProcessName & ".exe", """" & txtDirectoryPath.Text & """", "", "runas")
+                    CreateObject("Shell.Application").ShellExecute(Environment.CurrentDirectory & Op & Process.GetCurrentProcess.ProcessName & ".exe", """" & txtDirectoryPath.Text & """", "", "runas")
                     Application.Exit
                 End If
             Else
