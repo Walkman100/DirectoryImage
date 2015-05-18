@@ -76,15 +76,15 @@ Public Class DirectoryImage
             lookingForIconIndex = False
             For Each line In ReadLines(Directory & Op &"desktop.ini")
                 If line.StartsWith("IconResource=", True, Nothing) Then
-                    txtWindowsIconPath.Text = line.Remove(0, 13)
+                    txtWindowsIconPath.Text = line.Substring(13)
                     alreadyGotIcon = True
                     ParseWindows()
                 ElseIf line.StartsWith("IconFile=", True, Nothing) And alreadyGotIcon = False Then
-                    txtWindowsIconPath.Text = line.Remove(0, 9)
+                    txtWindowsIconPath.Text = line.Substring(9)
                     lookingForIconIndex = True
                     ParseWindows()
                 ElseIf line.StartsWith("IconIndex=", True, Nothing) And lookingForIconIndex Then
-                    txtWindowsIconPath.Text = txtWindowsIconPath.Text & "," & line.Remove(0, 10)
+                    txtWindowsIconPath.Text = txtWindowsIconPath.Text & "," & line.Substring(10)
                 End If
             Next
         Else
@@ -107,7 +107,7 @@ Public Class DirectoryImage
             End If
             For Each line In ReadLines(Directory & "\.directory")
                 If line.StartsWith("Icon=", True, Nothing) Then
-                    txtLinuxImagePath.Text = line.remove(0, 5)
+                    txtLinuxImagePath.Text = line.Substring(5)
                     ParseLinux()
                 End If
             Next
@@ -160,7 +160,7 @@ Public Class DirectoryImage
         ElseIf txtLinuxImagePath.Text.StartsWith("./", True, Nothing) Then
             optLinuxRel.Checked = True
             optLinuxRelContained.Checked = True
-            imgLinuxCurrent.ImageLocation = txtDirectoryPath.Text & txtLinuxImagePath.Text.Remove(0,1).Replace("/", "\")
+            imgLinuxCurrent.ImageLocation = txtDirectoryPath.Text & txtLinuxImagePath.Text.Substring(1).Replace("/", "\")
         ElseIf txtLinuxImagePath.Text.StartsWith("/", True, Nothing) Then
             optLinuxAbsolute.Checked = True
             If op="\" Then
@@ -231,12 +231,12 @@ Public Class DirectoryImage
                 End If
             ElseIf optWindowsRelContained.Checked = True Then
                 If txtDirectorypath.text.endswith(":\") Then
-                    txtWindowsIconPath.Text = OpenFileDialogWindows.FileName.Remove(0, txtDirectoryPath.Text.Length).Replace("/", "\")
+                    txtWindowsIconPath.Text = OpenFileDialogWindows.FileName.Substring(txtDirectoryPath.Text.Length).Replace("/", "\")
                 Else
-                    txtWindowsIconPath.Text = OpenFileDialogWindows.FileName.Remove(0, txtDirectoryPath.Text.Length + 1).Replace("/", "\")
+                    txtWindowsIconPath.Text = OpenFileDialogWindows.FileName.Substring(txtDirectoryPath.Text.Length + 1).Replace("/", "\")
                 End If
             ElseIf optWindowsRelExternal.Checked = True Then
-                txtWindowsIconPath.Text = ".." & OpenFileDialogWindows.FileName.Remove(0, OpenFileDialogWindows.FileName.Replace("/", "\").LastIndexOf("\"))
+                txtWindowsIconPath.Text = ".." & OpenFileDialogWindows.FileName.Substring(OpenFileDialogWindows.FileName.Replace("/", "\").LastIndexOf("\"))
             Else
                 MsgBox("Please select an option!", MsgBoxStyle.Exclamation)
             End If
@@ -400,17 +400,17 @@ Public Class DirectoryImage
             imgLinuxCurrent.ImageLocation = OpenFileDialogLinux.FileName
             btnWindowsSave.Enabled = True
             If optLinuxAbsolute.Checked = True Then
-                txtLinuxImagePath.Text = OpenFileDialogLinux.FileName.Remove(0,2).Replace("\", "/")
+                txtLinuxImagePath.Text = OpenFileDialogLinux.FileName.Substring(2).Replace("\", "/")
                 txtLinuxImagePath.Text = InputBox("Please enter the path in linux where drive """& OpenFileDialogLinux.FileName.Remove(2)&""" is mounted:", _
                                                   "Linux Drive Mountpoint","/media/"&Environment.GetEnvironmentVariable("UserName")&"/MountPath") & txtLinuxImagePath.Text
             ElseIf optLinuxRelContained.Checked = True Then
                 If txtDirectorypath.text.endswith(":\") Then
-                    txtLinuxImagePath.Text = "./" & OpenFileDialogLinux.FileName.Remove(0, txtDirectoryPath.Text.Length).Replace("\", "/")
+                    txtLinuxImagePath.Text = "./" & OpenFileDialogLinux.FileName.Substring(txtDirectoryPath.Text.Length).Replace("\", "/")
                 Else
-                    txtLinuxImagePath.Text = "./" & OpenFileDialogLinux.FileName.Remove(0, txtDirectoryPath.Text.Length + 1).Replace("\", "/")
+                    txtLinuxImagePath.Text = "./" & OpenFileDialogLinux.FileName.Substring(txtDirectoryPath.Text.Length + 1).Replace("\", "/")
                 End If
             ElseIf optLinuxRelExternal.Checked = True Then
-                txtLinuxImagePath.Text = ".." & OpenFileDialogLinux.FileName.Remove(0, OpenFileDialogLinux.FileName.LastIndexOf("\")).Replace("\", "/")
+                txtLinuxImagePath.Text = ".." & OpenFileDialogLinux.FileName.Substring(OpenFileDialogLinux.FileName.LastIndexOf("\")).Replace("\", "/")
             Else
                 MsgBox("Please select an option!", MsgBoxStyle.Exclamation)
             End If

@@ -20,7 +20,7 @@
     End Sub
     
     Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-        DirectoryImage.imgLinuxCurrent.ImageLocation = cbxWinLetter.Text & DirectoryImage.txtLinuxImagePath.Text.Remove(0,txtMntLen.Value).Replace("/", "\")
+        DirectoryImage.imgLinuxCurrent.ImageLocation = cbxWinLetter.Text & DirectoryImage.txtLinuxImagePath.Text.Substring(txtMntLen.Value).Replace("/", "\")
         Me.Close
     End Sub
     

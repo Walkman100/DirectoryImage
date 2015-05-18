@@ -21,7 +21,7 @@
     'txtwindowsiconpath.text = inputbox("Please enter the Windows drive letter where the path in linux ""/media/"&Environment.GetEnvironmentVariable("UserName")&"/MountPath"" is mounted:", _
     '                                                   "Windows Drive Letter") & txtWindowsIconPath.Text
     Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-        DirectoryImage.txtwindowsiconpath.text = cbxWinLetter.Text & DirectoryImage.txtwindowsiconpath.Text.Remove(0,txtMntLen.Value).Replace("/", "\")
+        DirectoryImage.txtwindowsiconpath.text = cbxWinLetter.Text & DirectoryImage.txtwindowsiconpath.Text.Substring(txtMntLen.Value).Replace("/", "\")
         Me.Close
     End Sub
     
