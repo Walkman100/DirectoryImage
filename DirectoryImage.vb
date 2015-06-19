@@ -60,21 +60,21 @@ Public Class DirectoryImage
     
     Dim alreadyGotIcon, lookingForIconIndex As Boolean
     Sub ParseFiles(Directory As String)
-        If Exists(Directory & Op &"desktop.ini") Then
+        If Exists(Directory & Op & "desktop.ini") Then
             btnWindowsOpenDataFile.Enabled = True
-            If GetAttributes(Directory & Op &"desktop.ini").HasFlag(IO.FileAttributes.Hidden) Then
+            If GetAttributes(Directory & Op & "desktop.ini").HasFlag(IO.FileAttributes.Hidden) Then
                 btnWindowsSetHidden.Enabled = False
             Else
                 btnWindowsSetHidden.Enabled = True
             End If
-            If GetAttributes(Directory & Op &"desktop.ini").HasFlag(IO.FileAttributes.System) Then
+            If GetAttributes(Directory & Op & "desktop.ini").HasFlag(IO.FileAttributes.System) Then
                 btnWindowsSetSystem.Enabled = False
             Else
                 btnWindowsSetSystem.Enabled = True
             End If
             alreadyGotIcon = False
             lookingForIconIndex = False
-            For Each line In ReadLines(Directory & Op &"desktop.ini")
+            For Each line In ReadLines(Directory & Op & "desktop.ini")
                 If line.StartsWith("IconResource=", True, Nothing) Then
                     txtWindowsIconPath.Text = line.Substring(13)
                     alreadyGotIcon = True
@@ -85,6 +85,7 @@ Public Class DirectoryImage
                     ParseWindows()
                 ElseIf line.StartsWith("IconIndex=", True, Nothing) And lookingForIconIndex Then
                     txtWindowsIconPath.Text = txtWindowsIconPath.Text & "," & line.Substring(10)
+                    lookingForIconIndex = False
                 End If
             Next
         Else
@@ -93,19 +94,19 @@ Public Class DirectoryImage
             btnWindowsSetSystem.Enabled = False
         End If
         
-        If Exists(Directory & Op &".directory") Then
+        If Exists(Directory & Op & ".directory") Then
             btnLinuxOpenDataFile.Enabled = True
-            If GetAttributes(txtDirectoryPath.Text & Op &".directory").HasFlag(IO.FileAttributes.Hidden) Then
+            If GetAttributes(txtDirectoryPath.Text & Op & ".directory").HasFlag(IO.FileAttributes.Hidden) Then
                 btnLinuxSetHidden.Enabled = False
             Else
                 btnLinuxSetHidden.Enabled = True
             End If
-            If GetAttributes(txtDirectoryPath.Text & Op &".directory").HasFlag(IO.FileAttributes.System) Then
+            If GetAttributes(txtDirectoryPath.Text & Op & ".directory").HasFlag(IO.FileAttributes.System) Then
                 btnLinuxSetSystem.Enabled = False
             Else
                 btnLinuxSetSystem.Enabled = True
             End If
-            For Each line In ReadLines(Directory & "\.directory")
+            For Each line In ReadLines(Directory & Op & ".directory")
                 If line.StartsWith("Icon=", True, Nothing) Then
                     txtLinuxImagePath.Text = line.Substring(5)
                     ParseLinux()
@@ -247,11 +248,11 @@ Public Class DirectoryImage
     Dim SetIcon, HasHeader As Boolean
     Sub btnWindowsSave_Click() Handles btnWindowsSave.Click
         Try
-            If Exists(txtDirectoryPath.Text & Op &"desktop.ini") Then
+            If Exists(txtDirectoryPath.Text & Op & "desktop.ini") Then
                 lineno = 0
                 seticon = False
                 hasheader = false
-                Dim FileContents As String() = ReadAllLines(txtDirectoryPath.Text & Op &"desktop.ini")
+                Dim FileContents As String() = ReadAllLines(txtDirectoryPath.Text & Op & "desktop.ini")
                 For Each line As String In FileContents
                     If line.StartsWith("IconResource=", True, Nothing) Then
                         FileContents(lineno) = "IconResource=" & txtWindowsIconPath.Text
@@ -266,9 +267,9 @@ Public Class DirectoryImage
                     End If
                     lineno += 1
                 Next
-                setattributes(txtDirectoryPath.Text & Op &"desktop.ini", io.fileattributes.normal)
+                setattributes(txtDirectoryPath.Text & Op & "desktop.ini", io.fileattributes.normal)
                 If seticon Then
-                    WriteAllLines(txtDirectoryPath.Text & Op &"desktop.ini", FileContents)
+                    WriteAllLines(txtDirectoryPath.Text & Op & "desktop.ini", FileContents)
                 Else
                     If hasheader Then
                         If FileContents.length<headerline+2 Then
@@ -282,16 +283,16 @@ Public Class DirectoryImage
                             Loop
                         End If
                         FileContents(headerline+1) = "IconResource=" & txtWindowsIconPath.Text
-                        WriteAllLines(txtDirectoryPath.Text & Op &"desktop.ini", FileContents)
+                        WriteAllLines(txtDirectoryPath.Text & Op & "desktop.ini", FileContents)
                     Else
-                        appendalltext(txtDirectoryPath.Text & Op &"desktop.ini", vbnewline &"[.ShellClassInfo]"&vbNewLine &"IconResource="& txtWindowsIconPath.Text &vbnewline)
+                        appendalltext(txtDirectoryPath.Text & Op & "desktop.ini", vbnewline &"[.ShellClassInfo]"&vbNewLine &"IconResource="& txtWindowsIconPath.Text &vbnewline)
                     End If
                 End If
             Else
-                WriteAllText(txtDirectoryPath.Text & Op &"desktop.ini", "[.ShellClassInfo]" & vbNewLine & "IconResource=" & txtWindowsIconPath.Text)
+                WriteAllText(txtDirectoryPath.Text & Op & "desktop.ini", "[.ShellClassInfo]" & vbNewLine & "IconResource=" & txtWindowsIconPath.Text)
                 btnWindowsOpenDataFile.Enabled = True
             End If
-            SetAttributes(txtDirectoryPath.Text & Op &"desktop.ini", IO.FileAttributes.Hidden)
+            SetAttributes(txtDirectoryPath.Text & Op & "desktop.ini", IO.FileAttributes.Hidden)
         Catch ex As exception
             ErrorParser(ex)
         End Try
@@ -299,9 +300,9 @@ Public Class DirectoryImage
     End Sub
     
     Sub btnWindowsOpenDataFile_Click(sender As Object, e As EventArgs) Handles btnWindowsOpenDataFile.Click
-        If Exists(txtDirectoryPath.Text & Op &"desktop.ini") Then
+        If Exists(txtDirectoryPath.Text & Op & "desktop.ini") Then
             If chkcustomeditor.checked Then
-                Process.Start(txteditorpath.text, txtDirectoryPath.Text & Op &"desktop.ini")
+                Process.Start(txteditorpath.text, txtDirectoryPath.Text & Op & "desktop.ini")
             Else
                 If op="\" Then
                     Process.Start(Environment.GetEnvironmentVariable("windir") & "\notepad.exe", txtDirectoryPath.Text & "\desktop.ini")
@@ -315,15 +316,15 @@ Public Class DirectoryImage
     End Sub
     
     Sub btnWindowsSetHidden_Click() Handles btnWindowsSetHidden.Click
-        'If Not GetAttributes(txtDirectoryPath.Text & Op &"desktop.ini").HasFlag(IO.FileAttributes.Hidden) Then
-        SetAttributes(txtDirectoryPath.Text & Op &"desktop.ini", FileAttribute.Hidden)
+        'If Not GetAttributes(txtDirectoryPath.Text & Op & "desktop.ini").HasFlag(IO.FileAttributes.Hidden) Then
+        SetAttributes(txtDirectoryPath.Text & Op & "desktop.ini", FileAttribute.Hidden)
         ParseFiles(txtDirectoryPath.Text)
         'btnWindowsSetHidden.Enabled = False '<= no need since ParseFiles will detect if the flag is set
         'End If
     End Sub
     
     Sub btnWindowsSetSystem_Click() Handles btnWindowsSetSystem.Click
-        SetAttributes(txtDirectoryPath.Text & Op &"desktop.ini", FileAttribute.System)
+        SetAttributes(txtDirectoryPath.Text & Op & "desktop.ini", FileAttribute.System)
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
@@ -423,7 +424,7 @@ Public Class DirectoryImage
                 lineno = 0 ' Actually the index of the line
                 seticon = False  ' Index starts at 0, count/length/number starts at 1
                 hasheader = false
-                Dim FileContents As String() = ReadAllLines(txtDirectoryPath.Text & "\.directory")
+                Dim FileContents As String() = ReadAllLines(txtDirectoryPath.Text & Op & ".directory")
                 For Each line As String In FileContents
                     If line.StartsWith("Icon=", True, Nothing) Then
                         FileContents(lineno) = "Icon=" & txtLinuxImagePath.Text
@@ -434,9 +435,9 @@ Public Class DirectoryImage
                     End If
                     lineno += 1
                 Next
-                setattributes(txtDirectoryPath.Text & "\.directory", io.fileattributes.normal)
+                setattributes(txtDirectoryPath.Text & Op & ".directory", io.fileattributes.normal)
                 If seticon Then
-                    WriteAllLines(txtDirectoryPath.Text & "\.directory", FileContents)
+                    WriteAllLines(txtDirectoryPath.Text & Op & ".directory", FileContents)
                 Else
                     If hasheader Then
                         If FileContents.length<headerline+2 Then
@@ -451,16 +452,16 @@ Public Class DirectoryImage
                             Loop
                         End If
                         FileContents(headerline+1) = "Icon=" & txtLinuxImagePath.Text
-                        WriteAllLines(txtDirectoryPath.Text & "\.directory", FileContents)
+                        WriteAllLines(txtDirectoryPath.Text & Op & ".directory", FileContents)
                     Else
-                        appendalltext(txtDirectoryPath.Text & "\.directory", vbnewline &"[Desktop Entry]"&vbNewLine &"Icon="& txtLinuxImagePath.Text &vbnewline)
+                        appendalltext(txtDirectoryPath.Text & Op & ".directory", vbnewline &"[Desktop Entry]"&vbNewLine &"Icon="& txtLinuxImagePath.Text &vbnewline)
                     End If
                 End If
             Else
-                WriteAllText(txtDirectoryPath.Text & "\.directory", "[Desktop Entry]" & vbNewLine & "Icon=" & txtLinuxImagePath.Text)
+                WriteAllText(txtDirectoryPath.Text & Op & ".directory", "[Desktop Entry]" & vbNewLine & "Icon=" & txtLinuxImagePath.Text)
                 btnLinuxOpenDataFile.Enabled = True
             End If
-            SetAttributes(txtDirectoryPath.Text & "\.directory", IO.FileAttributes.Hidden)
+            SetAttributes(txtDirectoryPath.Text & Op & ".directory", IO.FileAttributes.Hidden)
         Catch ex As exception
             ErrorParser(ex)
         End Try
@@ -468,11 +469,11 @@ Public Class DirectoryImage
     End Sub
     
     Sub btnLinuxOpenDataFile_Click(sender As Object, e As EventArgs) Handles btnLinuxOpenDataFile.Click
-        If Exists(txtDirectoryPath.Text & "\.directory") Then
+        If Exists(txtDirectoryPath.Text & Op & ".directory") Then
             If chkcustomeditor.checked Then
-                Process.Start(txteditorpath.text, txtDirectoryPath.Text & "\.directory")
+                Process.Start(txteditorpath.text, txtDirectoryPath.Text & Op & ".directory")
             Else
-                Process.Start(Environment.GetEnvironmentVariable("windir") & "\notepad.exe", txtDirectoryPath.Text & "\.directory")
+                Process.Start(Environment.GetEnvironmentVariable("windir") & Op & "notepad.exe", txtDirectoryPath.Text & Op & ".directory")
             End If
         Else
             btnLinuxOpenDataFile.Enabled = False
@@ -480,12 +481,12 @@ Public Class DirectoryImage
     End Sub
     
     Sub btnLinuxSetHidden_Click() Handles btnLinuxSetHidden.Click
-        SetAttributes(txtDirectoryPath.Text & "\.directory", FileAttribute.Hidden)
+        SetAttributes(txtDirectoryPath.Text & Op & ".directory", FileAttribute.Hidden)
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
     Sub btnLinuxSetSystem_Click() Handles btnLinuxSetSystem.Click
-        SetAttributes(txtDirectoryPath.Text & "\.directory", FileAttribute.System)
+        SetAttributes(txtDirectoryPath.Text & Op & ".directory", FileAttribute.System)
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
@@ -521,17 +522,15 @@ Public Class DirectoryImage
     End Sub
     
     Sub ErrorParser(ex As Exception)
-        'Access Denied:
-        'HResult of -2147024891
-        'GetHashCode of 44223604
+        ' Access Denied:
         'GetType: System.UnauthorizedAccessException
         'Message: Access to the path 'filepath' is denied.
         If ex.GetType.ToString = "System.UnauthorizedAccessException" Then
-        'Neither
+        ' Neither:
         'If ex.GetType.Equals(System.UnauthorizedAccessException) Then
-        'nor
+        ' nor:
         'If System.UnauthorizedAccessException.Equals(ex.GetType) Then
-        'work so i just compared them as strings.
+        ' work, so i just compared them as strings.
             if op = "\" then
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching DirectoryImage As Administrator?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
                     CreateObject("Shell.Application").ShellExecute(Application.StartupPath & Op & Process.GetCurrentProcess.ProcessName & ".exe", """" & txtDirectoryPath.Text & """", "", "runas")
