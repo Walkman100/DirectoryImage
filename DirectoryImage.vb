@@ -60,6 +60,31 @@ Public Class DirectoryImage
     
     Dim alreadyGotIcon, lookingForIconIndex As Boolean
     Sub ParseFiles(Directory As String)
+        If directory.endswith(":\") Then
+            If Exists(Directory & "Autorun.inf") Then
+                btnWindowsOpenDataFile.Enabled = True
+                If GetAttributes(Directory & "Autorun.inf").HasFlag(IO.FileAttributes.Hidden) Then
+                    btnWindowsSetHidden.Enabled = False
+                Else
+                    btnWindowsSetHidden.Enabled = True
+                End If
+                If GetAttributes(Directory & "Autorun.inf").HasFlag(IO.FileAttributes.System) Then
+                    btnWindowsSetSystem.Enabled = False
+                Else
+                    btnWindowsSetSystem.Enabled = True
+                End If
+                For Each line In ReadLines(Directory & "Autorun.inf")
+                    If line.StartsWith("Icon=", True, Nothing) Then
+                        txtWindowsIconPath.Text = line.Substring(5)
+                        ParseWindows()
+                    End If
+                Next
+            Else
+                btnWindowsOpenDataFile.Enabled = False
+                btnWindowsSetHidden.Enabled = False
+                btnWindowsSetSystem.Enabled = False
+            End If
+        Else
         If Exists(Directory & Op & "desktop.ini") Then
             btnWindowsOpenDataFile.Enabled = True
             If GetAttributes(Directory & Op & "desktop.ini").HasFlag(IO.FileAttributes.Hidden) Then
@@ -92,6 +117,7 @@ Public Class DirectoryImage
             btnWindowsOpenDataFile.Enabled = False
             btnWindowsSetHidden.Enabled = False
             btnWindowsSetSystem.Enabled = False
+        End If
         End If
         
         If Exists(Directory & Op & ".directory") Then
@@ -300,6 +326,17 @@ Public Class DirectoryImage
     End Sub
     
     Sub btnWindowsOpenDataFile_Click(sender As Object, e As EventArgs) Handles btnWindowsOpenDataFile.Click
+        If txtDirectoryPath.Text.endswith(":\") Then
+            If Exists(txtDirectoryPath.Text & "Autorun.inf") Then
+                If chkcustomeditor.checked Then
+                    Process.Start(txteditorpath.text, txtDirectoryPath.Text & "Autorun.inf")
+                Else ' No Op check below because if the path ends with ":\", we're on Windows
+                    Process.Start(Environment.GetEnvironmentVariable("windir") & "\notepad.exe", txtDirectoryPath.Text & "Autorun.inf")
+                End If
+            Else
+                btnWindowsOpenDataFile.Enabled = False
+            End If
+        Else
         If Exists(txtDirectoryPath.Text & Op & "desktop.ini") Then
             If chkcustomeditor.checked Then
                 Process.Start(txteditorpath.text, txtDirectoryPath.Text & Op & "desktop.ini")
@@ -313,18 +350,27 @@ Public Class DirectoryImage
         Else
             btnWindowsOpenDataFile.Enabled = False
         End If
+        End If
     End Sub
     
     Sub btnWindowsSetHidden_Click() Handles btnWindowsSetHidden.Click
         'If Not GetAttributes(txtDirectoryPath.Text & Op & "desktop.ini").HasFlag(IO.FileAttributes.Hidden) Then
-        SetAttributes(txtDirectoryPath.Text & Op & "desktop.ini", FileAttribute.Hidden)
+        If txtDirectoryPath.Text.endswith(":\") Then
+            SetAttributes(txtDirectoryPath.Text & "Autorun.inf", FileAttribute.Hidden)
+        Else
+            SetAttributes(txtDirectoryPath.Text & Op & "desktop.ini", FileAttribute.Hidden)
+        End If
         ParseFiles(txtDirectoryPath.Text)
         'btnWindowsSetHidden.Enabled = False '<= no need since ParseFiles will detect if the flag is set
         'End If
     End Sub
     
     Sub btnWindowsSetSystem_Click() Handles btnWindowsSetSystem.Click
-        SetAttributes(txtDirectoryPath.Text & Op & "desktop.ini", FileAttribute.System)
+        If txtDirectoryPath.Text.endswith(":\") Then
+            SetAttributes(txtDirectoryPath.Text & "Autorun.inf", FileAttribute.System)
+        Else
+            SetAttributes(txtDirectoryPath.Text & Op & "desktop.ini", FileAttribute.System)
+        End If
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
