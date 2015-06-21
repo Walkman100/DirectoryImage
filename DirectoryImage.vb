@@ -85,39 +85,39 @@ Public Class DirectoryImage
                 btnWindowsSetSystem.Enabled = False
             End If
         Else
-        If Exists(Directory & Op & "desktop.ini") Then
-            btnWindowsOpenDataFile.Enabled = True
-            If GetAttributes(Directory & Op & "desktop.ini").HasFlag(IO.FileAttributes.Hidden) Then
-                btnWindowsSetHidden.Enabled = False
-            Else
-                btnWindowsSetHidden.Enabled = True
-            End If
-            If GetAttributes(Directory & Op & "desktop.ini").HasFlag(IO.FileAttributes.System) Then
-                btnWindowsSetSystem.Enabled = False
-            Else
-                btnWindowsSetSystem.Enabled = True
-            End If
-            alreadyGotIcon = False
-            lookingForIconIndex = False
-            For Each line In ReadLines(Directory & Op & "desktop.ini")
-                If line.StartsWith("IconResource=", True, Nothing) Then
-                    txtWindowsIconPath.Text = line.Substring(13)
-                    alreadyGotIcon = True
-                    ParseWindows()
-                ElseIf line.StartsWith("IconFile=", True, Nothing) And alreadyGotIcon = False Then
-                    txtWindowsIconPath.Text = line.Substring(9)
-                    lookingForIconIndex = True
-                    ParseWindows()
-                ElseIf line.StartsWith("IconIndex=", True, Nothing) And lookingForIconIndex Then
-                    txtWindowsIconPath.Text = txtWindowsIconPath.Text & "," & line.Substring(10)
-                    lookingForIconIndex = False
+            If Exists(Directory & Op & "desktop.ini") Then
+                btnWindowsOpenDataFile.Enabled = True
+                If GetAttributes(Directory & Op & "desktop.ini").HasFlag(IO.FileAttributes.Hidden) Then
+                    btnWindowsSetHidden.Enabled = False
+                Else
+                    btnWindowsSetHidden.Enabled = True
                 End If
-            Next
-        Else
-            btnWindowsOpenDataFile.Enabled = False
-            btnWindowsSetHidden.Enabled = False
-            btnWindowsSetSystem.Enabled = False
-        End If
+                If GetAttributes(Directory & Op & "desktop.ini").HasFlag(IO.FileAttributes.System) Then
+                    btnWindowsSetSystem.Enabled = False
+                Else
+                    btnWindowsSetSystem.Enabled = True
+                End If
+                alreadyGotIcon = False
+                lookingForIconIndex = False
+                For Each line In ReadLines(Directory & Op & "desktop.ini")
+                    If line.StartsWith("IconResource=", True, Nothing) Then
+                        txtWindowsIconPath.Text = line.Substring(13)
+                        alreadyGotIcon = True
+                        ParseWindows()
+                    ElseIf line.StartsWith("IconFile=", True, Nothing) And alreadyGotIcon = False Then
+                        txtWindowsIconPath.Text = line.Substring(9)
+                        lookingForIconIndex = True
+                        ParseWindows()
+                    ElseIf line.StartsWith("IconIndex=", True, Nothing) And lookingForIconIndex Then
+                        txtWindowsIconPath.Text = txtWindowsIconPath.Text & "," & line.Substring(10)
+                        lookingForIconIndex = False
+                    End If
+                Next
+            Else
+                btnWindowsOpenDataFile.Enabled = False
+                btnWindowsSetHidden.Enabled = False
+                btnWindowsSetSystem.Enabled = False
+            End If
         End If
         
         If Exists(Directory & Op & ".directory") Then
@@ -337,19 +337,19 @@ Public Class DirectoryImage
                 btnWindowsOpenDataFile.Enabled = False
             End If
         Else
-        If Exists(txtDirectoryPath.Text & Op & "desktop.ini") Then
-            If chkcustomeditor.checked Then
-                Process.Start(txteditorpath.text, txtDirectoryPath.Text & Op & "desktop.ini")
-            Else
-                If op="\" Then
-                    Process.Start(Environment.GetEnvironmentVariable("windir") & "\notepad.exe", txtDirectoryPath.Text & "\desktop.ini")
+            If Exists(txtDirectoryPath.Text & Op & "desktop.ini") Then
+                If chkcustomeditor.checked Then
+                    Process.Start(txteditorpath.text, txtDirectoryPath.Text & Op & "desktop.ini")
                 Else
-                    Process.Start(txtDirectoryPath.Text & "/desktop.ini") 'Environment.GetEnvironmentVariable("windir") & "/notepad.exe", 
+                    If op="\" Then
+                        Process.Start(Environment.GetEnvironmentVariable("windir") & "\notepad.exe", txtDirectoryPath.Text & "\desktop.ini")
+                    Else
+                        Process.Start(txtDirectoryPath.Text & "/desktop.ini") 'Environment.GetEnvironmentVariable("windir") & "/notepad.exe", 
+                    End If
                 End If
+            Else
+                btnWindowsOpenDataFile.Enabled = False
             End If
-        Else
-            btnWindowsOpenDataFile.Enabled = False
-        End If
         End If
     End Sub
     
