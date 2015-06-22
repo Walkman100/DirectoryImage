@@ -276,7 +276,7 @@ Public Class DirectoryImage
     Dim SetIcon, HasHeader As Boolean
     Sub btnWindowsSave_Click() Handles btnWindowsSave.Click
         Try
-          If txtDirectoryPath.Text.endswith(":\") Then
+            If txtDirectoryPath.Text.endswith(":\") Then
                 If Exists(txtDirectoryPath.Text & "Autorun.inf") Then
                     lineno = 0
                     seticon = False
@@ -318,53 +318,53 @@ Public Class DirectoryImage
                     btnWindowsOpenDataFile.Enabled = True
                 End If
                 SetAttributes(txtDirectoryPath.Text & "Autorun.inf", IO.FileAttributes.Hidden)
-          Else
-            If Exists(txtDirectoryPath.Text & Op & "desktop.ini") Then
-                lineno = 0
-                seticon = False
-                hasheader = false
-                Dim FileContents As String() = ReadAllLines(txtDirectoryPath.Text & Op & "desktop.ini")
-                For Each line As String In FileContents
-                    If line.StartsWith("IconResource=", True, Nothing) Then
-                        FileContents(lineno) = "IconResource=" & txtWindowsIconPath.Text
-                        seticon = true
-                    ElseIf line.StartsWith("IconFile=", True, Nothing) Then
-                        FileContents(lineno) = nothing
-                    ElseIf line.StartsWith("IconIndex=", True, Nothing) Then
-                        FileContents(lineno) = Nothing
-                    ElseIf line = "[.ShellClassInfo]" Then
-                        hasheader = True
-                        headerline = lineno
-                    End If
-                    lineno += 1
-                Next
-                setattributes(txtDirectoryPath.Text & Op & "desktop.ini", io.fileattributes.normal)
-                If seticon Then
-                    WriteAllLines(txtDirectoryPath.Text & Op & "desktop.ini", FileContents)
-                Else
-                    If hasheader Then
-                        If FileContents.length<headerline+2 Then
-                            Array.Resize(FileContents, FileContents.Length+1)
-                        Else
-                            Do Until filecontents(headerline+1) = ""
-                                headerline+=1
-                                If FileContents.length<headerline+2 Then
-                                    Array.Resize(FileContents, FileContents.Length+1)
-                                End If
-                            Loop
+            Else
+                If Exists(txtDirectoryPath.Text & Op & "desktop.ini") Then
+                    lineno = 0
+                    seticon = False
+                    hasheader = False
+                    Dim FileContents As String() = ReadAllLines(txtDirectoryPath.Text & Op & "desktop.ini")
+                    For Each line As String In FileContents
+                        If line.StartsWith("IconResource=", True, Nothing) Then
+                            FileContents(lineno) = "IconResource=" & txtWindowsIconPath.Text
+                            seticon = True
+                        ElseIf line.StartsWith("IconFile=", True, Nothing) Then
+                            FileContents(lineno) = Nothing
+                        ElseIf line.StartsWith("IconIndex=", True, Nothing) Then
+                            FileContents(lineno) = Nothing
+                        ElseIf line = "[.ShellClassInfo]" Then
+                            hasheader = True
+                            headerline = lineno
                         End If
-                        FileContents(headerline+1) = "IconResource=" & txtWindowsIconPath.Text
+                        lineno += 1
+                    Next
+                    setattributes(txtDirectoryPath.Text & Op & "desktop.ini", io.fileattributes.normal)
+                    If seticon Then
                         WriteAllLines(txtDirectoryPath.Text & Op & "desktop.ini", FileContents)
                     Else
-                        appendalltext(txtDirectoryPath.Text & Op & "desktop.ini", vbnewline &"[.ShellClassInfo]"&vbNewLine &"IconResource="& txtWindowsIconPath.Text &vbnewline)
+                        If hasheader Then
+                            If FileContents.length<headerline+2 Then
+                                Array.Resize(FileContents, FileContents.Length+1)
+                            Else
+                                Do Until filecontents(headerline+1) = ""
+                                    headerline+=1
+                                    If FileContents.length<headerline+2 Then
+                                        Array.Resize(FileContents, FileContents.Length+1)
+                                    End If
+                                Loop
+                            End If
+                            FileContents(headerline+1) = "IconResource=" & txtWindowsIconPath.Text
+                            WriteAllLines(txtDirectoryPath.Text & Op & "desktop.ini", FileContents)
+                        Else
+                            appendalltext(txtDirectoryPath.Text & Op & "desktop.ini", vbnewline &"[.ShellClassInfo]"&vbNewLine &"IconResource="& txtWindowsIconPath.Text &vbnewline)
+                        End If
                     End If
+                Else
+                    WriteAllText(txtDirectoryPath.Text & Op & "desktop.ini", "[.ShellClassInfo]" & vbNewLine & "IconResource=" & txtWindowsIconPath.Text)
+                    btnWindowsOpenDataFile.Enabled = True
                 End If
-            Else
-                WriteAllText(txtDirectoryPath.Text & Op & "desktop.ini", "[.ShellClassInfo]" & vbNewLine & "IconResource=" & txtWindowsIconPath.Text)
-                btnWindowsOpenDataFile.Enabled = True
+                SetAttributes(txtDirectoryPath.Text & Op & "desktop.ini", IO.FileAttributes.Hidden)
             End If
-            SetAttributes(txtDirectoryPath.Text & Op & "desktop.ini", IO.FileAttributes.Hidden)
-          End If
         Catch ex As exception
             ErrorParser(ex)
         End Try
