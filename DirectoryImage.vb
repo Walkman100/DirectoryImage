@@ -61,19 +61,11 @@ Public Class DirectoryImage
     Dim alreadyGotIcon, lookingForIconIndex As Boolean
     Sub ParseFiles(Directory As String)
         If directory.endswith(":\") Then
+            btnWindowsOpenDataFile.Text = "Open Autorun.inf..."
             If Exists(Directory & "Autorun.inf") Then
                 btnWindowsOpenDataFile.Enabled = True
-                btnWindowsOpenDataFile.Text = "Open Autorun.inf..."
-                If GetAttributes(Directory & "Autorun.inf").HasFlag(IO.FileAttributes.Hidden) Then
-                    btnWindowsSetHidden.Enabled = False
-                Else
-                    btnWindowsSetHidden.Enabled = True
-                End If
-                If GetAttributes(Directory & "Autorun.inf").HasFlag(IO.FileAttributes.System) Then
-                    btnWindowsSetSystem.Enabled = False
-                Else
-                    btnWindowsSetSystem.Enabled = True
-                End If
+                btnWindowsSetHidden.Enabled = Not GetAttributes(Directory & "Autorun.inf").HasFlag(IO.FileAttributes.Hidden)
+                btnWindowsSetSystem.Enabled = Not GetAttributes(Directory & "Autorun.inf").HasFlag(IO.FileAttributes.System)
                 For Each line In ReadLines(Directory & "Autorun.inf")
                     If line.StartsWith("Icon=", True, Nothing) Then
                         txtWindowsIconPath.Text = line.Substring(5)
@@ -86,19 +78,11 @@ Public Class DirectoryImage
                 btnWindowsSetSystem.Enabled = False
             End If
         Else
+            btnWindowsOpenDataFile.Text = "Open desktop.ini..."
             If Exists(Directory & Op & "desktop.ini") Then
                 btnWindowsOpenDataFile.Enabled = True
-                btnWindowsOpenDataFile.Text = "Open desktop.ini..."
-                If GetAttributes(Directory & Op & "desktop.ini").HasFlag(IO.FileAttributes.Hidden) Then
-                    btnWindowsSetHidden.Enabled = False
-                Else
-                    btnWindowsSetHidden.Enabled = True
-                End If
-                If GetAttributes(Directory & Op & "desktop.ini").HasFlag(IO.FileAttributes.System) Then
-                    btnWindowsSetSystem.Enabled = False
-                Else
-                    btnWindowsSetSystem.Enabled = True
-                End If
+                btnWindowsSetHidden.Enabled = Not GetAttributes(Directory & Op & "desktop.ini").HasFlag(IO.FileAttributes.Hidden)
+                btnWindowsSetSystem.Enabled = Not GetAttributes(Directory & Op & "desktop.ini").HasFlag(IO.FileAttributes.System)
                 alreadyGotIcon = False
                 lookingForIconIndex = False
                 For Each line In ReadLines(Directory & Op & "desktop.ini")
@@ -124,16 +108,8 @@ Public Class DirectoryImage
         
         If Exists(Directory & Op & ".directory") Then
             btnLinuxOpenDataFile.Enabled = True
-            If GetAttributes(txtDirectoryPath.Text & Op & ".directory").HasFlag(IO.FileAttributes.Hidden) Then
-                btnLinuxSetHidden.Enabled = False
-            Else
-                btnLinuxSetHidden.Enabled = True
-            End If
-            If GetAttributes(txtDirectoryPath.Text & Op & ".directory").HasFlag(IO.FileAttributes.System) Then
-                btnLinuxSetSystem.Enabled = False
-            Else
-                btnLinuxSetSystem.Enabled = True
-            End If
+            btnLinuxSetHidden.Enabled = Not GetAttributes(txtDirectoryPath.Text & Op & ".directory").HasFlag(IO.FileAttributes.Hidden)
+            btnLinuxSetSystem.Enabled = Not GetAttributes(txtDirectoryPath.Text & Op & ".directory").HasFlag(IO.FileAttributes.System)
             For Each line In ReadLines(Directory & Op & ".directory")
                 If line.StartsWith("Icon=", True, Nothing) Then
                     txtLinuxImagePath.Text = line.Substring(5)
