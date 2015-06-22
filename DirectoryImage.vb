@@ -63,6 +63,7 @@ Public Class DirectoryImage
         If directory.endswith(":\") Then
             If Exists(Directory & "Autorun.inf") Then
                 btnWindowsOpenDataFile.Enabled = True
+                btnWindowsOpenDataFile.Text = "Open Autorun.inf..."
                 If GetAttributes(Directory & "Autorun.inf").HasFlag(IO.FileAttributes.Hidden) Then
                     btnWindowsSetHidden.Enabled = False
                 Else
@@ -87,6 +88,7 @@ Public Class DirectoryImage
         Else
             If Exists(Directory & Op & "desktop.ini") Then
                 btnWindowsOpenDataFile.Enabled = True
+                btnWindowsOpenDataFile.Text = "Open desktop.ini..."
                 If GetAttributes(Directory & Op & "desktop.ini").HasFlag(IO.FileAttributes.Hidden) Then
                     btnWindowsSetHidden.Enabled = False
                 Else
@@ -274,6 +276,49 @@ Public Class DirectoryImage
     Dim SetIcon, HasHeader As Boolean
     Sub btnWindowsSave_Click() Handles btnWindowsSave.Click
         Try
+          If txtDirectoryPath.Text.endswith(":\") Then
+                If Exists(txtDirectoryPath.Text & "Autorun.inf") Then
+                    lineno = 0
+                    seticon = False
+                    hasheader = False
+                    Dim FileContents As String() = ReadAllLines(txtDirectoryPath.Text & "Autorun.inf")
+                    For Each line As String In FileContents
+                        If line.StartsWith("Icon=", True, Nothing) Then
+                            FileContents(lineno) = "Icon=" & txtWindowsIconPath.Text
+                            seticon = True
+                        ElseIf line = "[autorun]" Then
+                            hasheader = True
+                            headerline = lineno
+                        End If
+                        lineno += 1
+                    Next
+                    setattributes(txtDirectoryPath.Text & "Autorun.inf", io.fileattributes.normal)
+                    If seticon Then
+                        WriteAllLines(txtDirectoryPath.Text & "Autorun.inf", FileContents)
+                    Else
+                        If hasheader Then
+                            If FileContents.length<headerline+2 Then
+                                Array.Resize(FileContents, FileContents.Length+1)
+                            Else
+                                Do Until filecontents(headerline+1) = ""
+                                    headerline+=1
+                                    If FileContents.length<headerline+2 Then
+                                        Array.Resize(FileContents, FileContents.Length+1)
+                                    End If
+                                Loop
+                            End If
+                            FileContents(headerline+1) = "Icon=" & txtWindowsIconPath.Text
+                            WriteAllLines(txtDirectoryPath.Text & "Autorun.inf", FileContents)
+                        Else
+                            appendalltext(txtDirectoryPath.Text & "Autorun.inf", vbnewline &"[.ShellClassInfo]"&vbNewLine &"Icon="& txtWindowsIconPath.Text &vbnewline)
+                        End If
+                    End If
+                Else
+                    WriteAllText(txtDirectoryPath.Text & "Autorun.inf", "[autorun]" & vbNewLine & "Icon=" & txtWindowsIconPath.Text)
+                    btnWindowsOpenDataFile.Enabled = True
+                End If
+                SetAttributes(txtDirectoryPath.Text & "Autorun.inf", IO.FileAttributes.Hidden)
+          Else
             If Exists(txtDirectoryPath.Text & Op & "desktop.ini") Then
                 lineno = 0
                 seticon = False
@@ -319,6 +364,7 @@ Public Class DirectoryImage
                 btnWindowsOpenDataFile.Enabled = True
             End If
             SetAttributes(txtDirectoryPath.Text & Op & "desktop.ini", IO.FileAttributes.Hidden)
+          End If
         Catch ex As exception
             ErrorParser(ex)
         End Try
