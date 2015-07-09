@@ -53,7 +53,7 @@ SectionEnd
 Section "Add DirectoryImage to context menu"
   WriteRegStr HKCR "Directory\shell\DirImage" "" "Set Directory Image..."
   WriteRegStr HKCR "Directory\shell\DirImage" "Icon" "$INSTDIR\DirectoryImage.exe"
-  WriteRegStr HKCR "Directory\shell\DirImage\command" "" "$INSTDIR\DirectoryImage.exe$\" $\"%1$\""
+  WriteRegStr HKCR "Directory\shell\DirImage\command" "" "$\"$INSTDIR\DirectoryImage.exe$\" $\"%1$\""
 SectionEnd
 
 ;Section "More apps from DeavmiOSS"
