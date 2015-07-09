@@ -14,14 +14,13 @@ Public Class DirectoryImage
             grpWindows.Location = New System.Drawing.Point(12, 210)
             grpLinux.Location = New System.Drawing.Point(12, 38)
         End If
-        For Each s As String In My.Application.CommandLineArgs
-            txtDirectoryPath.Text = s
+        If My.Application.CommandLineArgs.Count = 0 Then
+            timerDelayedBrowse.Start
+        Else
+            txtDirectoryPath.Text = My.Application.CommandLineArgs(0)
             grpLinux.Enabled = True
             grpWindows.Enabled = True
             ParseFiles(txtDirectoryPath.Text)
-        Next
-        If My.Application.CommandLineArgs.Count = 0 Then
-            timerDelayedBrowse.Start
         End If
     End Sub
     
@@ -45,6 +44,7 @@ Public Class DirectoryImage
             optWindowsRel.Checked = False
             optWindowsRelContained.Checked = True
             optWindowsRelExternal.Checked = False
+            ' If code AutoComplete isn't working for you, comment out the two following ".Image = " lines:
             imgWindowsCurrent.Image = Global.DirectoryImage.My.Resources.Resources.ImageResIconNo3
             txtLinuxImagePath.Text = ""
             optLinuxAbsolute.Checked = False
