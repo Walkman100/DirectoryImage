@@ -402,11 +402,11 @@ Public Class DirectoryImage
             If optWindowsRelContained.Checked Then
                 OpenFileDialogWindows.InitialDirectory = txtDirectoryPath.Text
             ElseIf optWindowsRelExternal.Checked
-                OpenFileDialogWindows.InitialDirectory = txtDirectoryPath.Text.Remove(txtDirectoryPath.Text.LastIndexOf("\"))
+                OpenFileDialogWindows.InitialDirectory = txtDirectoryPath.Text.Remove(txtDirectoryPath.Text.LastIndexOf(Op))
             End If
-            If txtWindowsIconPath.Text <> "" Then
-                OpenFileDialogWindows.FileName = txtWindowsIconPath.Text
-            End If
+        End If
+        If imgWindowsCurrent.ImageLocation <> "" Then
+            OpenFileDialogWindows.FileName = imgWindowsCurrent.ImageLocation
         End If
         
         If optLinuxAbsolute.Checked Then
@@ -417,11 +417,11 @@ Public Class DirectoryImage
             If optLinuxRelContained.Checked Then
                 OpenFileDialogLinux.InitialDirectory = txtDirectoryPath.Text
             ElseIf optLinuxRelExternal.Checked
-                OpenFileDialogLinux.InitialDirectory = txtDirectoryPath.Text.Remove(txtDirectoryPath.Text.LastIndexOf("\"))
+                OpenFileDialogLinux.InitialDirectory = txtDirectoryPath.Text.Remove(txtDirectoryPath.Text.LastIndexOf(Op))
             End If
-            If txtLinuxImagePath.Text <> "" Then
-                OpenFileDialogLinux.FileName = txtLinuxImagePath.Text
-            End If
+        End If
+        If imgLinuxCurrent.ImageLocation <> "" Then
+            OpenFileDialogLinux.FileName =  imgLinuxCurrent.ImageLocation
         End If
     End Sub
     
@@ -464,10 +464,10 @@ Public Class DirectoryImage
         SetInitialDirectories
         If OpenFileDialogLinux.ShowDialog = DialogResult.OK Then
             imgLinuxCurrent.ImageLocation = OpenFileDialogLinux.FileName
-            btnWindowsSave.Enabled = True
+            btnLinuxSave.Enabled = True
             If optLinuxAbsolute.Checked Then
                 txtLinuxImagePath.Text = OpenFileDialogLinux.FileName.Substring(2).Replace("\", "/")
-                txtLinuxImagePath.Text = InputBox("Please enter the path in linux where drive """& OpenFileDialogLinux.FileName.Remove(2)&""" is mounted:", _
+                txtLinuxImagePath.Text = InputBox("Please enter the path in Linux where drive """& OpenFileDialogLinux.FileName.Remove(2)&""" is mounted:", _
                                                   "Linux Drive Mountpoint","/media/"&Environment.GetEnvironmentVariable("UserName")&"/MountPath") & txtLinuxImagePath.Text
             ElseIf optLinuxRelContained.Checked Then
                 If txtDirectorypath.text.endswith(":\") Then
@@ -505,8 +505,8 @@ Public Class DirectoryImage
                     WriteAllLines(txtDirectoryPath.Text & Op & ".directory", FileContents)
                 Else
                     If hasheader Then
-                        If FileContents.length<headerline+2 Then
                         ' account for index -> length conversion, and that less than will have to be less than or equal to without another addition
+                        If FileContents.length<headerline+2 Then
                             Array.Resize(FileContents, FileContents.Length+1)
                         Else
                             Do Until filecontents(headerline+1) = ""
@@ -538,7 +538,11 @@ Public Class DirectoryImage
             If chkcustomeditor.checked Then
                 Process.Start(txteditorpath.text, txtDirectoryPath.Text & Op & ".directory")
             Else
-                Process.Start(Environment.GetEnvironmentVariable("windir") & Op & "notepad.exe", txtDirectoryPath.Text & Op & ".directory")
+                If op="\" Then
+                    Process.Start(Environment.GetEnvironmentVariable("windir") & "\notepad.exe", txtDirectoryPath.Text & "\.directory")
+                Else
+                    Process.Start(txtDirectoryPath.Text & "/.directory") 'Environment.GetEnvironmentVariable("windir") & "/notepad.exe", 
+                End If
             End If
         Else
             btnLinuxOpenDataFile.Enabled = False
