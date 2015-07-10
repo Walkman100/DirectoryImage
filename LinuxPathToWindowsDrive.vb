@@ -1,17 +1,8 @@
-﻿' To change this template use Tools | Options | Coding | Edit Standard Headers.
-'
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Public Class LinuxPathToWindowsDrive
     Inherits System.Windows.Forms.Form
-    
-    ''' <summary>
-    ''' Designer variable used to keep track of non-visual components.
-    ''' </summary>
     Private components As System.ComponentModel.IContainer
-    
-    ''' <summary>
-    ''' Disposes resources used by the form.
-    ''' </summary>
-    ''' <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+    <System.Diagnostics.DebuggerNonUserCode()> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         If disposing Then
             If components IsNot Nothing Then
@@ -20,12 +11,7 @@ Public Class LinuxPathToWindowsDrive
         End If
         MyBase.Dispose(disposing)
     End Sub
-    
-    ''' <summary>
-    ''' This method is required for Windows Forms designer support.
-    ''' Do not change the method contents inside the source code editor. The Forms designer might
-    ''' not be able to load this method if it was changed manually.
-    ''' </summary>
+    <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.cbxWinLetter = New System.Windows.Forms.ComboBox()
         Me.txtMntLen = New System.Windows.Forms.NumericUpDown()
@@ -37,11 +23,8 @@ Public Class LinuxPathToWindowsDrive
         Me.btnCancel = New System.Windows.Forms.Button()
         CType(Me.txtMntLen,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
-        '
         'cbxWinLetter
-        '
-        Me.cbxWinLetter.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-                        Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.cbxWinLetter.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.cbxWinLetter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbxWinLetter.FormattingEnabled = true
         Me.cbxWinLetter.Items.AddRange(New Object() {"A:", "B:", "C:", "D:", "E:", "F:", "G:", "H:", "I:", "J:", "K:", "L:", "M:", "N:", "O:", "P:"})
@@ -49,66 +32,51 @@ Public Class LinuxPathToWindowsDrive
         Me.cbxWinLetter.Name = "cbxWinLetter"
         Me.cbxWinLetter.Size = New System.Drawing.Size(255, 21)
         Me.cbxWinLetter.TabIndex = 0
-        '
         'txtMntLen
-        '
-        Me.txtMntLen.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-                        Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.txtMntLen.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.txtMntLen.Location = New System.Drawing.Point(12, 25)
         Me.txtMntLen.Name = "txtMntLen"
         Me.txtMntLen.Size = New System.Drawing.Size(255, 20)
         Me.txtMntLen.TabIndex = 1
         Me.txtMntLen.Value = New Decimal(New Integer() {24, 0, 0, 0})
-        '
         'txtMnt
-        '
-        Me.txtMnt.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-                        Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.txtMnt.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.txtMnt.Location = New System.Drawing.Point(12, 64)
         Me.txtMnt.Name = "txtMnt"
         Me.txtMnt.ReadOnly = true
         Me.txtMnt.Size = New System.Drawing.Size(255, 20)
         Me.txtMnt.TabIndex = 2
-        '
         'lblMntLen
-        '
         Me.lblMntLen.AutoSize = true
         Me.lblMntLen.Location = New System.Drawing.Point(12, 9)
         Me.lblMntLen.Name = "lblMntLen"
         Me.lblMntLen.Size = New System.Drawing.Size(111, 13)
         Me.lblMntLen.TabIndex = 3
         Me.lblMntLen.Text = "Length of mount path:"
-        '
         'lblMnt
-        '
         Me.lblMnt.AutoSize = true
         Me.lblMnt.Location = New System.Drawing.Point(12, 48)
         Me.lblMnt.Name = "lblMnt"
         Me.lblMnt.Size = New System.Drawing.Size(40, 13)
         Me.lblMnt.TabIndex = 4
         Me.lblMnt.Text = "Result:"
-        '
         'lblWinLetter
-        '
         Me.lblWinLetter.AutoSize = true
         Me.lblWinLetter.Location = New System.Drawing.Point(12, 87)
         Me.lblWinLetter.Name = "lblWinLetter"
         Me.lblWinLetter.Size = New System.Drawing.Size(108, 13)
         Me.lblWinLetter.TabIndex = 5
         Me.lblWinLetter.Text = "Windows Drive letter:"
-        '
         'btnSave
-        '
         Me.btnSave.Enabled = false
+        Me.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.btnSave.Location = New System.Drawing.Point(12, 130)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(125, 23)
         Me.btnSave.TabIndex = 6
         Me.btnSave.Text = "Save"
         Me.btnSave.UseVisualStyleBackColor = true
-        '
         'btnCancel
-        '
         Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Location = New System.Drawing.Point(142, 130)
@@ -117,9 +85,7 @@ Public Class LinuxPathToWindowsDrive
         Me.btnCancel.TabIndex = 8
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = true
-        '
         'LinuxPathToWindowsDrive
-        '
         Me.AcceptButton = Me.btnSave
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -155,17 +121,13 @@ Public Class LinuxPathToWindowsDrive
     Friend WithEvents txtMntLen As System.Windows.Forms.NumericUpDown
     Friend WithEvents cbxWinLetter As System.Windows.Forms.ComboBox
     
-    Public Sub New()
-        Me.InitializeComponent()
-    End Sub
-    
     Sub LinuxPathToWindowsPath_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         txtMntLen.Maximum = DirectoryImage.txtwindowsiconpath.Text.Length-1
         txtMntLen_ValueChanged()
     End Sub
     
     Sub txtMntLen_ValueChanged() Handles txtMntLen.ValueChanged
-        txtMnt.Text = DirectoryImage.txtwindowsiconpath.Text.Remove(txtMntLen.Value)
+        txtMnt.Text = DirectoryImage.txtwindowsiconpath.Text.Substring(txtMntLen.Value)
     End Sub
     
     Sub cbxWinLetter_SelectedIndexChanged() Handles cbxWinLetter.SelectedIndexChanged
@@ -176,7 +138,7 @@ Public Class LinuxPathToWindowsDrive
     End Sub
     
     Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-        DirectoryImage.txtwindowsiconpath.text = cbxWinLetter.Text & DirectoryImage.txtwindowsiconpath.Text.Substring(txtMntLen.Value).Replace("/", "\")
+        DirectoryImage.txtwindowsiconpath.text = cbxWinLetter.Text & DirectoryImage.txtwindowsiconpath.Text.Substring(txtMntLen.Value)
         Me.Close
     End Sub
     

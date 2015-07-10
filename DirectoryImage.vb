@@ -161,7 +161,7 @@ Public Class DirectoryImage
         If txtLinuxImagePath.Text.StartsWith("/", True, Nothing) Then
             optLinuxAbsolute.Checked = True
             If op="\" Then
-                LinuxPathToWindowsPath.Show '<- That sets the image
+                LinuxPathToWindowsPath.ShowDialog '<- That sets the image
             Else
                 imglinuxcurrent.imagelocation = txtlinuximagepath.text
             End If
@@ -232,11 +232,11 @@ Public Class DirectoryImage
                     txtWindowsIconPath.Text = OpenFileDialogWindows.FileName
                 Else
                     txtwindowsiconpath.text = openfiledialogwindows.filename.replace("/", "\")
-                    linuxpathtowindowsdrive.show
+                    LinuxPathToWindowsDrive.ShowDialog
                 End If
             ElseIf optWindowsRelContained.Checked Then
                 If txtDirectorypath.text.endswith(":\") Then
-                    txtWindowsIconPath.Text = OpenFileDialogWindows.FileName.Substring(txtDirectoryPath.Text.Length).Replace("/", "\")
+                    txtWindowsIconPath.Text = OpenFileDialogWindows.FileName.Substring(txtDirectoryPath.Text.Length)
                 Else
                     txtWindowsIconPath.Text = OpenFileDialogWindows.FileName.Substring(txtDirectoryPath.Text.Length + 1).Replace("/", "\")
                 End If
