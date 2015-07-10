@@ -559,34 +559,40 @@ Public Class DirectoryImage
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
-    Sub chkCustomEditor_CheckedChanged(sender As Object, e As EventArgs) handles chkcustomeditor.checkedchanged
-        btneditorbrowse.enabled = chkcustomeditor.checked
-        txteditorpath.enabled = false
-        btneditorpathcustom.enabled = chkcustomeditor.checked
-        btneditorpathcustom.text = "Edit..."
-        If chkcustomeditor.checked Then
-            if txteditorpath.text = "" then btneditorbrowse_click() else my.settings.customeditor = txteditorpath.text
+    Sub chkCustomEditor_CheckedChanged() Handles chkCustomEditor.CheckedChanged
+        btnEditorBrowse.Enabled = chkCustomEditor.Checked
+        txtEditorPath.Enabled = False
+        btnEditorPathCustom.Enabled = chkCustomEditor.Checked
+        btnEditorPathCustom.Text = "Edit..."
+        If chkCustomEditor.Checked Then
+            If txtEditorPath.Text = "" Then btnEditorBrowse_Click() Else My.Settings.CustomEditor = txtEditorPath.Text
         Else
-            My.settings.customeditor = ""
+            My.Settings.CustomEditor = ""
         End If
     End Sub
     
-    Sub btnEditorBrowse_Click() handles btneditorbrowse.click
-        openfiledialogeditor.initialdirectory = environment.GetEnvironmentVariable("ProgramFiles")
-        If openfiledialogeditor.showdialog = dialogresult.ok Then
-            txteditorpath.text = openfiledialogeditor.filename
-            my.settings.customeditor = openfiledialogeditor.filename
+    Sub btnEditorBrowse_Click() Handles btnEditorBrowse.Click
+        OpenFileDialogEditor.InitialDirectory = Environment.GetEnvironmentVariable("ProgramFiles")
+        If OpenFileDialogEditor.ShowDialog = DialogResult.OK Then
+            txtEditorPath.Text = OpenFileDialogEditor.FileName
+            My.Settings.CustomEditor = OpenFileDialogEditor.FileName
+        Else
+            If txtEditorPath.Text = "" Then chkCustomEditor.Checked = False
         End If
     End Sub
     
-    Sub btnEditorPathCustom_Click(sender As Object, e As EventArgs) handles btneditorpathcustom.click
-        If btneditorpathcustom.text = "Edit..." Then
-            txteditorpath.enabled = true
-            btneditorpathcustom.text = "Save"
+    Sub btnEditorPathCustom_Click() Handles btnEditorPathCustom.Click
+        If btnEditorPathCustom.Text = "Edit..." Then
+            txtEditorPath.Enabled = True
+            btnEditorPathCustom.Text = "Save"
         Else
-            My.Settings.CustomEditor = txteditorpath.text
-            txteditorpath.enabled = false
-            btneditorpathcustom.text = "Edit..."
+            If Exists(txtEditorPath.Text) Then
+                My.Settings.CustomEditor = txtEditorPath.Text
+                txtEditorPath.Enabled = False
+                btnEditorPathCustom.Text = "Edit..."
+            Else
+                MsgBox("""" & txtEditorPath.Text & """ doesn't exist!", MsgBoxStyle.Exclamation)
+            End If
         End If
     End Sub
     
