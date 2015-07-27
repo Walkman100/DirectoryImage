@@ -208,7 +208,8 @@ Public Class DirectoryImage
         grpLinuxRel.Enabled = optLinuxRel.Checked
     End Sub
     
-    Sub WindowsOptionSelected() Handles optWindowsAbsolute.CheckedChanged, optWindowsRel.CheckedChanged, optWindowsRelContained.CheckedChanged, optWindowsRelExternal.CheckedChanged
+    Sub WindowsOptionSelected() Handles optWindowsAbsolute.CheckedChanged, optWindowsRel.CheckedChanged, _
+                                    optWindowsRelContained.CheckedChanged, optWindowsRelExternal.CheckedChanged
         btnWindowsSave.Enabled = False
         If optWindowsAbsolute.Checked Then
             btnWindowsIconSet.Enabled = True
@@ -351,7 +352,8 @@ Public Class DirectoryImage
                             FileContents(headerline+1) = "IconResource=" & txtWindowsIconPath.Text
                             WriteAllLines(txtDirectoryPath.Text & Op & "desktop.ini", FileContents)
                         Else
-                            appendalltext(txtDirectoryPath.Text & Op & "desktop.ini", vbnewline &"[.ShellClassInfo]"&vbNewLine &"IconResource="& txtWindowsIconPath.Text &vbnewline)
+                            AppendAllText(txtDirectoryPath.Text & Op & "desktop.ini", _
+                                vbNewLine & "[.ShellClassInfo]" & vbNewLine & "IconResource=" & txtWindowsIconPath.Text & vbNewLine)
                         End If
                     End If
                 Else
@@ -444,7 +446,8 @@ Public Class DirectoryImage
         End If
     End Sub
     
-    Sub LinuxOptionSelected() Handles optLinuxAbsolute.CheckedChanged, optLinuxRel.CheckedChanged, optLinuxRelContained.CheckedChanged, optLinuxRelExternal.CheckedChanged, optLinuxSystemImage.CheckedChanged
+    Sub LinuxOptionSelected() Handles optLinuxAbsolute.CheckedChanged, optLinuxRel.CheckedChanged, _
+                optLinuxRelContained.CheckedChanged, optLinuxRelExternal.CheckedChanged, optLinuxSystemImage.CheckedChanged
         btnLinuxSave.enabled = false
         If optLinuxAbsolute.Checked Then
             btnLinuxIconSet.Enabled = True
@@ -626,18 +629,22 @@ Public Class DirectoryImage
         'If System.UnauthorizedAccessException.Equals(ex.GetType) Then
         ' work, so i just compared them as strings.
             if op = "\" then
-                If MsgBox(ex.message & vbnewline & vbnewline & "Try launching DirectoryImage As Administrator?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    CreateObject("Shell.Application").ShellExecute(Application.StartupPath & Op & Process.GetCurrentProcess.ProcessName & ".exe", """" & txtDirectoryPath.Text & """", "", "runas")
+                If MsgBox(ex.message & vbnewline & vbnewline & "Try launching DirectoryImage As Administrator?", _
+                        MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                    CreateObject("Shell.Application").ShellExecute(Application.StartupPath & Op & Process.GetCurrentProcess.ProcessName & ".exe", _
+                        """" & txtDirectoryPath.Text & """", "", "runas")
                     Application.Exit
                 End If
             Else
-                If MsgBox(ex.message & vbnewline & vbnewline & "Try launching DirectoryImage As root?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                If MsgBox(ex.message & vbnewline & vbnewline & "Try launching DirectoryImage As root?", _
+                        MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
                     Process.Start("kdesudo", "mono " & Application.StartupPath & Op & Process.GetCurrentProcess.ProcessName & ".exe """ & txtDirectoryPath.Text & """")
                     Application.Exit
                 End If
             End If
         Else
-            If MsgBox("There was an error! Error message: " & ex.Message & vbNewLine & "Show full stacktrace? (For sending to developer/making bugreport)", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Error!") = MsgBoxresult.Yes Then
+            If MsgBox("There was an error! Error message: " & ex.Message & vbNewLine & "Show full stacktrace? (For sending to developer/making bugreport)", _
+                MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Error!") = MsgBoxresult.Yes Then
                 Dim frmBugReport As New Form()
                 frmBugReport.Width = 600
                 frmBugReport.Height = 525
