@@ -155,6 +155,16 @@ Public Class DirectoryImage
             optWindowsRelContained.Checked = True
             imgWindowsCurrent.ImageLocation = txtDirectoryPath.Text & op & txtWindowsIconPath.Text.Replace("\", "/")
         End If
+        If imgWindowsCurrent.ImageLocation.EndsWith(",0") Then
+            imgWindowsCurrent.ImageLocation = imgWindowsCurrent.ImageLocation.Remove(imgWindowsCurrent.ImageLocation.Length-2)
+        End If
+        If imgWindowsCurrent.ImageLocation.StartsWith("%") Then
+            imgWindowsCurrent.ImageLocation = imgWindowsCurrent.ImageLocation.Substring(1)
+            If imgWindowsCurrent.ImageLocation.Contains("%") Then
+                imgWindowsCurrent.ImageLocation = Environment.GetEnvironmentVariable(imgWindowsCurrent.ImageLocation.Remove(imgWindowsCurrent.ImageLocation.IndexOf("%"))) _
+                  & imgWindowsCurrent.ImageLocation.Substring(imgWindowsCurrent.ImageLocation.IndexOf("%")+1)
+            End If
+        End If
     End Sub
     
     Sub imgWindowsCurrent_LoadCompleted(sender As Object, e As System.ComponentModel.AsyncCompletedEventArgs) Handles imgWindowsCurrent.LoadCompleted
