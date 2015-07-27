@@ -157,6 +157,15 @@ Public Class DirectoryImage
         End If
     End Sub
     
+    Sub imgWindowsCurrent_LoadCompleted(sender As Object, e As System.ComponentModel.AsyncCompletedEventArgs) Handles imgWindowsCurrent.LoadCompleted
+        If Not IsNothing(e.Error) Then
+            Try
+                imgWindowsCurrent.Image = Icon.ExtractAssociatedIcon(imgWindowsCurrent.ImageLocation).ToBitmap
+            Catch
+            End Try
+        End If
+    End Sub
+    
     Sub ParseLinux
         If txtLinuxImagePath.Text.StartsWith("/", True, Nothing) Then
             optLinuxAbsolute.Checked = True
