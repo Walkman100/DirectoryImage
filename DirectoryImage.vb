@@ -1,4 +1,5 @@
 ﻿Imports System.IO.File
+Imports System.Runtime.InteropServices
 
 Public Class DirectoryImage
     Dim Op As Char = "\" 'Operator character
@@ -13,6 +14,7 @@ Public Class DirectoryImage
             op = "/"
             grpWindows.Location = New System.Drawing.Point(12, 210)
             grpLinux.Location = New System.Drawing.Point(12, 38)
+            btnWindowsProperties.Visible = False
         End If
         If My.Application.CommandLineArgs.Count = 0 Then
             timerDelayedBrowse.Start
@@ -24,7 +26,7 @@ Public Class DirectoryImage
         End If
     End Sub
     
-    Sub timerDelayedBrowse_Tick(sender As Object, e As EventArgs) Handles timerDelayedBrowse.Tick
+    Sub timerDelayedBrowse_Tick() Handles timerDelayedBrowse.Tick
         timerDelayedBrowse.Stop
         btnDirectoryBrowse_Click
     End Sub
@@ -200,11 +202,11 @@ Public Class DirectoryImage
         End If
     End Sub
     
-    Sub optWindowsRel_CheckedChanged(sender As Object, e As EventArgs) Handles optWindowsRel.CheckedChanged
+    Sub optWindowsRel_CheckedChanged() Handles optWindowsRel.CheckedChanged
         grpWindowsRel.Enabled = optWindowsRel.Checked
     End Sub
     
-    Sub optLinuxRel_CheckedChanged(sender As Object, e As EventArgs) Handles optLinuxRel.CheckedChanged
+    Sub optLinuxRel_CheckedChanged() Handles optLinuxRel.CheckedChanged
         grpLinuxRel.Enabled = optLinuxRel.Checked
     End Sub
     
@@ -242,7 +244,7 @@ Public Class DirectoryImage
         End If
     End Sub
     
-    Sub btnWindowsIconSet_Click(sender As Object, e As EventArgs) Handles btnWindowsIconSet.Click
+    Sub btnWindowsIconSet_Click() Handles btnWindowsIconSet.Click
         SetInitialDirectories
         If OpenFileDialogWindows.ShowDialog = DialogResult.OK Then
             imgWindowsCurrent.ImageLocation = OpenFileDialogWindows.FileName
@@ -368,7 +370,7 @@ Public Class DirectoryImage
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
-    Sub btnWindowsOpenDataFile_Click(sender As Object, e As EventArgs) Handles btnWindowsOpenDataFile.Click
+    Sub btnWindowsOpenDataFile_Click() Handles btnWindowsOpenDataFile.Click
         If txtDirectoryPath.Text.endswith(":\") Then
             If Exists(txtDirectoryPath.Text & "Autorun.inf") Then
                 If chkcustomeditor.checked Then
@@ -482,7 +484,7 @@ Public Class DirectoryImage
         End If
     End Sub
     
-    Sub btnLinuxIconSet_Click(sender As Object, e As EventArgs) Handles btnLinuxIconSet.Click
+    Sub btnLinuxIconSet_Click() Handles btnLinuxIconSet.Click
         SetInitialDirectories
         If OpenFileDialogLinux.ShowDialog = DialogResult.OK Then
             imgLinuxCurrent.ImageLocation = OpenFileDialogLinux.FileName
@@ -555,7 +557,7 @@ Public Class DirectoryImage
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
-    Sub btnLinuxOpenDataFile_Click(sender As Object, e As EventArgs) Handles btnLinuxOpenDataFile.Click
+    Sub btnLinuxOpenDataFile_Click() Handles btnLinuxOpenDataFile.Click
         If Exists(txtDirectoryPath.Text & Op & ".directory") Then
             If chkcustomeditor.checked Then
                 Process.Start(txteditorpath.text, txtDirectoryPath.Text & Op & ".directory")
@@ -673,4 +675,46 @@ Public Class DirectoryImage
             End If
         End If
     End Sub
+    
+    Sub btnWindowsProperties_Click() Handles btnWindowsProperties.Click
+        If Op = "\" Then
+            Dim info As New ShellExecuteInfo
+            info.cbSize = Marshal.SizeOf(info)
+            info.fMask = 12
+            info.lpVerb = "properties"
+            info.lpParameters = "Customize"
+            info.lpFile = txtDirectoryPath.Text
+            If ShellExecuteEx(info) = False Then
+                MsgBox("Could not open properties window!", MsgBoxStyle.Exclamation)
+            End If
+        End If
+    End Sub
+    
+    ' https://stackoverflow.com/a/1936957/2999220
+    <DllImport("shell32.dll", CharSet := CharSet.Auto)> _
+    Private Shared Function ShellExecuteEx(ByRef lpExecInfo As ShellExecuteInfo) As Boolean
+    End Function
+    <StructLayout(LayoutKind.Sequential, CharSet := CharSet.Auto)> _
+    Public Structure ShellExecuteInfo
+        Public cbSize As Integer
+        Public fMask As UInteger
+        Public hwnd As IntPtr
+        <MarshalAs(UnmanagedType.LPTStr)> _
+        Public lpVerb As String
+        <MarshalAs(UnmanagedType.LPTStr)> _
+        Public lpFile As String
+        <MarshalAs(UnmanagedType.LPTStr)> _
+        Public lpParameters As String
+        <MarshalAs(UnmanagedType.LPTStr)> _
+        Public lpDirectory As String
+        Public nShow As Integer
+        Public hInstApp As IntPtr
+        Public lpIDList As IntPtr
+        <MarshalAs(UnmanagedType.LPTStr)> _
+        Public lpClass As String
+        Public hkeyClass As IntPtr
+        Public dwHotKey As UInteger
+        Public hIcon As IntPtr
+        Public hProcess As IntPtr
+    End Structure
 End Class

@@ -27,6 +27,7 @@ Partial Class DirectoryImage
         Me.txtDirectoryPath = New System.Windows.Forms.TextBox()
         Me.btnDirectoryBrowse = New System.Windows.Forms.Button()
         Me.grpWindows = New System.Windows.Forms.GroupBox()
+        Me.btnWindowsProperties = New System.Windows.Forms.Button()
         Me.btnWindowsSetHidden = New System.Windows.Forms.Button()
         Me.btnWindowsSetSystem = New System.Windows.Forms.Button()
         Me.btnWindowsSave = New System.Windows.Forms.Button()
@@ -96,6 +97,7 @@ Partial Class DirectoryImage
         '
         Me.grpWindows.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.grpWindows.Controls.Add(Me.btnWindowsProperties)
         Me.grpWindows.Controls.Add(Me.btnWindowsSetHidden)
         Me.grpWindows.Controls.Add(Me.btnWindowsSetSystem)
         Me.grpWindows.Controls.Add(Me.btnWindowsSave)
@@ -114,6 +116,17 @@ Partial Class DirectoryImage
         Me.grpWindows.TabIndex = 2
         Me.grpWindows.TabStop = false
         Me.grpWindows.Text = "Windows Icon"
+        '
+        'btnWindowsProperties
+        '
+        Me.btnWindowsProperties.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnWindowsProperties.AutoSize = true
+        Me.btnWindowsProperties.Location = New System.Drawing.Point(282, 42)
+        Me.btnWindowsProperties.Name = "btnWindowsProperties"
+        Me.btnWindowsProperties.Size = New System.Drawing.Size(143, 23)
+        Me.btnWindowsProperties.TabIndex = 8
+        Me.btnWindowsProperties.Text = "Folder Windows Properties"
+        Me.btnWindowsProperties.UseVisualStyleBackColor = true
         '
         'btnWindowsSetHidden
         '
@@ -542,6 +555,7 @@ Partial Class DirectoryImage
         Me.ResumeLayout(false)
         Me.PerformLayout
     End Sub
+    Friend WithEvents btnWindowsProperties As System.Windows.Forms.Button
     Friend WithEvents timerDelayedBrowse As System.Windows.Forms.Timer
     Friend WithEvents OpenFileDialogEditor As System.Windows.Forms.OpenFileDialog
     Friend WithEvents chkCustomEditor As System.Windows.Forms.CheckBox
