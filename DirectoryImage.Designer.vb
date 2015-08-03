@@ -27,8 +27,8 @@ Partial Class DirectoryImage
         Me.btnDirectoryBrowse = New System.Windows.Forms.Button()
         Me.grpWindows = New System.Windows.Forms.GroupBox()
         Me.btnWindowsProperties = New System.Windows.Forms.Button()
-        Me.btnWindowsSetHidden = New System.Windows.Forms.Button()
-        Me.btnWindowsSetSystem = New System.Windows.Forms.Button()
+        Me.chkWindowsHidden = New System.Windows.Forms.CheckBox()
+        Me.chkWindowsSystem = New System.Windows.Forms.CheckBox()
         Me.btnWindowsSave = New System.Windows.Forms.Button()
         Me.btnWindowsOpenDataFile = New System.Windows.Forms.Button()
         Me.optWindowsRel = New System.Windows.Forms.RadioButton()
@@ -41,8 +41,8 @@ Partial Class DirectoryImage
         Me.imgWindowsCurrent = New System.Windows.Forms.PictureBox()
         Me.lblWindowsCurrent = New System.Windows.Forms.Label()
         Me.grpLinux = New System.Windows.Forms.GroupBox()
-        Me.btnLinuxSetHidden = New System.Windows.Forms.Button()
-        Me.btnLinuxSetSystem = New System.Windows.Forms.Button()
+        Me.chkLinuxHidden = New System.Windows.Forms.CheckBox()
+        Me.chkLinuxSystem = New System.Windows.Forms.CheckBox()
         Me.btnLinuxSave = New System.Windows.Forms.Button()
         Me.optLinuxSystemImage = New System.Windows.Forms.RadioButton()
         Me.btnLinuxOpenDataFile = New System.Windows.Forms.Button()
@@ -97,8 +97,8 @@ Partial Class DirectoryImage
         Me.grpWindows.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.grpWindows.Controls.Add(Me.btnWindowsProperties)
-        Me.grpWindows.Controls.Add(Me.btnWindowsSetHidden)
-        Me.grpWindows.Controls.Add(Me.btnWindowsSetSystem)
+        Me.grpWindows.Controls.Add(Me.chkWindowsHidden)
+        Me.grpWindows.Controls.Add(Me.chkWindowsSystem)
         Me.grpWindows.Controls.Add(Me.btnWindowsSave)
         Me.grpWindows.Controls.Add(Me.btnWindowsOpenDataFile)
         Me.grpWindows.Controls.Add(Me.optWindowsRel)
@@ -127,29 +127,29 @@ Partial Class DirectoryImage
         Me.btnWindowsProperties.Text = "Folder Windows Properties"
         Me.btnWindowsProperties.UseVisualStyleBackColor = true
         '
-        'btnWindowsSetHidden
+        'chkWindowsHidden
         '
-        Me.btnWindowsSetHidden.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnWindowsSetHidden.AutoSize = true
-        Me.btnWindowsSetHidden.Enabled = false
-        Me.btnWindowsSetHidden.Location = New System.Drawing.Point(276, 137)
-        Me.btnWindowsSetHidden.Name = "btnWindowsSetHidden"
-        Me.btnWindowsSetHidden.Size = New System.Drawing.Size(112, 23)
-        Me.btnWindowsSetHidden.TabIndex = 13
-        Me.btnWindowsSetHidden.Text = "Set Hidden Property"
-        Me.btnWindowsSetHidden.UseVisualStyleBackColor = true
+        Me.chkWindowsHidden.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.chkWindowsHidden.AutoSize = true
+        Me.chkWindowsHidden.Enabled = false
+        Me.chkWindowsHidden.Location = New System.Drawing.Point(380, 137)
+        Me.chkWindowsHidden.Name = "chkWindowsHidden"
+        Me.chkWindowsHidden.Size = New System.Drawing.Size(60, 17)
+        Me.chkWindowsHidden.TabIndex = 12
+        Me.chkWindowsHidden.Text = "Hidden"
+        Me.chkWindowsHidden.UseVisualStyleBackColor = true
         '
-        'btnWindowsSetSystem
+        'chkWindowsSystem
         '
-        Me.btnWindowsSetSystem.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnWindowsSetSystem.AutoSize = true
-        Me.btnWindowsSetSystem.Enabled = false
-        Me.btnWindowsSetSystem.Location = New System.Drawing.Point(394, 137)
-        Me.btnWindowsSetSystem.Name = "btnWindowsSetSystem"
-        Me.btnWindowsSetSystem.Size = New System.Drawing.Size(112, 23)
-        Me.btnWindowsSetSystem.TabIndex = 12
-        Me.btnWindowsSetSystem.Text = "Set System Property"
-        Me.btnWindowsSetSystem.UseVisualStyleBackColor = true
+        Me.chkWindowsSystem.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.chkWindowsSystem.AutoSize = true
+        Me.chkWindowsSystem.Enabled = false
+        Me.chkWindowsSystem.Location = New System.Drawing.Point(446, 137)
+        Me.chkWindowsSystem.Name = "chkWindowsSystem"
+        Me.chkWindowsSystem.Size = New System.Drawing.Size(60, 17)
+        Me.chkWindowsSystem.TabIndex = 13
+        Me.chkWindowsSystem.Text = "System"
+        Me.chkWindowsSystem.UseVisualStyleBackColor = true
         '
         'btnWindowsSave
         '
@@ -276,8 +276,8 @@ Partial Class DirectoryImage
         '
         Me.grpLinux.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.grpLinux.Controls.Add(Me.btnLinuxSetHidden)
-        Me.grpLinux.Controls.Add(Me.btnLinuxSetSystem)
+        Me.grpLinux.Controls.Add(Me.chkLinuxHidden)
+        Me.grpLinux.Controls.Add(Me.chkLinuxSystem)
         Me.grpLinux.Controls.Add(Me.btnLinuxSave)
         Me.grpLinux.Controls.Add(Me.optLinuxSystemImage)
         Me.grpLinux.Controls.Add(Me.btnLinuxOpenDataFile)
@@ -296,29 +296,29 @@ Partial Class DirectoryImage
         Me.grpLinux.TabStop = false
         Me.grpLinux.Text = "Linux Image"
         '
-        'btnLinuxSetHidden
+        'chkLinuxHidden
         '
-        Me.btnLinuxSetHidden.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnLinuxSetHidden.AutoSize = true
-        Me.btnLinuxSetHidden.Enabled = false
-        Me.btnLinuxSetHidden.Location = New System.Drawing.Point(276, 137)
-        Me.btnLinuxSetHidden.Name = "btnLinuxSetHidden"
-        Me.btnLinuxSetHidden.Size = New System.Drawing.Size(112, 23)
-        Me.btnLinuxSetHidden.TabIndex = 18
-        Me.btnLinuxSetHidden.Text = "Set Hidden Property"
-        Me.btnLinuxSetHidden.UseVisualStyleBackColor = true
+        Me.chkLinuxHidden.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.chkLinuxHidden.AutoSize = true
+        Me.chkLinuxHidden.Enabled = false
+        Me.chkLinuxHidden.Location = New System.Drawing.Point(380, 137)
+        Me.chkLinuxHidden.Name = "chkLinuxHidden"
+        Me.chkLinuxHidden.Size = New System.Drawing.Size(60, 17)
+        Me.chkLinuxHidden.TabIndex = 17
+        Me.chkLinuxHidden.Text = "Hidden"
+        Me.chkLinuxHidden.UseVisualStyleBackColor = true
         '
-        'btnLinuxSetSystem
+        'chkLinuxSystem
         '
-        Me.btnLinuxSetSystem.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnLinuxSetSystem.AutoSize = true
-        Me.btnLinuxSetSystem.Enabled = false
-        Me.btnLinuxSetSystem.Location = New System.Drawing.Point(394, 137)
-        Me.btnLinuxSetSystem.Name = "btnLinuxSetSystem"
-        Me.btnLinuxSetSystem.Size = New System.Drawing.Size(112, 23)
-        Me.btnLinuxSetSystem.TabIndex = 17
-        Me.btnLinuxSetSystem.Text = "Set System Property"
-        Me.btnLinuxSetSystem.UseVisualStyleBackColor = true
+        Me.chkLinuxSystem.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.chkLinuxSystem.AutoSize = true
+        Me.chkLinuxSystem.Enabled = false
+        Me.chkLinuxSystem.Location = New System.Drawing.Point(446, 137)
+        Me.chkLinuxSystem.Name = "chkLinuxSystem"
+        Me.chkLinuxSystem.Size = New System.Drawing.Size(60, 17)
+        Me.chkLinuxSystem.TabIndex = 18
+        Me.chkLinuxSystem.Text = "System"
+        Me.chkLinuxSystem.UseVisualStyleBackColor = true
         '
         'btnLinuxSave
         '
@@ -562,10 +562,10 @@ Partial Class DirectoryImage
     Friend WithEvents txtEditorPath As System.Windows.Forms.TextBox
     Friend WithEvents btnEditorPathCustom As System.Windows.Forms.Button
     Friend WithEvents btnDirectoryBrowse As System.Windows.Forms.Button
-    Friend WithEvents btnLinuxSetSystem As System.Windows.Forms.Button
-    Friend WithEvents btnLinuxSetHidden As System.Windows.Forms.Button
-    Friend WithEvents btnWindowsSetSystem As System.Windows.Forms.Button
-    Friend WithEvents btnWindowsSetHidden As System.Windows.Forms.Button
+    Friend WithEvents chkLinuxSystem As System.Windows.Forms.CheckBox
+    Friend WithEvents chkLinuxHidden As System.Windows.Forms.CheckBox
+    Friend WithEvents chkWindowsHidden As System.Windows.Forms.CheckBox
+    Friend WithEvents chkWindowsSystem As System.Windows.Forms.CheckBox
     Friend WithEvents btnLinuxSave As System.Windows.Forms.Button
     Friend WithEvents btnWindowsSave As System.Windows.Forms.Button
     Friend WithEvents optLinuxSystemImage As System.Windows.Forms.RadioButton
