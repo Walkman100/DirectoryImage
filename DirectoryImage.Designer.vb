@@ -554,45 +554,45 @@ Partial Class DirectoryImage
         Me.ResumeLayout(false)
         Me.PerformLayout
     End Sub
-    Friend WithEvents btnWindowsProperties As System.Windows.Forms.Button
-    Friend WithEvents timerDelayedBrowse As System.Windows.Forms.Timer
-    Friend WithEvents OpenFileDialogEditor As System.Windows.Forms.OpenFileDialog
-    Friend WithEvents chkCustomEditor As System.Windows.Forms.CheckBox
-    Friend WithEvents btnEditorBrowse As System.Windows.Forms.Button
-    Friend WithEvents txtEditorPath As System.Windows.Forms.TextBox
-    Friend WithEvents btnEditorPathCustom As System.Windows.Forms.Button
-    Friend WithEvents btnDirectoryBrowse As System.Windows.Forms.Button
-    Friend WithEvents chkLinuxSystem As System.Windows.Forms.CheckBox
-    Friend WithEvents chkLinuxHidden As System.Windows.Forms.CheckBox
-    Friend WithEvents chkWindowsHidden As System.Windows.Forms.CheckBox
-    Friend WithEvents chkWindowsSystem As System.Windows.Forms.CheckBox
-    Friend WithEvents btnLinuxSave As System.Windows.Forms.Button
-    Friend WithEvents btnWindowsSave As System.Windows.Forms.Button
-    Friend WithEvents optLinuxSystemImage As System.Windows.Forms.RadioButton
-    Friend WithEvents OpenFileDialogLinux As System.Windows.Forms.OpenFileDialog
-    Friend WithEvents OpenFileDialogWindows As System.Windows.Forms.OpenFileDialog
-    Friend WithEvents FolderBrowserDialog As System.Windows.Forms.FolderBrowserDialog
-    Friend WithEvents btnLinuxOpenDataFile As System.Windows.Forms.Button
-    Friend WithEvents btnWindowsOpenDataFile As System.Windows.Forms.Button
-    Friend WithEvents lblLinuxCurrent As System.Windows.Forms.Label
-    Friend WithEvents imgLinuxCurrent As System.Windows.Forms.PictureBox
-    Friend WithEvents optLinuxAbsolute As System.Windows.Forms.RadioButton
+    Private WithEvents btnWindowsProperties As System.Windows.Forms.Button
+    Private WithEvents timerDelayedBrowse As System.Windows.Forms.Timer
+    Private OpenFileDialogEditor As System.Windows.Forms.OpenFileDialog
+    Private WithEvents chkCustomEditor As System.Windows.Forms.CheckBox
+    Private WithEvents btnEditorBrowse As System.Windows.Forms.Button
+    Private txtEditorPath As System.Windows.Forms.TextBox
+    Private WithEvents btnEditorPathCustom As System.Windows.Forms.Button
+    Private WithEvents btnDirectoryBrowse As System.Windows.Forms.Button
+    Private WithEvents chkLinuxSystem As System.Windows.Forms.CheckBox
+    Private WithEvents chkLinuxHidden As System.Windows.Forms.CheckBox
+    Private WithEvents chkWindowsHidden As System.Windows.Forms.CheckBox
+    Private WithEvents chkWindowsSystem As System.Windows.Forms.CheckBox
+    Private WithEvents btnLinuxSave As System.Windows.Forms.Button
+    Private WithEvents btnWindowsSave As System.Windows.Forms.Button
+    Private WithEvents optLinuxSystemImage As System.Windows.Forms.RadioButton
+    Private OpenFileDialogLinux As System.Windows.Forms.OpenFileDialog
+    Private OpenFileDialogWindows As System.Windows.Forms.OpenFileDialog
+    Private FolderBrowserDialog As System.Windows.Forms.FolderBrowserDialog
+    Private WithEvents btnLinuxOpenDataFile As System.Windows.Forms.Button
+    Private WithEvents btnWindowsOpenDataFile As System.Windows.Forms.Button
+    Private lblLinuxCurrent As System.Windows.Forms.Label
+    Friend imgLinuxCurrent As System.Windows.Forms.PictureBox
+    Private WithEvents optLinuxAbsolute As System.Windows.Forms.RadioButton
     Friend WithEvents txtLinuxImagePath As System.Windows.Forms.TextBox
-    Friend WithEvents btnLinuxIconSet As System.Windows.Forms.Button
-    Friend WithEvents optLinuxRelExternal As System.Windows.Forms.RadioButton
-    Friend WithEvents optLinuxRel As System.Windows.Forms.RadioButton
-    Friend WithEvents optLinuxRelContained As System.Windows.Forms.RadioButton
-    Friend WithEvents grpLinuxRel As System.Windows.Forms.GroupBox
-    Friend WithEvents lblWindowsCurrent As System.Windows.Forms.Label
-    Friend WithEvents imgWindowsCurrent As System.Windows.Forms.PictureBox
-    Friend WithEvents optWindowsAbsolute As System.Windows.Forms.RadioButton
+    Private WithEvents btnLinuxIconSet As System.Windows.Forms.Button
+    Private WithEvents optLinuxRelExternal As System.Windows.Forms.RadioButton
+    Private WithEvents optLinuxRel As System.Windows.Forms.RadioButton
+    Private WithEvents optLinuxRelContained As System.Windows.Forms.RadioButton
+    Private grpLinuxRel As System.Windows.Forms.GroupBox
+    Private lblWindowsCurrent As System.Windows.Forms.Label
+    Private WithEvents imgWindowsCurrent As System.Windows.Forms.PictureBox
+    Private WithEvents optWindowsAbsolute As System.Windows.Forms.RadioButton
     Friend WithEvents txtWindowsIconPath As System.Windows.Forms.TextBox
-    Friend WithEvents btnWindowsIconSet As System.Windows.Forms.Button
-    Friend WithEvents optWindowsRelExternal As System.Windows.Forms.RadioButton
-    Friend WithEvents optWindowsRel As System.Windows.Forms.RadioButton
-    Friend WithEvents optWindowsRelContained As System.Windows.Forms.RadioButton
-    Friend WithEvents grpWindowsRel As System.Windows.Forms.GroupBox
-    Friend WithEvents grpLinux As System.Windows.Forms.GroupBox
-    Friend WithEvents grpWindows As System.Windows.Forms.GroupBox
-    Friend WithEvents txtDirectoryPath As System.Windows.Forms.TextBox
+    Private WithEvents btnWindowsIconSet As System.Windows.Forms.Button
+    Private WithEvents optWindowsRelExternal As System.Windows.Forms.RadioButton
+    Private WithEvents optWindowsRel As System.Windows.Forms.RadioButton
+    Private WithEvents optWindowsRelContained As System.Windows.Forms.RadioButton
+    Private grpWindowsRel As System.Windows.Forms.GroupBox
+    Private grpLinux As System.Windows.Forms.GroupBox
+    Private grpWindows As System.Windows.Forms.GroupBox
+    Private txtDirectoryPath As System.Windows.Forms.TextBox
 End Class

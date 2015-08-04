@@ -66,6 +66,8 @@ Public Class DirectoryImage
             btnWindowsOpenDataFile.Text = "Open Autorun.inf..."
             If Exists(Directory & "Autorun.inf") Then
                 btnWindowsOpenDataFile.Enabled = True
+                chkWindowsHidden.Enabled = True
+                chkWindowsSystem.Enabled = True
                 chkWindowsHidden.Checked = GetAttributes(Directory & "Autorun.inf").HasFlag(IO.FileAttributes.Hidden)
                 chkWindowsSystem.Checked = GetAttributes(Directory & "Autorun.inf").HasFlag(IO.FileAttributes.System)
                 For Each line In ReadLines(Directory & "Autorun.inf")
@@ -78,11 +80,15 @@ Public Class DirectoryImage
                 btnWindowsOpenDataFile.Enabled = False
                 chkWindowsHidden.Enabled = False
                 chkWindowsSystem.Enabled = False
+                chkWindowsHidden.Checked = False
+                chkWindowsSystem.Checked = False
             End If
         Else
             btnWindowsOpenDataFile.Text = "Open desktop.ini..."
             If Exists(Directory & Op & "desktop.ini") Then
                 btnWindowsOpenDataFile.Enabled = True
+                chkWindowsHidden.Enabled = True
+                chkWindowsSystem.Enabled = True
                 chkWindowsHidden.Checked = GetAttributes(Directory & Op & "desktop.ini").HasFlag(IO.FileAttributes.Hidden)
                 chkWindowsSystem.Checked = GetAttributes(Directory & Op & "desktop.ini").HasFlag(IO.FileAttributes.System)
                 alreadyGotIcon = False
@@ -105,11 +111,15 @@ Public Class DirectoryImage
                 btnWindowsOpenDataFile.Enabled = False
                 chkWindowsHidden.Enabled = False
                 chkWindowsSystem.Enabled = False
+                chkWindowsHidden.Checked = False
+                chkWindowsSystem.Checked = False
             End If
         End If
         
         If Exists(Directory & Op & ".directory") Then
             btnLinuxOpenDataFile.Enabled = True
+            chkLinuxHidden.Enabled = True
+            chkLinuxSystem.Enabled = True
             chkLinuxHidden.Checked = GetAttributes(txtDirectoryPath.Text & Op & ".directory").HasFlag(IO.FileAttributes.Hidden)
             chkLinuxSystem.Checked = GetAttributes(txtDirectoryPath.Text & Op & ".directory").HasFlag(IO.FileAttributes.System)
             For Each line In ReadLines(Directory & Op & ".directory")
@@ -122,6 +132,8 @@ Public Class DirectoryImage
             btnLinuxOpenDataFile.Enabled = False
             chkLinuxHidden.Enabled = False
             chkLinuxSystem.Enabled = False
+            chkLinuxHidden.Checked = False
+            chkLinuxSystem.Checked = False
         End If
     End Sub
     
@@ -398,20 +410,36 @@ Public Class DirectoryImage
         End If
     End Sub
     
-    Sub chkWindowsHidden_CheckedChanged() Handles chkWindowsHidden.CheckedChanged
+    Sub chkWindowsHidden_CheckedChanged() Handles chkWindowsHidden.Click 'CheckedChanged
         If txtDirectoryPath.Text.endswith(":\") Then
-            SetAttributes(txtDirectoryPath.Text & "Autorun.inf", FileAttribute.Hidden)
+            If chkWindowsHidden.Checked Then
+                RemoveAttribute(txtDirectoryPath.Text & "Autorun.inf", FileAttribute.Hidden)
+            Else
+               AddAttribute (txtDirectoryPath.Text & "Autorun.inf", FileAttributes.Hidden)
+            End If
         Else
-            SetAttributes(txtDirectoryPath.Text & Op & "desktop.ini", FileAttribute.Hidden)
+            If chkWindowsHidden.Checked Then
+                RemoveAttribute(txtDirectoryPath.Text & Op & "desktop.ini", FileAttribute.Hidden)
+            Else
+                AddAttribute(txtDirectoryPath.Text & Op & "desktop.ini", FileAttributes.Hidden)
+            End If
         End If
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
-    Sub chkWindowsSystem_CheckedChanged() Handles chkWindowsSystem.CheckedChanged
+    Sub chkWindowsSystem_CheckedChanged() Handles chkWindowsSystem.Click 'CheckedChanged
         If txtDirectoryPath.Text.endswith(":\") Then
-            SetAttributes(txtDirectoryPath.Text & "Autorun.inf", FileAttribute.System)
+            If chkWindowsSystem.Checked Then
+                RemoveAttribute(txtDirectoryPath.Text & "Autorun.inf", FileAttribute.System)
+            Else
+                AddAttribute(txtDirectoryPath.Text & "Autorun.inf", FileAttribute.System)
+            End If
         Else
-            SetAttributes(txtDirectoryPath.Text & Op & "desktop.ini", FileAttribute.System)
+            If chkWindowsSystem.Checked Then
+                RemoveAttribute(txtDirectoryPath.Text & Op & "desktop.ini", FileAttribute.System)
+            Else
+                AddAttribute(txtDirectoryPath.Text & Op & "desktop.ini", FileAttribute.System)
+            End If
         End If
         ParseFiles(txtDirectoryPath.Text)
     End Sub
@@ -573,13 +601,21 @@ Public Class DirectoryImage
         End If
     End Sub
     
-    Sub chkLinuxHidden_CheckedChanged() Handles chkLinuxHidden.CheckedChanged
-        SetAttributes(txtDirectoryPath.Text & Op & ".directory", FileAttribute.Hidden)
+    Sub chkLinuxHidden_CheckedChanged() Handles chkLinuxHidden.Click 'CheckedChanged
+        If chkLinuxHidden.Checked Then
+            RemoveAttribute(txtDirectoryPath.Text & Op & ".directory", FileAttribute.Hidden)
+        Else
+            AddAttribute(txtDirectoryPath.Text & Op & ".directory", FileAttribute.Hidden)
+        End If
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
-    Sub chkLinuxSystem_CheckedChanged() Handles chkLinuxSystem.CheckedChanged
-        SetAttributes(txtDirectoryPath.Text & Op & ".directory", FileAttribute.System)
+    Sub chkLinuxSystem_CheckedChanged() Handles chkLinuxSystem.Click 'CheckedChanged
+        If chkLinuxSystem.Checked Then
+            RemoveAttribute(txtDirectoryPath.Text & Op & ".directory", FileAttribute.System)
+        Else
+            AddAttribute(txtDirectoryPath.Text & Op & ".directory", FileAttribute.System)
+        End If
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
@@ -618,6 +654,20 @@ Public Class DirectoryImage
                 MsgBox("""" & txtEditorPath.Text & """ doesn't exist!", MsgBoxStyle.Exclamation)
             End If
         End If
+    End Sub
+    
+    ''' <summary>Adds the specified System.IO.FileAttributes to the file at the specified path</summary>
+    ''' <param name="path">The path to the file.</param>
+    ''' <param name="fileAttributes">The attributes to add.</param>
+    Sub AddAttribute(path As String, fileAttribute As FileAttributes)
+        SetAttributes(path, GetAttributes(path) + fileAttribute)
+    End Sub
+    
+    ''' <summary>Removes the specified System.IO.FileAttributes from the file at the specified path</summary>
+    ''' <param name="path">The path to the file.</param>
+    ''' <param name="fileAttribute">The attributes to remove.</param>
+    Sub RemoveAttribute(path As String, fileAttribute As FileAttributes)
+        SetAttributes(path, GetAttributes(path) - fileAttribute)
     End Sub
     
     Sub ErrorParser(ex As Exception)
