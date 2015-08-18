@@ -46,15 +46,14 @@ Public Class DirectoryImage
             optWindowsRel.Checked = False
             optWindowsRelContained.Checked = True
             optWindowsRelExternal.Checked = False
-            ' If code AutoComplete isn't working for you, comment out the two following ".Image = " lines:
-            imgWindowsCurrent.Image = Global.DirectoryImage.My.Resources.Resources.ImageResIconNo3
+            imgWindowsCurrent.Image = My.Resources.Resources.ImageResIconNo3
             txtLinuxImagePath.Text = ""
             optLinuxAbsolute.Checked = False
             optLinuxRel.Checked = False
             optLinuxRelContained.Checked = True
             optLinuxRelExternal.Checked = False
             optLinuxSystemImage.Checked = False
-            imgLinuxCurrent.Image = Global.DirectoryImage.My.Resources.Resources.OxygenFolder128px
+            imgLinuxCurrent.Image = My.Resources.Resources.OxygenFolder128px
             
             ParseFiles(txtDirectoryPath.Text)
         End If
