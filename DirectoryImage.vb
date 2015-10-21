@@ -208,7 +208,7 @@ Public Class DirectoryImage
         Else
             optLinuxSystemImage.Checked = True
             If op="/" Then
-                imglinuxcurrent.imagelocation = inputbox("System images location:", "/usr/share/icons/oxygen/256x256/places/") & txtlinuximagepath.text
+                imglinuxcurrent.imagelocation = inputbox("System images location:", "Enter Location", "/usr/share/icons/oxymentary/256x256/places/") & txtlinuximagepath.text
             End If
         End If
     End Sub
