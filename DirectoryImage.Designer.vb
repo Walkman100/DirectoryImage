@@ -514,8 +514,6 @@ Partial Class DirectoryImage
         '
         'OpenFileDialogEditor
         '
-        Me.OpenFileDialogEditor.DefaultExt = "exe"
-        Me.OpenFileDialogEditor.Filter = "Applications|*.exe"
         Me.OpenFileDialogEditor.ReadOnlyChecked = true
         Me.OpenFileDialogEditor.Title = "Select a program to open files in"
         '

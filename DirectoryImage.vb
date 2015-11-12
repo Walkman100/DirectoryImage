@@ -631,7 +631,15 @@ Public Class DirectoryImage
     End Sub
     
     Sub btnEditorBrowse_Click() Handles btnEditorBrowse.Click
-        OpenFileDialogEditor.InitialDirectory = Environment.GetEnvironmentVariable("ProgramFiles")
+        If Op = "\" Then
+            OpenFileDialogEditor.InitialDirectory = Environment.GetEnvironmentVariable("ProgramFiles")
+            OpenFileDialogEditor.Filter = "Applications|*.exe"
+            OpenFileDialogEditor.DefaultExt = "exe"
+        Else
+            OpenFileDialogEditor.InitialDirectory = "\usr\bin"
+            OpenFileDialogEditor.Filter = "Executables|*"
+            OpenFileDialogEditor.AddExtension = false
+        End If
         If OpenFileDialogEditor.ShowDialog = DialogResult.OK Then
             txtEditorPath.Text = OpenFileDialogEditor.FileName
             My.Settings.CustomEditor = OpenFileDialogEditor.FileName
