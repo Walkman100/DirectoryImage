@@ -132,7 +132,7 @@ Public Class LinuxPathToWindowsPath
     Friend WithEvents txtMntLen As System.Windows.Forms.NumericUpDown
     Friend WithEvents cbxWinLetter As System.Windows.Forms.ComboBox
     
-    Sub LinuxPathToWindowsPath_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Sub LinuxPathToWindowsPath_Load() Handles MyBase.Load
         txtMntLen.Maximum = DirectoryImage.txtLinuxImagePath.Text.Length-1
         txtMntLen_ValueChanged()
     End Sub
@@ -148,17 +148,17 @@ Public Class LinuxPathToWindowsPath
         End If
     End Sub
     
-    Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
+    Sub btnSave_Click() Handles btnSave.Click
         DirectoryImage.imgLinuxCurrent.ImageLocation = cbxWinLetter.Text & DirectoryImage.txtLinuxImagePath.Text.Substring(txtMntLen.Value).Replace("/", "\")
         Me.Close
     End Sub
     
-    Sub btnBrowse_Click(sender As Object, e As EventArgs) Handles btnBrowse.Click
+    Sub btnBrowse_Click() Handles btnBrowse.Click
         Me.Close
         DirectoryImage.btnDirectoryBrowse_Click()
     End Sub
     
-    Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
+    Sub btnCancel_Click() Handles btnCancel.Click
         Me.Close
     End Sub
 End Class
