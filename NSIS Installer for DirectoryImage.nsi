@@ -51,14 +51,12 @@ Section "Quick Launch Shortcut"
 SectionEnd
 
 Section "Add DirectoryImage to context menu"
-  WriteRegStr HKCR "Directory\shell\DirImage" "" "Set Directory Image..."
-  WriteRegStr HKCR "Directory\shell\DirImage" "Icon" "$INSTDIR\DirectoryImage.exe"
-  WriteRegStr HKCR "Directory\shell\DirImage\command" "" "$\"$INSTDIR\DirectoryImage.exe$\" $\"%1$\""
+  DeleteRegKey HKCR "Directory\shell\DirImage" ; Remove old context menu item, 'Folder' also covers drives
+  
+  WriteRegStr HKCR "Folder\shell\DirImage" "" "Set Directory Image..."
+  WriteRegStr HKCR "Folder\shell\DirImage" "Icon" "$INSTDIR\DirectoryImage.exe"
+  WriteRegStr HKCR "Folder\shell\DirImage\command" "" "$\"$INSTDIR\DirectoryImage.exe$\" $\"%1$\""
 SectionEnd
-
-;Section "More apps from DeavmiOSS"
-; this should have sub options for available apps, that are downloaded
-;SectionEnd
 
 ; Functions
 
@@ -90,7 +88,8 @@ Section "Uninstall"
   Delete "$DESKTOP\DirectoryImage.lnk"   ; Remove Desktop Shortcut
   Delete "$QUICKLAUNCH\DirectoryImage.lnk"   ; Remove Quick Launch Shortcut
   
-  DeleteRegKey HKCR "Directory\shell\DirImage" ; Remove context menu item
+  DeleteRegKey HKCR "Directory\shell\DirImage" ; Remove old context menu item
+  DeleteRegKey HKCR "Folder\shell\DirImage" ; Remove context menu item
 SectionEnd
 
 ; Uninstaller Functions
