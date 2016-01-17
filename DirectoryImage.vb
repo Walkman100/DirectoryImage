@@ -22,6 +22,10 @@ Public Class DirectoryImage
             txtDirectoryPath.Text = My.Application.CommandLineArgs(0)
             grpLinux.Enabled = True
             grpWindows.Enabled = True
+            
+            If txtDirectoryPath.Text.EndsWith("""") Then
+                txtDirectoryPath.Text = txtDirectoryPath.Text.Remove(txtDirectoryPath.Text.Length - 1) & "\"
+            End If
             ParseFiles(txtDirectoryPath.Text)
         End If
     End Sub
