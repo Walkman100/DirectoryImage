@@ -5,6 +5,7 @@
 Icon "My Project\Shell32(#326).ico"
 Caption "DirectoryImage Installer"
 Name "DirectoryImage"
+XPStyle on
 AutoCloseWindow true
 ShowInstDetails show
 
