@@ -146,19 +146,11 @@ Public Class DirectoryImage
             isAbsolute = True
         Else
             For i = 1 To 26 ' The Chr() below will give all letters from A to Z
-                If txtWindowsIconPath.Text.StartsWith(Chr(i+64) & ":\") Then
+                If txtWindowsIconPath.Text.StartsWith( Chr(i+64) & ":\", True, Nothing) Then
                     isAbsolute = True
                     Exit for
                 End If
             Next
-            If isabsolute = False Then
-                For i = 1 To 26 ' The Chr() below will give all letters from a to z
-                    If txtWindowsIconPath.Text.StartsWith(Chr(i+96) & ":\") Then
-                        isAbsolute = True
-                        Exit For
-                    End If
-                Next
-            End If
         End If
         If isAbsolute Then
             optWindowsAbsolute.Checked = True
@@ -172,6 +164,7 @@ Public Class DirectoryImage
             optWindowsRelContained.Checked = True
             imgWindowsCurrent.ImageLocation = txtDirectoryPath.Text & op & txtWindowsIconPath.Text.Replace("\", "/")
         End If
+
         If imgWindowsCurrent.ImageLocation.EndsWith(",0") Then
             imgWindowsCurrent.ImageLocation = imgWindowsCurrent.ImageLocation.Remove(imgWindowsCurrent.ImageLocation.Length-2)
         End If
@@ -199,7 +192,7 @@ Public Class DirectoryImage
             If op="\" Then
                 LinuxPathToWindowsPath.ShowDialog '<- That sets the image
             Else
-                imglinuxcurrent.imagelocation = txtlinuximagepath.text
+                imgLinuxCurrent.ImageLocation = txtLinuxImagePath.Text
             End If
         ElseIf txtLinuxImagePath.Text.StartsWith("./", True, Nothing) Then
             optLinuxRel.Checked = True
@@ -337,7 +330,7 @@ Public Class DirectoryImage
                     seticon = False
                     hasheader = False
                     Dim FileContents As String() = ReadAllLines(txtDirectoryPath.Text & Op & "desktop.ini")
-                    For Each line As String In FileContents
+                    For Each line In FileContents
                         If line.StartsWith("IconResource=", True, Nothing) Then
                             FileContents(lineno) = "IconResource=" & txtWindowsIconPath.Text
                             seticon = True
@@ -388,18 +381,22 @@ Public Class DirectoryImage
     Sub btnWindowsOpenDataFile_Click() Handles btnWindowsOpenDataFile.Click
         If txtDirectoryPath.Text.endswith(":\") Then
             If Exists(txtDirectoryPath.Text & "Autorun.inf") Then
-                If chkcustomeditor.checked Then
-                    Process.Start(txteditorpath.text, txtDirectoryPath.Text & "Autorun.inf")
+                If chkCustomEditor.Checked Then
+                    Process.Start(txtEditorPath.Text, txtDirectoryPath.Text & "Autorun.inf")
                 Else ' No Op check below because if the path ends with ":\", we're on Windows
-                    Process.Start(Environment.GetEnvironmentVariable("windir") & "\notepad.exe", txtDirectoryPath.Text & "Autorun.inf")
+                    If op="\" Then ' EXCEPT it is possible to make a random folder called ":\" because >linux
+                        Process.Start(Environment.GetEnvironmentVariable("windir") & "\notepad.exe", txtDirectoryPath.Text & "Autorun.inf")
+                    Else
+                        Process.Start(txtDirectoryPath.Text & "/Autorun.inf") 'Environment.GetEnvironmentVariable("windir") & "\notepad.exe", 
+                    End If
                 End If
             Else
                 btnWindowsOpenDataFile.Enabled = False
             End If
         Else
             If Exists(txtDirectoryPath.Text & Op & "desktop.ini") Then
-                If chkcustomeditor.checked Then
-                    Process.Start(txteditorpath.text, txtDirectoryPath.Text & Op & "desktop.ini")
+                If chkCustomEditor.Checked Then
+                    Process.Start(txtEditorPath.Text, txtDirectoryPath.Text & Op & "desktop.ini")
                 Else
                     If op="\" Then
                         Process.Start(Environment.GetEnvironmentVariable("windir") & "\notepad.exe", txtDirectoryPath.Text & "\desktop.ini")
@@ -418,7 +415,7 @@ Public Class DirectoryImage
             If chkWindowsHidden.Checked Then
                 RemoveAttribute(txtDirectoryPath.Text & "Autorun.inf", FileAttribute.Hidden)
             Else
-               AddAttribute (txtDirectoryPath.Text & "Autorun.inf", FileAttributes.Hidden)
+                AddAttribute(txtDirectoryPath.Text & "Autorun.inf", FileAttributes.Hidden)
             End If
         Else
             If chkWindowsHidden.Checked Then
