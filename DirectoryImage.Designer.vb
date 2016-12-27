@@ -483,7 +483,6 @@ Partial Class DirectoryImage
         '
         'btnEditorBrowse
         '
-        Me.btnEditorBrowse.Enabled = false
         Me.btnEditorBrowse.Location = New System.Drawing.Point(109, 382)
         Me.btnEditorBrowse.Name = "btnEditorBrowse"
         Me.btnEditorBrowse.Size = New System.Drawing.Size(75, 23)
@@ -504,7 +503,6 @@ Partial Class DirectoryImage
         'btnEditorPathCustom
         '
         Me.btnEditorPathCustom.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnEditorPathCustom.Enabled = false
         Me.btnEditorPathCustom.Location = New System.Drawing.Point(449, 382)
         Me.btnEditorPathCustom.Name = "btnEditorPathCustom"
         Me.btnEditorPathCustom.Size = New System.Drawing.Size(75, 23)

@@ -652,15 +652,12 @@ Public Class DirectoryImage
     End Sub
     
     Sub chkCustomEditor_Click() Handles chkCustomEditor.Click
-        btnEditorBrowse.Enabled = chkCustomEditor.Checked
         txtEditorPath.Enabled = False
-        btnEditorPathCustom.Enabled = chkCustomEditor.Checked
         btnEditorPathCustom.Text = "Edit..."
         If chkCustomEditor.Checked Then
-            If txtEditorPath.Text = "" Then btnEditorBrowse_Click() Else WriteConfig(configFilePath)
-        Else
-            WriteConfig(configFilePath, "")
+            If txtEditorPath.Text = "" Then btnEditorBrowse_Click()
         End If
+        WriteConfig(configFilePath)
     End Sub
     
     Sub btnEditorBrowse_Click() Handles btnEditorBrowse.Click
@@ -675,6 +672,7 @@ Public Class DirectoryImage
         End If
         If OpenFileDialogEditor.ShowDialog = DialogResult.OK Then
             txtEditorPath.Text = OpenFileDialogEditor.FileName
+            chkCustomEditor.Checked = True
         Else
             If txtEditorPath.Text = "" Then chkCustomEditor.Checked = False
         End If
@@ -690,6 +688,7 @@ Public Class DirectoryImage
                 WriteConfig(configFilePath)
                 txtEditorPath.Enabled = False
                 btnEditorPathCustom.Text = "Edit..."
+                chkCustomEditor.Checked = True
             Else
                 MsgBox("""" & txtEditorPath.Text & """ doesn't exist!", MsgBoxStyle.Exclamation)
             End If
@@ -818,12 +817,12 @@ Public Class DirectoryImage
                         If reader.Name = "CustomEditor" Then
                             attribute = reader("path")
                             If attribute IsNot Nothing Then
-                                If attribute <> "" Then
-                                    txtEditorPath.Text = attribute
-                                    chkCustomEditor.Checked = True
-                                    btnEditorBrowse.Enabled = chkCustomEditor.Checked
-                                    btnEditorPathCustom.Enabled = chkCustomEditor.Checked
-                                End If
+                                txtEditorPath.Text = attribute
+                            End If
+                            
+                            attribute = reader("enabled")
+                            If attribute IsNot Nothing Then
+                                chkCustomEditor.Checked = attribute
                             End If
                         End If
                     End If
@@ -834,7 +833,7 @@ Public Class DirectoryImage
         reader.Close
     End Sub
     
-    Private Sub WriteConfig(path As String, Optional EditorPath As String = "CannotUnloadAppDomainException")
+    Private Sub WriteConfig(path As String)
         Dim XMLwSettings As New XmlWriterSettings()
         XMLwSettings.Indent = True
         Dim writer As XmlWriter = XmlWriter.Create(path, XMLwSettings)
@@ -844,11 +843,8 @@ Public Class DirectoryImage
         
         writer.WriteStartElement("Settings")
             writer.WriteStartElement("CustomEditor")
-                If EditorPath = "CannotUnloadAppDomainException" Then
-                    writer.WriteAttributeString("path", txtEditorPath.Text)
-                Else
-                    writer.WriteAttributeString("path", EditorPath)
-                End If
+                writer.WriteAttributeString("path", txtEditorPath.Text)
+                writer.WriteAttributeString("enabled", chkCustomEditor.Checked)
             writer.WriteEndElement()
         writer.WriteEndElement()
         
