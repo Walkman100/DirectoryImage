@@ -194,18 +194,18 @@ Public Class DirectoryImage
             Else
                 imgLinuxCurrent.ImageLocation = txtLinuxImagePath.Text
             End If
+        ElseIf txtLinuxImagePath.Text.StartsWith("./../", True, Nothing) Then
+            optLinuxRel.Checked = True
+            optLinuxRelExternal.Checked = True
+            imgLinuxCurrent.ImageLocation = txtDirectoryPath.Text & txtLinuxImagePath.Text.Substring(1).Replace("/", "\")
         ElseIf txtLinuxImagePath.Text.StartsWith("./", True, Nothing) Then
             optLinuxRel.Checked = True
             optLinuxRelContained.Checked = True
             imgLinuxCurrent.ImageLocation = txtDirectoryPath.Text & txtLinuxImagePath.Text.Substring(1).Replace("/", "\")
-        ElseIf txtLinuxImagePath.Text.StartsWith("../", True, Nothing) Then
-            optLinuxRel.Checked = True
-            optLinuxRelExternal.Checked = True
-            imgLinuxCurrent.ImageLocation = txtDirectoryPath.Text & Op & txtLinuxImagePath.Text.Replace("/", "\")
         Else
             optLinuxSystemImage.Checked = True
             If op="/" Then
-                imglinuxcurrent.imagelocation = inputbox("System images location:", "Enter Location", "/usr/share/icons/oxymentary/256x256/places/") & txtlinuximagepath.text
+                imglinuxcurrent.imagelocation = inputbox("System images location:", "Enter Location", Environment.GetEnvironmentVariable("HOME") & "/.local/share/icons/hicolor/256x256/apps/") & txtlinuximagepath.text
             End If
         End If
     End Sub
@@ -528,7 +528,7 @@ Public Class DirectoryImage
                     txtLinuxImagePath.Text = "./" & OpenFileDialogLinux.FileName.Substring(txtDirectoryPath.Text.Length + 1).Replace("\", "/")
                 End If
             ElseIf optLinuxRelExternal.Checked Then
-                txtLinuxImagePath.Text = ".." & OpenFileDialogLinux.FileName.Substring(OpenFileDialogLinux.FileName.LastIndexOf("\")).Replace("\", "/")
+                txtLinuxImagePath.Text = "./.." & OpenFileDialogLinux.FileName.Substring(OpenFileDialogLinux.FileName.LastIndexOf("\")).Replace("\", "/")
             Else
                 MsgBox("Please select an option!", MsgBoxStyle.Exclamation)
             End If
