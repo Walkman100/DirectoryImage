@@ -115,6 +115,7 @@
     <Import Include="System" />
     <Import Include="System.Diagnostics" />
     <Import Include="System.IO" />
+    <Import Include="System.Security.Principal" />
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

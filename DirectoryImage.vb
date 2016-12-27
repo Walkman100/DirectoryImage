@@ -16,6 +16,8 @@ Public Class DirectoryImage
             grpLinux.Location = New System.Drawing.Point(12, 38)
             btnWindowsProperties.Visible = False
         End If
+        If New WindowsPrincipal(WindowsIdentity.GetCurrent).IsInRole(WindowsBuiltInRole.Administrator) Then _
+          Me.Text = "[Admin] Windows and Linux directory image setter"
         If My.Application.CommandLineArgs.Count = 0 Then
             timerDelayedBrowse.Start
         Else
@@ -411,36 +413,44 @@ Public Class DirectoryImage
     End Sub
     
     Sub chkWindowsHidden_CheckedChanged() Handles chkWindowsHidden.Click 'CheckedChanged
-        If txtDirectoryPath.Text.endswith(":\") Then
-            If chkWindowsHidden.Checked Then
-                RemoveAttribute(txtDirectoryPath.Text & "Autorun.inf", FileAttribute.Hidden)
+        Try
+            If txtDirectoryPath.Text.endswith(":\") Then
+                If chkWindowsHidden.Checked Then
+                    RemoveAttribute(txtDirectoryPath.Text & "Autorun.inf", FileAttribute.Hidden)
+                Else
+                    AddAttribute(txtDirectoryPath.Text & "Autorun.inf", FileAttributes.Hidden)
+                End If
             Else
-                AddAttribute(txtDirectoryPath.Text & "Autorun.inf", FileAttributes.Hidden)
+                If chkWindowsHidden.Checked Then
+                    RemoveAttribute(txtDirectoryPath.Text & Op & "desktop.ini", FileAttribute.Hidden)
+                Else
+                    AddAttribute(txtDirectoryPath.Text & Op & "desktop.ini", FileAttributes.Hidden)
+                End If
             End If
-        Else
-            If chkWindowsHidden.Checked Then
-                RemoveAttribute(txtDirectoryPath.Text & Op & "desktop.ini", FileAttribute.Hidden)
-            Else
-                AddAttribute(txtDirectoryPath.Text & Op & "desktop.ini", FileAttributes.Hidden)
-            End If
-        End If
+        Catch ex As exception
+            ErrorParser(ex)
+        End Try
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
     Sub chkWindowsSystem_CheckedChanged() Handles chkWindowsSystem.Click 'CheckedChanged
-        If txtDirectoryPath.Text.endswith(":\") Then
-            If chkWindowsSystem.Checked Then
-                RemoveAttribute(txtDirectoryPath.Text & "Autorun.inf", FileAttribute.System)
+        Try
+            If txtDirectoryPath.Text.endswith(":\") Then
+                If chkWindowsSystem.Checked Then
+                    RemoveAttribute(txtDirectoryPath.Text & "Autorun.inf", FileAttribute.System)
+                Else
+                    AddAttribute(txtDirectoryPath.Text & "Autorun.inf", FileAttribute.System)
+                End If
             Else
-                AddAttribute(txtDirectoryPath.Text & "Autorun.inf", FileAttribute.System)
+                If chkWindowsSystem.Checked Then
+                    RemoveAttribute(txtDirectoryPath.Text & Op & "desktop.ini", FileAttribute.System)
+                Else
+                    AddAttribute(txtDirectoryPath.Text & Op & "desktop.ini", FileAttribute.System)
+                End If
             End If
-        Else
-            If chkWindowsSystem.Checked Then
-                RemoveAttribute(txtDirectoryPath.Text & Op & "desktop.ini", FileAttribute.System)
-            Else
-                AddAttribute(txtDirectoryPath.Text & Op & "desktop.ini", FileAttribute.System)
-            End If
-        End If
+        Catch ex As exception
+            ErrorParser(ex)
+        End Try
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
@@ -602,20 +612,28 @@ Public Class DirectoryImage
     End Sub
     
     Sub chkLinuxHidden_CheckedChanged() Handles chkLinuxHidden.Click 'CheckedChanged
-        If chkLinuxHidden.Checked Then
-            RemoveAttribute(txtDirectoryPath.Text & Op & ".directory", FileAttribute.Hidden)
-        Else
-            AddAttribute(txtDirectoryPath.Text & Op & ".directory", FileAttribute.Hidden)
-        End If
+        Try
+            If chkLinuxHidden.Checked Then
+                RemoveAttribute(txtDirectoryPath.Text & Op & ".directory", FileAttribute.Hidden)
+            Else
+                AddAttribute(txtDirectoryPath.Text & Op & ".directory", FileAttribute.Hidden)
+            End If
+        Catch ex As exception
+            ErrorParser(ex)
+        End Try
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
     Sub chkLinuxSystem_CheckedChanged() Handles chkLinuxSystem.Click 'CheckedChanged
-        If chkLinuxSystem.Checked Then
-            RemoveAttribute(txtDirectoryPath.Text & Op & ".directory", FileAttribute.System)
-        Else
-            AddAttribute(txtDirectoryPath.Text & Op & ".directory", FileAttribute.System)
-        End If
+        Try
+            If chkLinuxSystem.Checked Then
+                RemoveAttribute(txtDirectoryPath.Text & Op & ".directory", FileAttribute.System)
+            Else
+                AddAttribute(txtDirectoryPath.Text & Op & ".directory", FileAttribute.System)
+            End If
+        Catch ex As exception
+            ErrorParser(ex)
+        End Try
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
@@ -679,15 +697,8 @@ Public Class DirectoryImage
     End Sub
     
     Sub ErrorParser(ex As Exception)
-        ' Access Denied:
-        'GetType: System.UnauthorizedAccessException
-        'Message: Access to the path 'filepath' is denied.
-        If ex.GetType.ToString = "System.UnauthorizedAccessException" Then
-        ' Neither:
-        'If ex.GetType.Equals(System.UnauthorizedAccessException) Then
-        ' nor:
-        'If System.UnauthorizedAccessException.Equals(ex.GetType) Then
-        ' work, so i just compared them as strings.
+        If ex.GetType.ToString = "System.UnauthorizedAccessException" AndAlso _
+          Not New WindowsPrincipal(WindowsIdentity.GetCurrent).IsInRole(WindowsBuiltInRole.Administrator) Then
             if op = "\" then
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching DirectoryImage As Administrator?", _
                         MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
