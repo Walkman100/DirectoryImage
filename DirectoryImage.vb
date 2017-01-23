@@ -1,4 +1,4 @@
-﻿Imports System.IO.File
+Imports System.IO.File
 Imports System.Runtime.InteropServices
 
 Public Class DirectoryImage
