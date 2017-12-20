@@ -25,13 +25,15 @@ Public Class DirectoryImage
         If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
             Op = "\"
         Else
-            op = "/"
+            Op = "/"
             grpWindows.Location = New System.Drawing.Point(12, 210)
             grpLinux.Location = New System.Drawing.Point(12, 38)
             btnWindowsProperties.Visible = False
         End If
+        
         If New WindowsPrincipal(WindowsIdentity.GetCurrent).IsInRole(WindowsBuiltInRole.Administrator) Then _
-          Me.Text = "[Admin] Windows and Linux directory image setter"
+            Me.Text = "[Admin] Windows and Linux directory image setter"
+        
         If My.Application.CommandLineArgs.Count = 0 Then
             timerDelayedBrowse.Start
         Else
@@ -164,7 +166,7 @@ Public Class DirectoryImage
             For i = 1 To 26 ' The Chr() below will give all letters from A to Z
                 If txtWindowsIconPath.Text.StartsWith( Chr(i+64) & ":\", True, Nothing) Then
                     isAbsolute = True
-                    Exit for
+                    Exit For
                 End If
             Next
         End If
@@ -180,7 +182,7 @@ Public Class DirectoryImage
             optWindowsRelContained.Checked = True
             imgWindowsCurrent.ImageLocation = txtDirectoryPath.Text & op & txtWindowsIconPath.Text.Replace("\", "/")
         End If
-
+        
         If imgWindowsCurrent.ImageLocation.EndsWith(",0") Then
             imgWindowsCurrent.ImageLocation = imgWindowsCurrent.ImageLocation.Remove(imgWindowsCurrent.ImageLocation.Length-2)
         End If
@@ -274,7 +276,7 @@ Public Class DirectoryImage
             imgWindowsCurrent.ImageLocation = OpenFileDialogWindows.FileName
             btnWindowsSave.Enabled = True
             If optWindowsAbsolute.Checked Then
-                If op="\" Then
+                If Op = "\" Then
                     txtWindowsIconPath.Text = OpenFileDialogWindows.FileName
                 Else
                     txtwindowsiconpath.text = openfiledialogwindows.filename.replace("/", "\")
@@ -569,7 +571,6 @@ Public Class DirectoryImage
                 Dim scanText As String
                 Try
                     scanText = txtDirectoryPath.Text.Substring(OpenFileDialogLinux.FileName.Replace("\", "/").LastIndexOf("/")+1).Replace("\", "/")
-                    MsgBox(scanText)
                     If scanText.Contains("/") Then
                         For Each character As Char In scanText
                             If character = "/" Then

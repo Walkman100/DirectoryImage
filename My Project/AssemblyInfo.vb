@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("A program that generates files that set directory images for Windows and Linux")> 
 <Assembly: AssemblyCompany("WalkmanOSS")> 
 <Assembly: AssemblyProduct("DirectoryImage")> 
-<Assembly: AssemblyCopyright("FOSS from Walkman 2015")> 
+<Assembly: AssemblyCopyright("FOSS from Walkman 2015-17")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
