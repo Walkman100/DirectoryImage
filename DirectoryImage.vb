@@ -3,8 +3,13 @@ Imports System.Runtime.InteropServices
 Public Class DirectoryImage
     
     Dim configFilePath As String = ""
+    Dim windowsCustomizeTab As String = "Customize"
     Dim Op As Char = "\" 'Operator character
     Sub LoadDirectoryImage() Handles MyBase.Load
+        If System.Globalization.CultureInfo.CurrentCulture.EnglishName = "English (South Africa)" Then
+            windowsCustomizeTab = "Customise"
+        End If
+        
         If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
             Op = "\"
             If Not Directory.Exists(Environment.GetEnvironmentVariable("AppData") & "\WalkmanOSS") Then
@@ -804,10 +809,19 @@ Public Class DirectoryImage
             info.cbSize = Marshal.SizeOf(info)
             info.fMask = 12
             info.lpVerb = "properties"
-            info.lpParameters = "Customize"
+            info.lpParameters = windowsCustomizeTab
             info.lpFile = txtDirectoryPath.Text
             If ShellExecuteEx(info) = False Then
                 MsgBox("Could not open properties window!", MsgBoxStyle.Exclamation)
+            End If
+        End If
+    End Sub
+    
+    Sub btnWindowsProperties_MouseUp(sender As Object, e As MouseEventArgs) Handles btnWindowsProperties.MouseUp
+        If e.Button = MouseButtons.Right Then
+            Dim tmpInput = InputBox("Enter customise tab name:", "Set customise tab name", windowsCustomizeTab)
+            If tmpInput <> "" Then
+                windowsCustomizeTab = tmpInput
             End If
         End If
     End Sub
@@ -864,6 +878,11 @@ Public Class DirectoryImage
                             If attribute IsNot Nothing Then
                                 chkCustomEditor.Checked = attribute
                             End If
+                        ElseIf reader.Name = "CustomizeTab" Then
+                            attribute = reader("name")
+                            If attribute IsNot Nothing Then
+                                windowsCustomizeTab = attribute
+                            End If
                         End If
                     End If
                 End While
@@ -885,6 +904,9 @@ Public Class DirectoryImage
             writer.WriteStartElement("CustomEditor")
                 writer.WriteAttributeString("path", txtEditorPath.Text)
                 writer.WriteAttributeString("enabled", chkCustomEditor.Checked)
+            writer.WriteEndElement()
+            writer.WriteStartElement("CustomizeTab")
+                writer.WriteAttributeString("name", windowsCustomizeTab)
             writer.WriteEndElement()
         writer.WriteEndElement()
         
