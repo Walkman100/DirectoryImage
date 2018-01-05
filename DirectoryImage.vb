@@ -822,6 +822,7 @@ Public Class DirectoryImage
             Dim tmpInput = InputBox("Enter customise tab name:", "Set customise tab name", windowsCustomizeTab)
             If tmpInput <> "" Then
                 windowsCustomizeTab = tmpInput
+                WriteConfig(configFilePath)
             End If
         End If
     End Sub
