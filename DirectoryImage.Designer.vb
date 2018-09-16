@@ -64,6 +64,7 @@ Partial Class DirectoryImage
         Me.btnEditorPathCustom = New System.Windows.Forms.Button()
         Me.OpenFileDialogEditor = New System.Windows.Forms.OpenFileDialog()
         Me.timerDelayedBrowse = New System.Windows.Forms.Timer(Me.components)
+        Me.lblVersion = New System.Windows.Forms.Label()
         Me.grpWindows.SuspendLayout
         Me.grpWindowsRel.SuspendLayout
         CType(Me.imgWindowsCurrent,System.ComponentModel.ISupportInitialize).BeginInit
@@ -519,11 +520,23 @@ Partial Class DirectoryImage
         '
         Me.timerDelayedBrowse.Interval = 500
         '
+        'lblVersion
+        '
+        Me.lblVersion.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblVersion.AutoSize = true
+        Me.lblVersion.Font = New System.Drawing.Font("Microsoft Sans Serif", 6!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblVersion.Location = New System.Drawing.Point(515, 408)
+        Me.lblVersion.Name = "lblVersion"
+        Me.lblVersion.Size = New System.Drawing.Size(21, 9)
+        Me.lblVersion.TabIndex = 8
+        Me.lblVersion.Text = "1.0.0"
+        '
         'DirectoryImage
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(536, 417)
+        Me.Controls.Add(Me.lblVersion)
         Me.Controls.Add(Me.btnEditorPathCustom)
         Me.Controls.Add(Me.txtEditorPath)
         Me.Controls.Add(Me.btnEditorBrowse)
@@ -550,6 +563,7 @@ Partial Class DirectoryImage
         Me.ResumeLayout(false)
         Me.PerformLayout
     End Sub
+    Private lblVersion As System.Windows.Forms.Label
     Private WithEvents btnWindowsProperties As System.Windows.Forms.Button
     Private WithEvents timerDelayedBrowse As System.Windows.Forms.Timer
     Private OpenFileDialogEditor As System.Windows.Forms.OpenFileDialog

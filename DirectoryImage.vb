@@ -10,6 +10,7 @@ Public Class DirectoryImage
             windowsCustomizeTab = "Customise"
         End If
         
+        lblVersion.Text = My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor & "." & My.Application.Info.Version.Build
         If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
             Op = "\"
             If Not Directory.Exists(Environment.GetEnvironmentVariable("AppData") & "\WalkmanOSS") Then
