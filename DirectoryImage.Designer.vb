@@ -545,7 +545,6 @@ Partial Class DirectoryImage
         Me.Controls.Add(Me.grpWindows)
         Me.Controls.Add(Me.btnDirectoryBrowse)
         Me.Controls.Add(Me.txtDirectoryPath)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = Global.DirectoryImage.My.Resources.Resources.Shell32__326_
         Me.Name = "DirectoryImage"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

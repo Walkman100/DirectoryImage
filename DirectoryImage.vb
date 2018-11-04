@@ -101,7 +101,7 @@ Public Class DirectoryImage
     
     Dim alreadyGotIcon, lookingForIconIndex As Boolean
     Sub ParseFiles(Directory As String)
-        If directory.endswith(":\") Then
+        If Directory.EndsWith(":\") Then
             btnWindowsOpenDataFile.Text = "Open Autorun.inf..."
             If Exists(Directory & "Autorun.inf") Then
                 btnWindowsOpenDataFile.Enabled = True
@@ -240,8 +240,8 @@ Public Class DirectoryImage
             imgLinuxCurrent.ImageLocation = txtDirectoryPath.Text & txtLinuxImagePath.Text.Substring(1).Replace("/", "\")
         Else
             optLinuxSystemImage.Checked = True
-            If op="/" Then
-                imglinuxcurrent.imagelocation = inputbox("System images location:", "Enter Location", Environment.GetEnvironmentVariable("HOME") & "/.local/share/icons/hicolor/256x256/apps/") & txtlinuximagepath.text
+            If Op = "/" Then
+                imgLinuxCurrent.ImageLocation = InputBox("System images location:", "Enter Location", Environment.GetEnvironmentVariable("HOME") & "/.local/share/icons/hicolor/256x256/apps/") & txtLinuxImagePath.Text
             End If
         End If
     End Sub
