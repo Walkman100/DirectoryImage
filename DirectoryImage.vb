@@ -86,6 +86,8 @@ Public Class DirectoryImage
         End If
     End Sub
     
+    ' ==================== Reading Files ====================
+    
     Dim alreadyGotIcon, lookingForIconIndex As Boolean
     Sub ParseFiles(Directory As String)
         If Directory.EndsWith(":\") Then
@@ -162,6 +164,8 @@ Public Class DirectoryImage
             chkLinuxSystem.Checked = False
         End If
     End Sub
+    
+    ' ==================== Parsing paths for absolute/relative ====================
     
     Sub ParseWindows
         Dim isAbsolute As New Boolean
@@ -249,13 +253,7 @@ Public Class DirectoryImage
         End If
     End Sub
     
-    Sub optWindowsRel_CheckedChanged() Handles optWindowsRel.CheckedChanged
-        grpWindowsRel.Enabled = optWindowsRel.Checked
-    End Sub
-    
-    Sub optLinuxRel_CheckedChanged() Handles optLinuxRel.CheckedChanged
-        grpLinuxRel.Enabled = optLinuxRel.Checked
-    End Sub
+    ' ==================== GUI actions - Windows ====================
     
     Sub WindowsOptionSelected() Handles optWindowsAbsolute.CheckedChanged, optWindowsRel.CheckedChanged, _
                                     optWindowsRelContained.CheckedChanged, optWindowsRelExternal.CheckedChanged
@@ -275,6 +273,10 @@ Public Class DirectoryImage
         End If
     End Sub
     
+    Sub optWindowsRel_CheckedChanged() Handles optWindowsRel.CheckedChanged
+        grpWindowsRel.Enabled = optWindowsRel.Checked
+    End Sub
+    
     Sub WindowsIconPathChanged() Handles txtWindowsIconPath.TextChanged
         If optWindowsAbsolute.Checked Then
             btnWindowsSave.Enabled = True
@@ -291,6 +293,7 @@ Public Class DirectoryImage
         End If
     End Sub
     
+    ' selecting icon
     Sub btnWindowsIconSet_Click() Handles btnWindowsIconSet.Click
         SetInitialDirectories
         If OpenFileDialogWindows.ShowDialog = DialogResult.OK Then
@@ -331,6 +334,7 @@ Public Class DirectoryImage
         End If
     End Sub
     
+    ' Writing windows icon file
     Dim lineNo, headerLine As Byte
     Dim SetIcon, HasHeader As Boolean
     Sub btnWindowsSave_Click() Handles btnWindowsSave.Click
@@ -436,12 +440,12 @@ Public Class DirectoryImage
         If txtDirectoryPath.Text.EndsWith(":\") Then
             If Exists(Path.Combine(txtDirectoryPath.Text, "Autorun.inf")) Then
                 If chkCustomEditor.Checked Then
-                    Process.Start(txtEditorPath.Text, Path.Combine(txtDirectoryPath.Text, "Autorun.inf"))
+                    Process.Start(txtEditorPath.Text, """" & Path.Combine(txtDirectoryPath.Text, "Autorun.inf") & """")
                 Else
                     If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
-                        Process.Start(Path.Combine(Environment.GetEnvironmentVariable("windir"), "notepad.exe"), Path.Combine(txtDirectoryPath.Text, "Autorun.inf"))
+                        Process.Start(Path.Combine(Environment.GetEnvironmentVariable("windir"), "notepad.exe"), """" & Path.Combine(txtDirectoryPath.Text, "Autorun.inf") & """")
                     Else
-                        Process.Start(Path.Combine(txtDirectoryPath.Text & "Autorun.inf"))
+                        Process.Start("xdg-open", """" & Path.Combine(txtDirectoryPath.Text & "Autorun.inf") & """")
                     End If
                 End If
             Else
@@ -450,12 +454,12 @@ Public Class DirectoryImage
         Else
             If Exists(Path.Combine(txtDirectoryPath.Text, "desktop.ini")) Then
                 If chkCustomEditor.Checked Then
-                    Process.Start(txtEditorPath.Text, Path.Combine(txtDirectoryPath.Text, "desktop.ini"))
+                    Process.Start(txtEditorPath.Text, """" & Path.Combine(txtDirectoryPath.Text, "desktop.ini") & """")
                 Else
                     If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
-                        Process.Start(Path.Combine(Environment.GetEnvironmentVariable("windir"), "notepad.exe"), Path.Combine(txtDirectoryPath.Text, "desktop.ini"))
+                        Process.Start(Path.Combine(Environment.GetEnvironmentVariable("windir"), "notepad.exe"), """" & Path.Combine(txtDirectoryPath.Text, "desktop.ini") & """")
                     Else
-                        Process.Start(Path.Combine(txtDirectoryPath.Text, "desktop.ini"))
+                        Process.Start("xdg-open", """" & Path.Combine(txtDirectoryPath.Text, "desktop.ini") & """")
                     End If
                 End If
             Else
@@ -482,6 +486,7 @@ Public Class DirectoryImage
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
+    ' ==================== Called before selecting icon for both types ====================
     Sub SetInitialDirectories()
         If optWindowsAbsolute.Checked Then
             If OpenFileDialogWindows.InitialDirectory = "" Then
@@ -514,6 +519,8 @@ Public Class DirectoryImage
         End If
     End Sub
     
+    ' ==================== GUI actions - Linux ====================
+    
     Sub LinuxOptionSelected() Handles optLinuxAbsolute.CheckedChanged, optLinuxRel.CheckedChanged, _
                 optLinuxRelContained.CheckedChanged, optLinuxRelExternal.CheckedChanged, optLinuxSystemImage.CheckedChanged
         btnLinuxSave.Enabled = False
@@ -534,6 +541,10 @@ Public Class DirectoryImage
         End If
     End Sub
     
+    Sub optLinuxRel_CheckedChanged() Handles optLinuxRel.CheckedChanged
+        grpLinuxRel.Enabled = optLinuxRel.Checked
+    End Sub
+    
     Sub LinuxImagePathChanged() Handles txtLinuxImagePath.TextChanged
         If optLinuxAbsolute.Checked Then
             btnLinuxSave.Enabled = True
@@ -550,6 +561,7 @@ Public Class DirectoryImage
         End If
     End Sub
     
+    ' selecting icon
     Sub btnLinuxIconSet_Click() Handles btnLinuxIconSet.Click
         SetInitialDirectories
         If OpenFileDialogLinux.ShowDialog = DialogResult.OK Then
@@ -586,6 +598,7 @@ Public Class DirectoryImage
         End If
     End Sub
     
+    ' Writing linux icon file
     Sub btnLinuxSave_Click() Handles btnLinuxSave.Click
         Try
             If Exists(Path.Combine(txtDirectoryPath.Text, ".directory")) Then
@@ -640,12 +653,12 @@ Public Class DirectoryImage
     Sub btnLinuxOpenDataFile_Click() Handles btnLinuxOpenDataFile.Click
         If Exists(Path.Combine(txtDirectoryPath.Text, ".directory")) Then
             If chkCustomEditor.Checked Then
-                Process.Start(txtEditorPath.Text, Path.Combine(txtDirectoryPath.Text, ".directory"))
+                Process.Start(txtEditorPath.Text, """" & Path.Combine(txtDirectoryPath.Text, ".directory") & """")
             Else
                 If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
-                    Process.Start(Path.Combine(Environment.GetEnvironmentVariable("windir"), "notepad.exe"), Path.Combine(txtDirectoryPath.Text, ".directory"))
+                    Process.Start(Path.Combine(Environment.GetEnvironmentVariable("windir"), "notepad.exe"), """" & Path.Combine(txtDirectoryPath.Text, ".directory") & """")
                 Else
-                    Process.Start(Path.Combine(txtDirectoryPath.Text, ".directory"))
+                    Process.Start("xdg-open", """" & Path.Combine(txtDirectoryPath.Text, ".directory") & """")
                 End If
             End If
         Else
@@ -662,6 +675,8 @@ Public Class DirectoryImage
         WalkmanLib.ChangeAttribute(Path.Combine(txtDirectoryPath.Text, ".directory"), FileAttributes.System, chkLinuxSystem.Checked, AddressOf ErrorParser)
         ParseFiles(txtDirectoryPath.Text)
     End Sub
+    
+    ' ==================== Custom Editor managing ====================
     
     Sub chkCustomEditor_Click() Handles chkCustomEditor.Click
         txtEditorPath.Enabled = False
@@ -707,6 +722,28 @@ Public Class DirectoryImage
         End If
     End Sub
     
+    ' ==================== Extra Windows buttons ====================
+    
+    Sub btnWindowsProperties_Click() Handles btnWindowsProperties.Click
+        If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
+            If WalkmanLib.ShowProperties(txtDirectoryPath.Text, windowsCustomizeTab) = False Then
+                MsgBox("Could not open properties window!", MsgBoxStyle.Exclamation)
+            End If
+        End If
+    End Sub
+    
+    Sub btnWindowsProperties_MouseUp(sender As Object, e As MouseEventArgs) Handles btnWindowsProperties.MouseUp
+        If e.Button = MouseButtons.Right Then
+            Dim tmpInput = InputBox("Enter customise tab name:", "Set customise tab name", windowsCustomizeTab)
+            If tmpInput <> "" Then
+                windowsCustomizeTab = tmpInput
+                WriteConfig(configFilePath)
+            End If
+        End If
+    End Sub
+    
+    ' ==================== Helper methods ====================
+    
     Sub ErrorParser(ex As Exception)
         If ex.GetType.ToString = "System.UnauthorizedAccessException" AndAlso Not WalkmanLib.IsAdmin Then
             If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
@@ -750,24 +787,6 @@ Public Class DirectoryImage
                                     "TargetSite:" & vbNewLine & ex.TargetSite.ToString
                                     '"InnerException:" & vbNewLine & ex.InnerException.ToString & vbNewLine & vbNewLine & _
                 frmBugReport.Show()
-            End If
-        End If
-    End Sub
-    
-    Sub btnWindowsProperties_Click() Handles btnWindowsProperties.Click
-        If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
-            If WalkmanLib.ShowProperties(txtDirectoryPath.Text, windowsCustomizeTab) = False Then
-                MsgBox("Could not open properties window!", MsgBoxStyle.Exclamation)
-            End If
-        End If
-    End Sub
-    
-    Sub btnWindowsProperties_MouseUp(sender As Object, e As MouseEventArgs) Handles btnWindowsProperties.MouseUp
-        If e.Button = MouseButtons.Right Then
-            Dim tmpInput = InputBox("Enter customise tab name:", "Set customise tab name", windowsCustomizeTab)
-            If tmpInput <> "" Then
-                windowsCustomizeTab = tmpInput
-                WriteConfig(configFilePath)
             End If
         End If
     End Sub
