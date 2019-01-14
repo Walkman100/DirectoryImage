@@ -4,7 +4,6 @@ Public Class DirectoryImage
     Dim configFileName As String = "DirectoryImage.xml"
     Dim configFilePath As String = ""
     Dim windowsCustomizeTab As String = "Customize"
-    Dim Op As Char = "\" 'Operator character
     
     Sub LoadDirectoryImage() Handles MyBase.Load
         If System.Globalization.CultureInfo.CurrentCulture.EnglishName = "English (South Africa)" Then
@@ -13,13 +12,11 @@ Public Class DirectoryImage
         
         lblVersion.Text = My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor & "." & My.Application.Info.Version.Build
         If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
-            Op = "\"
             If Not       Directory.Exists(Path.Combine(Environment.GetEnvironmentVariable("AppData"), "WalkmanOSS")) Then
                 Directory.CreateDirectory(Path.Combine(Environment.GetEnvironmentVariable("AppData"), "WalkmanOSS"))
             End If
             configFilePath =              Path.Combine(Environment.GetEnvironmentVariable("AppData"), "WalkmanOSS", configFileName)
         Else
-            Op = "/"
             If Not       Directory.Exists(Path.Combine(Environment.GetEnvironmentVariable("HOME"), ".config", "WalkmanOSS")) Then
                 Directory.CreateDirectory(Path.Combine(Environment.GetEnvironmentVariable("HOME"), ".config", "WalkmanOSS"))
             End If
@@ -216,10 +213,10 @@ Public Class DirectoryImage
     Sub ParseLinux
         If txtLinuxImagePath.Text.StartsWith("/", True, Nothing) Then
             optLinuxAbsolute.Checked = True
-            If op="\" Then
-                LinuxPathToWindowsPath.ShowDialog '<- That sets the image
-            Else
+            If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
                 imgLinuxCurrent.ImageLocation = txtLinuxImagePath.Text
+            Else
+                LinuxPathToWindowsPath.ShowDialog '<- That sets the image
             End If
         ElseIf txtLinuxImagePath.Text.StartsWith("./../", True, Nothing) Then
             optLinuxRel.Checked = True
@@ -231,7 +228,7 @@ Public Class DirectoryImage
             imgLinuxCurrent.ImageLocation = Path.Combine(txtDirectoryPath.Text, txtLinuxImagePath.Text.Substring(1).Replace("/", "\"))
         Else
             optLinuxSystemImage.Checked = True
-            If Op = "/" Then
+            If Environment.GetEnvironmentVariable("OS") <> "Windows_NT" Then
                 imgLinuxCurrent.ImageLocation = Path.Combine(InputBox("System images location:", "Enter Location", Path.Combine(Environment.GetEnvironmentVariable("HOME"), ".local/share/icons/hicolor/256x256/apps")), txtLinuxImagePath.Text)
             End If
         End If
@@ -285,7 +282,7 @@ Public Class DirectoryImage
             imgWindowsCurrent.ImageLocation = OpenFileDialogWindows.FileName
             btnWindowsSave.Enabled = True
             If optWindowsAbsolute.Checked Then
-                If Op = "\" Then
+                If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
                     txtWindowsIconPath.Text = OpenFileDialogWindows.FileName
                 Else
                     txtWindowsIconPath.Text = OpenFileDialogWindows.FileName.Replace("/", "\")
@@ -426,7 +423,7 @@ Public Class DirectoryImage
                 If chkCustomEditor.Checked Then
                     Process.Start(txtEditorPath.Text, Path.Combine(txtDirectoryPath.Text, "Autorun.inf"))
                 Else
-                    If Op = "\" Then
+                    If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
                         Process.Start(Path.Combine(Environment.GetEnvironmentVariable("windir"), "notepad.exe"), Path.Combine(txtDirectoryPath.Text, "Autorun.inf"))
                     Else
                         Process.Start(Path.Combine(txtDirectoryPath.Text & "Autorun.inf"))
@@ -440,7 +437,7 @@ Public Class DirectoryImage
                 If chkCustomEditor.Checked Then
                     Process.Start(txtEditorPath.Text, Path.Combine(txtDirectoryPath.Text, "desktop.ini"))
                 Else
-                    If Op = "\" Then
+                    If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
                         Process.Start(Path.Combine(Environment.GetEnvironmentVariable("windir"), "notepad.exe"), Path.Combine(txtDirectoryPath.Text & "desktop.ini"))
                     Else
                         Process.Start(Path.Combine(txtDirectoryPath.Text, "desktop.ini"))
@@ -503,7 +500,7 @@ Public Class DirectoryImage
             If optWindowsRelContained.Checked Then
                 OpenFileDialogWindows.InitialDirectory = txtDirectoryPath.Text
             ElseIf optWindowsRelExternal.Checked
-                OpenFileDialogWindows.InitialDirectory = txtDirectoryPath.Text.Remove(txtDirectoryPath.Text.LastIndexOf(Op))
+                OpenFileDialogWindows.InitialDirectory = txtDirectoryPath.Text.Remove(txtDirectoryPath.Text.LastIndexOf(Path.DirectorySeparatorChar))
             End If
         End If
         If imgWindowsCurrent.ImageLocation <> "" Then
@@ -518,7 +515,7 @@ Public Class DirectoryImage
             If optLinuxRelContained.Checked Then
                 OpenFileDialogLinux.InitialDirectory = txtDirectoryPath.Text
             ElseIf optLinuxRelExternal.Checked
-                OpenFileDialogLinux.InitialDirectory = txtDirectoryPath.Text.Remove(txtDirectoryPath.Text.LastIndexOf(Op))
+                OpenFileDialogLinux.InitialDirectory = txtDirectoryPath.Text.Remove(txtDirectoryPath.Text.LastIndexOf(Path.DirectorySeparatorChar))
             End If
         End If
         If imgLinuxCurrent.ImageLocation <> "" Then
@@ -654,7 +651,7 @@ Public Class DirectoryImage
             If chkCustomEditor.Checked Then
                 Process.Start(txtEditorPath.Text, Path.Combine(txtDirectoryPath.Text, ".directory"))
             Else
-                If Op = "\" Then
+                If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
                     Process.Start(Path.Combine(Environment.GetEnvironmentVariable("windir"), "notepad.exe"), Path.Combine(txtDirectoryPath.Text, ".directory"))
                 Else
                     Process.Start(Path.Combine(txtDirectoryPath.Text, ".directory"))
@@ -701,7 +698,7 @@ Public Class DirectoryImage
     End Sub
     
     Sub btnEditorBrowse_Click() Handles btnEditorBrowse.Click
-        If Op = "\" Then
+        If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
             OpenFileDialogEditor.InitialDirectory = Environment.GetEnvironmentVariable("ProgramFiles")
             OpenFileDialogEditor.Filter = "Applications|*.exe"
             OpenFileDialogEditor.DefaultExt = "exe"
@@ -752,7 +749,7 @@ Public Class DirectoryImage
     Sub ErrorParser(ex As Exception)
         If ex.GetType.ToString = "System.UnauthorizedAccessException" AndAlso _
           Not New WindowsPrincipal(WindowsIdentity.GetCurrent).IsInRole(WindowsBuiltInRole.Administrator) Then
-            If Op = "\" Then
+            If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
                 If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching DirectoryImage As Administrator?", _
                         MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
                     CreateObject("Shell.Application").ShellExecute(Path.Combine(Application.StartupPath, Process.GetCurrentProcess.ProcessName & ".exe"), _
@@ -799,7 +796,7 @@ Public Class DirectoryImage
     End Sub
     
     Sub btnWindowsProperties_Click() Handles btnWindowsProperties.Click
-        If Op = "\" Then
+        If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
             Dim info As New ShellExecuteInfo
             info.cbSize = Marshal.SizeOf(info)
             info.fMask = 12
