@@ -59,6 +59,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -85,6 +86,15 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="WalkmanLib\WalkmanLibDotNet.vb">
+      <Link>WalkmanLibDotNet.vb</Link>
+    </Compile>
+    <Compile Include="WalkmanLib\WalkmanLibWin32.vb">
+      <Link>WalkmanLibWin32.vb</Link>
+    </Compile>
+    <Compile Include="WalkmanLib\WalkmanLibWinVersion.vb">
+      <Link>WalkmanLibWinVersion.vb</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
