@@ -6,7 +6,7 @@ Public Class DirectoryImage
     Dim windowsCustomizeTab As String = "Customize"
     
     Sub LoadDirectoryImage() Handles MyBase.Load
-        If System.Globalization.CultureInfo.CurrentCulture.EnglishName = "English (South Africa)" Then
+        If WalkmanLib.GetWindowsVersion >= WindowsVersion.Windows8 Then
             windowsCustomizeTab = "Customise"
         End If
         
