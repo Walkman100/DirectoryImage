@@ -37,8 +37,7 @@ Public Class DirectoryImage
             ReadConfig(configFilePath)
         End If
         
-        If New WindowsPrincipal(WindowsIdentity.GetCurrent).IsInRole(WindowsBuiltInRole.Administrator) Then _
-            Me.Text = "[Admin] Windows and Linux directory image setter"
+        If WalkmanLib.IsAdmin Then Me.Text = "[Admin] Windows and Linux directory image setter"
         
         If My.Application.CommandLineArgs.Count = 0 Then
             timerDelayedBrowse.Start
@@ -220,12 +219,12 @@ Public Class DirectoryImage
             End If
         ElseIf txtLinuxImagePath.Text.StartsWith("./../", True, Nothing) Then
             optLinuxRel.Checked = True
-            optLinuxRelExternal.Checked = True
-            imgLinuxCurrent.ImageLocation = Path.Combine(txtDirectoryPath.Text, txtLinuxImagePath.Text.Substring(1).Replace("/", "\"))
+            optLinuxRelExternal.Checked = True ' no Path.Combine below because the image path will begin with \, and that causes Path.Combine to just use the second part
+            imgLinuxCurrent.ImageLocation = txtDirectoryPath.Text & txtLinuxImagePath.Text.Substring(1).Replace("/", "\")
         ElseIf txtLinuxImagePath.Text.StartsWith("./", True, Nothing) Then
             optLinuxRel.Checked = True
-            optLinuxRelContained.Checked = True
-            imgLinuxCurrent.ImageLocation = Path.Combine(txtDirectoryPath.Text, txtLinuxImagePath.Text.Substring(1).Replace("/", "\"))
+            optLinuxRelContained.Checked = True ' no Path.Combine below because the image path will begin with \, and that causes Path.Combine to just use the second part
+            imgLinuxCurrent.ImageLocation = txtDirectoryPath.Text & txtLinuxImagePath.Text.Substring(1).Replace("/", "\")
         Else
             optLinuxSystemImage.Checked = True
             If Environment.GetEnvironmentVariable("OS") <> "Windows_NT" Then
@@ -336,7 +335,7 @@ Public Class DirectoryImage
                         End If
                         lineNo += 1
                     Next
-                    SetAttributes(Path.Combine(txtDirectoryPath.Text, "Autorun.inf"), FileAttributes.Normal)
+                    WalkmanLib.SetAttribute(Path.Combine(txtDirectoryPath.Text, "Autorun.inf"), FileAttributes.Normal, AddressOf ErrorParser)
                     If SetIcon Then
                         WriteAllLines(Path.Combine(txtDirectoryPath.Text, "Autorun.inf"), FileContents)
                     Else
@@ -362,7 +361,7 @@ Public Class DirectoryImage
                     WriteAllText(Path.Combine(txtDirectoryPath.Text, "Autorun.inf"), "[autorun]" & vbNewLine & "Icon=" & txtWindowsIconPath.Text)
                     btnWindowsOpenDataFile.Enabled = True
                 End If
-                SetAttributes(Path.Combine(txtDirectoryPath.Text, "Autorun.inf"), IO.FileAttributes.Hidden)
+                WalkmanLib.AddAttribute(Path.Combine(txtDirectoryPath.Text, "Autorun.inf"), IO.FileAttributes.Hidden, AddressOf ErrorParser)
             Else
                 If Exists(Path.Combine(txtDirectoryPath.Text, "desktop.ini")) Then
                     lineNo = 0
@@ -383,7 +382,7 @@ Public Class DirectoryImage
                         End If
                         lineNo += 1
                     Next
-                    SetAttributes(Path.Combine(txtDirectoryPath.Text, "desktop.ini"), FileAttributes.Normal)
+                    WalkmanLib.SetAttribute(Path.Combine(txtDirectoryPath.Text, "desktop.ini"), FileAttributes.Normal, AddressOf ErrorParser)
                     If SetIcon Then
                         WriteAllLines(Path.Combine(txtDirectoryPath.Text, "desktop.ini"), FileContents)
                     Else
@@ -409,7 +408,7 @@ Public Class DirectoryImage
                     WriteAllText(Path.Combine(txtDirectoryPath.Text, "desktop.ini"), "[.ShellClassInfo]" & vbNewLine & "IconResource=" & txtWindowsIconPath.Text)
                     btnWindowsOpenDataFile.Enabled = True
                 End If
-                SetAttributes(Path.Combine(txtDirectoryPath.Text, "desktop.ini"), IO.FileAttributes.Hidden)
+                WalkmanLib.AddAttribute(Path.Combine(txtDirectoryPath.Text, "desktop.ini"), IO.FileAttributes.Hidden, AddressOf ErrorParser)
             End If
         Catch ex As Exception
             ErrorParser(ex)
@@ -438,7 +437,7 @@ Public Class DirectoryImage
                     Process.Start(txtEditorPath.Text, Path.Combine(txtDirectoryPath.Text, "desktop.ini"))
                 Else
                     If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
-                        Process.Start(Path.Combine(Environment.GetEnvironmentVariable("windir"), "notepad.exe"), Path.Combine(txtDirectoryPath.Text & "desktop.ini"))
+                        Process.Start(Path.Combine(Environment.GetEnvironmentVariable("windir"), "notepad.exe"), Path.Combine(txtDirectoryPath.Text, "desktop.ini"))
                     Else
                         Process.Start(Path.Combine(txtDirectoryPath.Text, "desktop.ini"))
                     End If
@@ -450,44 +449,20 @@ Public Class DirectoryImage
     End Sub
     
     Sub chkWindowsHidden_CheckedChanged() Handles chkWindowsHidden.Click 'CheckedChanged
-        Try
-            If txtDirectoryPath.Text.EndsWith(":\") Then
-                If chkWindowsHidden.Checked Then
-                    RemoveAttribute(Path.Combine(txtDirectoryPath.Text, "Autorun.inf"), FileAttribute.Hidden)
-                Else
-                    AddAttribute(Path.Combine(txtDirectoryPath.Text, "Autorun.inf"), FileAttributes.Hidden)
-                End If
-            Else
-                If chkWindowsHidden.Checked Then
-                    RemoveAttribute(Path.Combine(txtDirectoryPath.Text, "desktop.ini"), FileAttribute.Hidden)
-                Else
-                    AddAttribute(Path.Combine(txtDirectoryPath.Text, "desktop.ini"), FileAttributes.Hidden)
-                End If
-            End If
-        Catch ex As Exception
-            ErrorParser(ex)
-        End Try
+        If txtDirectoryPath.Text.EndsWith(":\") Then
+            WalkmanLib.ChangeAttribute(Path.Combine(txtDirectoryPath.Text, "Autorun.inf"), FileAttributes.Hidden, chkWindowsHidden.Checked, AddressOf ErrorParser)
+        Else
+            WalkmanLib.ChangeAttribute(Path.Combine(txtDirectoryPath.Text, "desktop.ini"), FileAttributes.Hidden, chkWindowsHidden.Checked, AddressOf ErrorParser)
+        End If
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
     Sub chkWindowsSystem_CheckedChanged() Handles chkWindowsSystem.Click 'CheckedChanged
-        Try
-            If txtDirectoryPath.Text.EndsWith(":\") Then
-                If chkWindowsSystem.Checked Then
-                    RemoveAttribute(Path.Combine(txtDirectoryPath.Text, "Autorun.inf"), FileAttribute.System)
-                Else
-                    AddAttribute(Path.Combine(txtDirectoryPath.Text, "Autorun.inf"), FileAttribute.System)
-                End If
-            Else
-                If chkWindowsSystem.Checked Then
-                    RemoveAttribute(Path.Combine(txtDirectoryPath.Text, "desktop.ini"), FileAttribute.System)
-                Else
-                    AddAttribute(Path.Combine(txtDirectoryPath.Text, "desktop.ini"), FileAttribute.System)
-                End If
-            End If
-        Catch ex As Exception
-            ErrorParser(ex)
-        End Try
+        If txtDirectoryPath.Text.EndsWith(":\") Then
+            WalkmanLib.ChangeAttribute(Path.Combine(txtDirectoryPath.Text, "Autorun.inf"), FileAttributes.System, chkWindowsSystem.Checked, AddressOf ErrorParser)
+        Else
+            WalkmanLib.ChangeAttribute(Path.Combine(txtDirectoryPath.Text, "desktop.ini"), FileAttributes.System, chkWindowsSystem.Checked, AddressOf ErrorParser)
+        End If
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
@@ -612,7 +587,7 @@ Public Class DirectoryImage
                     End If
                     lineNo += 1
                 Next
-                SetAttributes(Path.Combine(txtDirectoryPath.Text, ".directory"), FileAttributes.Normal)
+                WalkmanLib.SetAttribute(Path.Combine(txtDirectoryPath.Text, ".directory"), FileAttributes.Normal, AddressOf ErrorParser)
                 If SetIcon Then
                     WriteAllLines(Path.Combine(txtDirectoryPath.Text, ".directory"), FileContents)
                 Else
@@ -639,7 +614,7 @@ Public Class DirectoryImage
                 WriteAllText(Path.Combine(txtDirectoryPath.Text, ".directory"), "[Desktop Entry]" & vbNewLine & "Icon=" & txtLinuxImagePath.Text)
                 btnLinuxOpenDataFile.Enabled = True
             End If
-            SetAttributes(Path.Combine(txtDirectoryPath.Text, ".directory"), FileAttributes.Hidden)
+            WalkmanLib.AddAttribute(Path.Combine(txtDirectoryPath.Text, ".directory"), FileAttributes.Hidden, AddressOf ErrorParser)
         Catch ex As Exception
             ErrorParser(ex)
         End Try
@@ -663,28 +638,12 @@ Public Class DirectoryImage
     End Sub
     
     Sub chkLinuxHidden_CheckedChanged() Handles chkLinuxHidden.Click 'CheckedChanged
-        Try
-            If chkLinuxHidden.Checked Then
-                RemoveAttribute(Path.Combine(txtDirectoryPath.Text, ".directory"), FileAttribute.Hidden)
-            Else
-                AddAttribute(Path.Combine(txtDirectoryPath.Text, ".directory"), FileAttribute.Hidden)
-            End If
-        Catch ex As Exception
-            ErrorParser(ex)
-        End Try
+        WalkmanLib.ChangeAttribute(Path.Combine(txtDirectoryPath.Text, ".directory"), FileAttributes.Hidden, chkLinuxHidden.Checked, AddressOf ErrorParser)
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
     Sub chkLinuxSystem_CheckedChanged() Handles chkLinuxSystem.Click 'CheckedChanged
-        Try
-            If chkLinuxSystem.Checked Then
-                RemoveAttribute(Path.Combine(txtDirectoryPath.Text, ".directory"), FileAttribute.System)
-            Else
-                AddAttribute(Path.Combine(txtDirectoryPath.Text, ".directory"), FileAttribute.System)
-            End If
-        Catch ex As Exception
-            ErrorParser(ex)
-        End Try
+        WalkmanLib.ChangeAttribute(Path.Combine(txtDirectoryPath.Text, ".directory"), FileAttributes.System, chkLinuxSystem.Checked, AddressOf ErrorParser)
         ParseFiles(txtDirectoryPath.Text)
     End Sub
     
@@ -732,28 +691,12 @@ Public Class DirectoryImage
         End If
     End Sub
     
-    ''' <summary>Adds the specified System.IO.FileAttributes to the file at the specified path</summary>
-    ''' <param name="path">The path to the file.</param>
-    ''' <param name="fileAttributes">The attributes to add.</param>
-    Sub AddAttribute(path As String, fileAttribute As FileAttributes)
-        SetAttributes(path, GetAttributes(path) + fileAttribute)
-    End Sub
-    
-    ''' <summary>Removes the specified System.IO.FileAttributes from the file at the specified path</summary>
-    ''' <param name="path">The path to the file.</param>
-    ''' <param name="fileAttribute">The attributes to remove.</param>
-    Sub RemoveAttribute(path As String, fileAttribute As FileAttributes)
-        SetAttributes(path, GetAttributes(path) - fileAttribute)
-    End Sub
-    
     Sub ErrorParser(ex As Exception)
-        If ex.GetType.ToString = "System.UnauthorizedAccessException" AndAlso _
-          Not New WindowsPrincipal(WindowsIdentity.GetCurrent).IsInRole(WindowsBuiltInRole.Administrator) Then
+        If ex.GetType.ToString = "System.UnauthorizedAccessException" AndAlso Not WalkmanLib.IsAdmin Then
             If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
                 If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching DirectoryImage As Administrator?", _
                         MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    CreateObject("Shell.Application").ShellExecute(Path.Combine(Application.StartupPath, Process.GetCurrentProcess.ProcessName & ".exe"), _
-                        """" & txtDirectoryPath.Text & """", "", "runas")
+                    WalkmanLib.RunAsAdmin(Path.Combine(Application.StartupPath, Process.GetCurrentProcess.ProcessName & ".exe"), """" & txtDirectoryPath.Text & """")
                     Application.Exit
                 End If
             Else
@@ -797,13 +740,7 @@ Public Class DirectoryImage
     
     Sub btnWindowsProperties_Click() Handles btnWindowsProperties.Click
         If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
-            Dim info As New ShellExecuteInfo
-            info.cbSize = Marshal.SizeOf(info)
-            info.fMask = 12
-            info.lpVerb = "properties"
-            info.lpParameters = windowsCustomizeTab
-            info.lpFile = txtDirectoryPath.Text
-            If ShellExecuteEx(info) = False Then
+            If WalkmanLib.ShowProperties(txtDirectoryPath.Text, windowsCustomizeTab) = False Then
                 MsgBox("Could not open properties window!", MsgBoxStyle.Exclamation)
             End If
         End If
@@ -818,34 +755,6 @@ Public Class DirectoryImage
             End If
         End If
     End Sub
-    
-    ' https://stackoverflow.com/a/1936957/2999220
-    <DllImport("shell32.dll", CharSet := CharSet.Auto)> _
-    Private Shared Function ShellExecuteEx(ByRef lpExecInfo As ShellExecuteInfo) As Boolean
-    End Function
-    <StructLayout(LayoutKind.Sequential, CharSet := CharSet.Auto)> _
-    Public Structure ShellExecuteInfo
-        Public cbSize As Integer
-        Public fMask As UInteger
-        Public hwnd As IntPtr
-        <MarshalAs(UnmanagedType.LPTStr)> _
-        Public lpVerb As String
-        <MarshalAs(UnmanagedType.LPTStr)> _
-        Public lpFile As String
-        <MarshalAs(UnmanagedType.LPTStr)> _
-        Public lpParameters As String
-        <MarshalAs(UnmanagedType.LPTStr)> _
-        Public lpDirectory As String
-        Public nShow As Integer
-        Public hInstApp As IntPtr
-        Public lpIDList As IntPtr
-        <MarshalAs(UnmanagedType.LPTStr)> _
-        Public lpClass As String
-        Public hkeyClass As IntPtr
-        Public dwHotKey As UInteger
-        Public hIcon As IntPtr
-        Public hProcess As IntPtr
-    End Structure
     
     Private Sub ReadConfig(path As String)
         Dim reader As XmlReader = XmlReader.Create(path)
