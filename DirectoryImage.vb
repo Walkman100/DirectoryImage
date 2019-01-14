@@ -191,6 +191,7 @@ Public Class DirectoryImage
         If imgWindowsCurrent.ImageLocation.EndsWith(",0") Then
             imgWindowsCurrent.ImageLocation = imgWindowsCurrent.ImageLocation.Remove(imgWindowsCurrent.ImageLocation.Length-2)
         End If
+        
         If imgWindowsCurrent.ImageLocation.StartsWith("%") Then
             imgWindowsCurrent.ImageLocation = imgWindowsCurrent.ImageLocation.Substring(1)
             If imgWindowsCurrent.ImageLocation.Contains("%") Then
@@ -203,8 +204,23 @@ Public Class DirectoryImage
     Sub imgWindowsCurrent_LoadCompleted(sender As Object, e As System.ComponentModel.AsyncCompletedEventArgs) Handles imgWindowsCurrent.LoadCompleted
         If Not IsNothing(e.Error) Then
             Try
-                imgWindowsCurrent.Image = Icon.ExtractAssociatedIcon(imgWindowsCurrent.ImageLocation).ToBitmap
+                imgWindowsCurrent.Image = Drawing.Icon.ExtractAssociatedIcon(imgWindowsCurrent.ImageLocation).ToBitmap
             Catch
+                Dim filePath As String = imgWindowsCurrent.ImageLocation
+                Dim iconIndex As Integer = 0
+                
+                If filePath.Contains(",") Then
+                    If IsNumeric(filePath.Substring( filePath.LastIndexOf(",") +1 )) Then
+                        iconIndex = filePath.Substring( filePath.LastIndexOf(",") +1 )
+                        
+                        filePath = filePath.Remove(filePath.LastIndexOf(","))
+                    End If
+                End If
+                
+                Try
+                    imgWindowsCurrent.Image = WalkmanLib.ExtractIconByIndex(filePath, iconIndex, imgWindowsCurrent.Width).ToBitmap
+                Catch
+                End Try
             End Try
         End If
     End Sub
