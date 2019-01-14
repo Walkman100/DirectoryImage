@@ -1,10 +1,11 @@
 Imports System.IO.File
 Imports System.Runtime.InteropServices
 Public Class DirectoryImage
-    
+    Dim configFileName As String = "DirectoryImage.xml"
     Dim configFilePath As String = ""
     Dim windowsCustomizeTab As String = "Customize"
     Dim Op As Char = "\" 'Operator character
+    
     Sub LoadDirectoryImage() Handles MyBase.Load
         If System.Globalization.CultureInfo.CurrentCulture.EnglishName = "English (South Africa)" Then
             windowsCustomizeTab = "Customise"
@@ -13,40 +14,30 @@ Public Class DirectoryImage
         lblVersion.Text = My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor & "." & My.Application.Info.Version.Build
         If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
             Op = "\"
-            If Not Directory.Exists(Environment.GetEnvironmentVariable("AppData") & "\WalkmanOSS") Then
-                Directory.CreateDirectory(Environment.GetEnvironmentVariable("AppData") & "\WalkmanOSS")
+            If Not       Directory.Exists(Path.Combine(Environment.GetEnvironmentVariable("AppData"), "WalkmanOSS")) Then
+                Directory.CreateDirectory(Path.Combine(Environment.GetEnvironmentVariable("AppData"), "WalkmanOSS"))
             End If
-            configFilePath = Environment.GetEnvironmentVariable("AppData") & "\WalkmanOSS\DirectoryImage.xml"
-            
-            If File.Exists(Application.StartupPath & "\DirectoryImage.xml") Then
-                configFilePath = Application.StartupPath & "\DirectoryImage.xml"
-            ElseIf File.Exists("DirectoryImage.xml") Then
-                configFilePath = (New IO.FileInfo("DirectoryImage.xml")).FullName
-            End If
-            
-            If File.Exists(configFilePath) Then
-                ReadConfig(configFilePath)
-            End If
+            configFilePath =              Path.Combine(Environment.GetEnvironmentVariable("AppData"), "WalkmanOSS", configFileName)
         Else
             Op = "/"
-            If Not Directory.Exists(Environment.GetEnvironmentVariable("HOME") & "/.walkmanoss") Then
-                Directory.CreateDirectory(Environment.GetEnvironmentVariable("HOME") & "/.walkmanoss")
+            If Not       Directory.Exists(Path.Combine(Environment.GetEnvironmentVariable("HOME"), ".config", "WalkmanOSS")) Then
+                Directory.CreateDirectory(Path.Combine(Environment.GetEnvironmentVariable("HOME"), ".config", "WalkmanOSS"))
             End If
-            configFilePath = Environment.GetEnvironmentVariable("HOME") & "/.walkmanoss/DirectoryImage.xml"
-            
-            If File.Exists(Application.StartupPath & "/DirectoryImage.xml") Then
-                configFilePath = Application.StartupPath & "/DirectoryImage.xml"
-            ElseIf File.Exists("DirectoryImage.xml") Then
-                configFilePath = (New IO.FileInfo("DirectoryImage.xml")).FullName
-            End If
-            
-            If File.Exists(configFilePath) Then
-                ReadConfig(configFilePath)
-            End If
+            configFilePath =              Path.Combine(Environment.GetEnvironmentVariable("HOME"), ".config", "WalkmanOSS", configFileName)
             
             grpWindows.Location = New System.Drawing.Point(12, 210)
             grpLinux.Location = New System.Drawing.Point(12, 38)
             btnWindowsProperties.Visible = False
+        End If
+        
+        If       File.Exists(Path.Combine(Application.StartupPath, configFileName)) Then
+            configFilePath = Path.Combine(Application.StartupPath, configFileName)
+        ElseIf File.Exists(configFileName) Then
+            configFilePath = (New FileInfo(configFileName)).FullName
+        End If
+        
+        If File.Exists(configFilePath) Then
+            ReadConfig(configFilePath)
         End If
         
         If New WindowsPrincipal(WindowsIdentity.GetCurrent).IsInRole(WindowsBuiltInRole.Administrator) Then _
