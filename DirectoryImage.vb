@@ -6,16 +6,16 @@ Public Class DirectoryImage
     Dim windowsCustomizeTab As String = "Customize"
     
     Sub LoadDirectoryImage() Handles MyBase.Load
-        If WalkmanLib.GetWindowsVersion >= WindowsVersion.Windows8 Then
-            windowsCustomizeTab = "Customise"
-        End If
-        
         lblVersion.Text = My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor & "." & My.Application.Info.Version.Build
         If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
             If Not       Directory.Exists(Path.Combine(Environment.GetEnvironmentVariable("AppData"), "WalkmanOSS")) Then
                 Directory.CreateDirectory(Path.Combine(Environment.GetEnvironmentVariable("AppData"), "WalkmanOSS"))
             End If
             configFilePath =              Path.Combine(Environment.GetEnvironmentVariable("AppData"), "WalkmanOSS", configFileName)
+            
+            If WalkmanLib.GetWindowsVersion >= WindowsVersion.Windows8 Then
+                windowsCustomizeTab = "Customise"
+            End If
         Else
             If Not       Directory.Exists(Path.Combine(Environment.GetEnvironmentVariable("HOME"), ".config", "WalkmanOSS")) Then
                 Directory.CreateDirectory(Path.Combine(Environment.GetEnvironmentVariable("HOME"), ".config", "WalkmanOSS"))
@@ -193,10 +193,11 @@ Public Class DirectoryImage
         End If
         
         If imgWindowsCurrent.ImageLocation.EndsWith(",0") Then
+            If Environment.GetEnvironmentVariable("OS") <> "Windows_NT" Then Threading.Thread.Sleep(100) ' otherwise it crashes with "System.NotSupportedException: WebClient does not support concurrent I/O operations." at this point
             imgWindowsCurrent.ImageLocation = imgWindowsCurrent.ImageLocation.Remove(imgWindowsCurrent.ImageLocation.Length-2)
         End If
         
-        If imgWindowsCurrent.ImageLocation.StartsWith("%") Then
+        If Environment.GetEnvironmentVariable("OS") = "Windows_NT" AndAlso imgWindowsCurrent.ImageLocation.StartsWith("%") Then
             imgWindowsCurrent.ImageLocation = imgWindowsCurrent.ImageLocation.Substring(1)
             If imgWindowsCurrent.ImageLocation.Contains("%") Then
                 imgWindowsCurrent.ImageLocation = Environment.GetEnvironmentVariable(imgWindowsCurrent.ImageLocation.Remove(imgWindowsCurrent.ImageLocation.IndexOf("%"))) _
