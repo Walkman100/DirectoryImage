@@ -1,4 +1,4 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class DirectoryImage
     Inherits System.Windows.Forms.Form
 
@@ -26,6 +26,7 @@ Partial Class DirectoryImage
         Me.txtDirectoryPath = New System.Windows.Forms.TextBox()
         Me.btnDirectoryBrowse = New System.Windows.Forms.Button()
         Me.grpWindows = New System.Windows.Forms.GroupBox()
+        Me.btnWindowsPickIcon = New System.Windows.Forms.Button()
         Me.btnWindowsProperties = New System.Windows.Forms.Button()
         Me.chkWindowsHidden = New System.Windows.Forms.CheckBox()
         Me.chkWindowsSystem = New System.Windows.Forms.CheckBox()
@@ -65,6 +66,7 @@ Partial Class DirectoryImage
         Me.OpenFileDialogEditor = New System.Windows.Forms.OpenFileDialog()
         Me.timerDelayedBrowse = New System.Windows.Forms.Timer(Me.components)
         Me.lblVersion = New System.Windows.Forms.Label()
+        Me.btnExit = New System.Windows.Forms.Button()
         Me.grpWindows.SuspendLayout
         Me.grpWindowsRel.SuspendLayout
         CType(Me.imgWindowsCurrent,System.ComponentModel.ISupportInitialize).BeginInit
@@ -97,6 +99,7 @@ Partial Class DirectoryImage
         '
         Me.grpWindows.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.grpWindows.Controls.Add(Me.btnWindowsPickIcon)
         Me.grpWindows.Controls.Add(Me.btnWindowsProperties)
         Me.grpWindows.Controls.Add(Me.chkWindowsHidden)
         Me.grpWindows.Controls.Add(Me.chkWindowsSystem)
@@ -116,6 +119,17 @@ Partial Class DirectoryImage
         Me.grpWindows.TabIndex = 2
         Me.grpWindows.TabStop = false
         Me.grpWindows.Text = "Windows Icon"
+        '
+        'btnWindowsPickIcon
+        '
+        Me.btnWindowsPickIcon.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnWindowsPickIcon.AutoSize = true
+        Me.btnWindowsPickIcon.Location = New System.Drawing.Point(320, 68)
+        Me.btnWindowsPickIcon.Name = "btnWindowsPickIcon"
+        Me.btnWindowsPickIcon.Size = New System.Drawing.Size(75, 23)
+        Me.btnWindowsPickIcon.TabIndex = 7
+        Me.btnWindowsPickIcon.Text = "Pick Icon..."
+        Me.btnWindowsPickIcon.UseVisualStyleBackColor = true
         '
         'btnWindowsProperties
         '
@@ -531,11 +545,23 @@ Partial Class DirectoryImage
         Me.lblVersion.TabIndex = 8
         Me.lblVersion.Text = "1.0.0"
         '
+        'btnExit
+        '
+        Me.btnExit.Location = New System.Drawing.Point(-80, -30)
+        Me.btnExit.Name = "btnExit"
+        Me.btnExit.Size = New System.Drawing.Size(75, 23)
+        Me.btnExit.TabIndex = 9
+        Me.btnExit.TabStop = false
+        Me.btnExit.Text = "Exit"
+        Me.btnExit.UseVisualStyleBackColor = true
+        '
         'DirectoryImage
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.CancelButton = Me.btnExit
         Me.ClientSize = New System.Drawing.Size(536, 417)
+        Me.Controls.Add(Me.btnExit)
         Me.Controls.Add(Me.lblVersion)
         Me.Controls.Add(Me.btnEditorPathCustom)
         Me.Controls.Add(Me.txtEditorPath)
@@ -562,6 +588,8 @@ Partial Class DirectoryImage
         Me.ResumeLayout(false)
         Me.PerformLayout
     End Sub
+    Private WithEvents btnExit As System.Windows.Forms.Button
+    Private WithEvents btnWindowsPickIcon As System.Windows.Forms.Button
     Private lblVersion As System.Windows.Forms.Label
     Private WithEvents btnWindowsProperties As System.Windows.Forms.Button
     Private WithEvents timerDelayedBrowse As System.Windows.Forms.Timer

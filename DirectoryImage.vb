@@ -25,6 +25,7 @@ Public Class DirectoryImage
             grpWindows.Location = New System.Drawing.Point(12, 210)
             grpLinux.Location = New System.Drawing.Point(12, 38)
             btnWindowsProperties.Visible = False
+            btnWindowsPickIcon.Visible = False
         End If
         
         If       File.Exists(Path.Combine(Application.StartupPath, configFileName)) Then
@@ -516,7 +517,7 @@ Public Class DirectoryImage
             End If
         End If
         If imgLinuxCurrent.ImageLocation <> "" Then
-            OpenFileDialogLinux.FileName =  imgLinuxCurrent.ImageLocation
+            OpenFileDialogLinux.FileName = imgLinuxCurrent.ImageLocation
         End If
     End Sub
     
@@ -741,6 +742,27 @@ Public Class DirectoryImage
                 WriteConfig(configFilePath)
             End If
         End If
+    End Sub
+    
+    Sub btnWindowsPickIcon_Click() Handles btnWindowsPickIcon.Click
+        Dim selectedFilePath As String = txtWindowsIconPath.Text
+        Dim selectedIconIndex As Integer
+        
+        If selectedFilePath.Contains(",") Then
+            If IsNumeric(selectedFilePath.Substring( selectedFilePath.LastIndexOf(",") +1 )) Then
+                selectedIconIndex = selectedFilePath.Substring( selectedFilePath.LastIndexOf(",") +1 )
+                
+                selectedFilePath = selectedFilePath.Remove(selectedFilePath.LastIndexOf(","))
+            End If
+        End If
+        
+        If WalkmanLib.PickIconDialogShow(selectedFilePath, selectedIconIndex, Me.Handle) Then
+            txtWindowsIconPath.Text = selectedFilePath & "," & selectedIconIndex
+        End If
+    End Sub
+    
+    Sub btnExit_Click() Handles btnExit.Click
+        Application.Exit()
     End Sub
     
     ' ==================== Helper methods ====================
