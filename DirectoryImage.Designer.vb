@@ -56,7 +56,6 @@ Partial Class DirectoryImage
         Me.optLinuxAbsolute = New System.Windows.Forms.RadioButton()
         Me.imgLinuxCurrent = New System.Windows.Forms.PictureBox()
         Me.lblLinuxCurrent = New System.Windows.Forms.Label()
-        Me.FolderBrowserDialog = New System.Windows.Forms.FolderBrowserDialog()
         Me.OpenFileDialogWindows = New System.Windows.Forms.OpenFileDialog()
         Me.OpenFileDialogLinux = New System.Windows.Forms.OpenFileDialog()
         Me.chkCustomEditor = New System.Windows.Forms.CheckBox()
@@ -66,6 +65,7 @@ Partial Class DirectoryImage
         Me.OpenFileDialogEditor = New System.Windows.Forms.OpenFileDialog()
         Me.timerDelayedBrowse = New System.Windows.Forms.Timer(Me.components)
         Me.lblVersion = New System.Windows.Forms.Label()
+        Me.FolderBrowserDialog = New Ookii.Dialogs.VistaFolderBrowserDialog()
         Me.btnExit = New System.Windows.Forms.Button()
         Me.grpWindows.SuspendLayout
         Me.grpWindowsRel.SuspendLayout
@@ -467,10 +467,6 @@ Partial Class DirectoryImage
         Me.lblLinuxCurrent.TabIndex = 0
         Me.lblLinuxCurrent.Text = "Current Image:"
         '
-        'FolderBrowserDialog
-        '
-        Me.FolderBrowserDialog.Description = "Select a folder to set or view icons for"
-        '
         'OpenFileDialogWindows
         '
         Me.OpenFileDialogWindows.DefaultExt = "ico"
@@ -545,6 +541,11 @@ Partial Class DirectoryImage
         Me.lblVersion.TabIndex = 8
         Me.lblVersion.Text = "1.0.0"
         '
+        'FolderBrowserDialog
+        '
+        Me.FolderBrowserDialog.Description = "Select a folder to set or view icons for"
+        Me.FolderBrowserDialog.UseDescriptionForTitle = true
+        '
         'btnExit
         '
         Me.btnExit.Location = New System.Drawing.Point(-80, -30)
@@ -608,7 +609,7 @@ Partial Class DirectoryImage
     Private WithEvents optLinuxSystemImage As System.Windows.Forms.RadioButton
     Private OpenFileDialogLinux As System.Windows.Forms.OpenFileDialog
     Private OpenFileDialogWindows As System.Windows.Forms.OpenFileDialog
-    Private FolderBrowserDialog As System.Windows.Forms.FolderBrowserDialog
+    Private FolderBrowserDialog As Ookii.Dialogs.VistaFolderBrowserDialog
     Private WithEvents btnLinuxOpenDataFile As System.Windows.Forms.Button
     Private WithEvents btnWindowsOpenDataFile As System.Windows.Forms.Button
     Private lblLinuxCurrent As System.Windows.Forms.Label

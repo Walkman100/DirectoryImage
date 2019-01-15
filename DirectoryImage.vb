@@ -249,8 +249,18 @@ Public Class DirectoryImage
             imgLinuxCurrent.ImageLocation = txtDirectoryPath.Text & txtLinuxImagePath.Text.Substring(1).Replace("/", "\")
         Else
             optLinuxSystemImage.Checked = True
+            
             If Environment.GetEnvironmentVariable("OS") <> "Windows_NT" Then
-                imgLinuxCurrent.ImageLocation = Path.Combine(InputBox("System images location:", "Enter Location", Path.Combine(Environment.GetEnvironmentVariable("HOME"), ".local/share/icons/hicolor/256x256/apps")), txtLinuxImagePath.Text)
+                Dim tmpString As String = Path.Combine(Environment.GetEnvironmentVariable("HOME"), ".local/share/icons/hicolor/256x256/apps")
+                
+                If OokiiDialogsLoaded() Then
+                    OokiiInputBox(tmpString, "Enter Location", "System images location:")
+                                ' tmpString above is ByRef, so OokiiInputBox() updates it
+                Else
+                    tmpString = InputBox("System images location:", "Enter Location", tmpString)
+                End If
+                
+                imgLinuxCurrent.ImageLocation = Path.Combine(tmpString, txtLinuxImagePath.Text)
             End If
         End If
     End Sub
@@ -570,9 +580,21 @@ Public Class DirectoryImage
             imgLinuxCurrent.ImageLocation = OpenFileDialogLinux.FileName
             btnLinuxSave.Enabled = True
             If optLinuxAbsolute.Checked Then
-                txtLinuxImagePath.Text = OpenFileDialogLinux.FileName.Substring(2).Replace("\", "/")
-                txtLinuxImagePath.Text = InputBox("Please enter the path in Linux where drive """& OpenFileDialogLinux.FileName.Remove(2)&""" is mounted:", _
-                                                  "Linux Drive Mountpoint","/media/"&Environment.GetEnvironmentVariable("UserName")&"/MountPath") & txtLinuxImagePath.Text
+                If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
+                    txtLinuxImagePath.Text = OpenFileDialogLinux.FileName.Substring(2).Replace("\", "/")
+                    
+                    Dim tmpString As String = "/media/" & Environment.GetEnvironmentVariable("UserName") & "/MountPath"
+                    If OokiiDialogsLoaded() Then
+                        OokiiInputBox(tmpString, "Linux Drive Mountpoint", "Please enter the path in Linux where drive """& OpenFileDialogLinux.FileName.Remove(2)&""" is mounted:")
+                                    ' tmpString above is ByRef, so OokiiInputBox() updates it
+                    Else
+                        tmpString = InputBox("Please enter the path in Linux where drive """& OpenFileDialogLinux.FileName.Remove(2)&""" is mounted:", "Linux Drive Mountpoint", tmpString)
+                    End If
+                    
+                    txtLinuxImagePath.Text = tmpString & txtLinuxImagePath.Text
+                Else
+                    txtLinuxImagePath.Text = OpenFileDialogLinux.FileName
+                End If
             ElseIf optLinuxRelContained.Checked Then
                 If txtDirectoryPath.Text.EndsWith(":\") Then
                     txtLinuxImagePath.Text = "./" & OpenFileDialogLinux.FileName.Substring(txtDirectoryPath.Text.Length).Replace("\", "/")
@@ -736,7 +758,16 @@ Public Class DirectoryImage
     
     Sub btnWindowsProperties_MouseUp(sender As Object, e As MouseEventArgs) Handles btnWindowsProperties.MouseUp
         If e.Button = MouseButtons.Right Then
-            Dim tmpInput = InputBox("Enter customise tab name:", "Set customise tab name", windowsCustomizeTab)
+            Dim tmpInput As String = windowsCustomizeTab
+            
+            If OokiiDialogsLoaded() Then
+                If OokiiInputBox(tmpInput, "Set customise tab name", "Enter customise tab name:") <> DialogResult.OK Then
+                    tmpInput = "" ' tmpInput above is ByRef, so OokiiInputBox() updates it
+                End If
+            Else
+                tmpInput = InputBox("Enter customise tab name:", "Set customise tab name", tmpInput)
+            End If
+            
             If tmpInput <> "" Then
                 windowsCustomizeTab = tmpInput
                 WriteConfig(configFilePath)
@@ -812,6 +843,35 @@ Public Class DirectoryImage
                 frmBugReport.Show()
             End If
         End If
+    End Sub
+    
+    Function OokiiInputBox(ByRef input As String, Optional windowTitle As String = Nothing, Optional header As String = Nothing, Optional content As String = Nothing) As DialogResult
+        Dim ooInput = New Ookii.Dialogs.InputDialog
+        ooInput.WindowTitle = windowTitle
+        ooInput.MainInstruction = header
+        ooInput.Content = content
+        ooInput.Input = input
+        
+        Dim returnResult = ooInput.ShowDialog()
+        input = ooInput.Input
+        Return returnResult
+    End Function
+    Function OokiiDialogsLoaded() As Boolean
+        Try
+            OokiiDialogsLoadedDelegate()
+            Return True
+        Catch ex As FileNotFoundException
+            If ex.Message.StartsWith("Could not load file or assembly 'PropertiesDotNet-Ookii.Dialogs") = False Then
+                MsgBox("Unexpected error loading Ookii.Dialogs.dll!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
+            End If
+            Return False
+        Catch ex As Exception
+            MsgBox("Unexpected error loading Ookii.Dialogs.dll!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
+            Return False
+        End Try
+    End Function
+    Sub OokiiDialogsLoadedDelegate() ' because calling a not found class will fail the caller of the method not directly in the method
+        Dim test = Ookii.Dialogs.TaskDialogIcon.Information
     End Sub
     
     Private Sub ReadConfig(path As String)
