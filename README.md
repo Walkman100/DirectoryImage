@@ -33,5 +33,7 @@ Get the latest version [here](https://github.com/Walkman100/DirectoryImage/relea
 [here](https://ci.appveyor.com/project/Walkman100/DirectoryImage/build/artifacts)
 (note that these builds are built for the Debug config and so are not optimised)
 
+If getting the latest build from commit, download [DirectoryImage-Ookii.Dialogs.dll](https://github.com/Walkman100/DirectoryImage/raw/master/Ookii.Dialogs/DirectoryImage-Ookii.Dialogs.dll) to be able to run DirectoryImage.
+
 ## Compile requirements
 See [CompileInstructions.md](https://github.com/Walkman100/gists/blob/master/CompileInstructions.md)
