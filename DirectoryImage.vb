@@ -695,9 +695,9 @@ Public Class DirectoryImage
             OpenFileDialogEditor.Filter = "Applications|*.exe"
             OpenFileDialogEditor.DefaultExt = "exe"
         Else
-            OpenFileDialogEditor.InitialDirectory = "\usr\bin"
+            OpenFileDialogEditor.InitialDirectory = "/usr/bin"
             OpenFileDialogEditor.Filter = "Executables|*"
-            OpenFileDialogEditor.AddExtension = false
+            OpenFileDialogEditor.AddExtension = False
         End If
         If OpenFileDialogEditor.ShowDialog = DialogResult.OK Then
             txtEditorPath.Text = OpenFileDialogEditor.FileName

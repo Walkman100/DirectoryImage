@@ -138,7 +138,7 @@ Partial Class DirectoryImage
         Me.btnWindowsProperties.Location = New System.Drawing.Point(282, 42)
         Me.btnWindowsProperties.Name = "btnWindowsProperties"
         Me.btnWindowsProperties.Size = New System.Drawing.Size(143, 23)
-        Me.btnWindowsProperties.TabIndex = 8
+        Me.btnWindowsProperties.TabIndex = 6
         Me.btnWindowsProperties.Text = "Folder Windows Properties"
         Me.btnWindowsProperties.UseVisualStyleBackColor = true
         '
@@ -150,7 +150,7 @@ Partial Class DirectoryImage
         Me.chkWindowsHidden.Location = New System.Drawing.Point(380, 137)
         Me.chkWindowsHidden.Name = "chkWindowsHidden"
         Me.chkWindowsHidden.Size = New System.Drawing.Size(60, 17)
-        Me.chkWindowsHidden.TabIndex = 12
+        Me.chkWindowsHidden.TabIndex = 10
         Me.chkWindowsHidden.Text = "Hidden"
         Me.chkWindowsHidden.UseVisualStyleBackColor = true
         '
@@ -162,7 +162,7 @@ Partial Class DirectoryImage
         Me.chkWindowsSystem.Location = New System.Drawing.Point(446, 137)
         Me.chkWindowsSystem.Name = "chkWindowsSystem"
         Me.chkWindowsSystem.Size = New System.Drawing.Size(60, 17)
-        Me.chkWindowsSystem.TabIndex = 13
+        Me.chkWindowsSystem.TabIndex = 11
         Me.chkWindowsSystem.Text = "System"
         Me.chkWindowsSystem.UseVisualStyleBackColor = true
         '
@@ -174,7 +174,7 @@ Partial Class DirectoryImage
         Me.btnWindowsSave.Location = New System.Drawing.Point(431, 79)
         Me.btnWindowsSave.Name = "btnWindowsSave"
         Me.btnWindowsSave.Size = New System.Drawing.Size(75, 23)
-        Me.btnWindowsSave.TabIndex = 11
+        Me.btnWindowsSave.TabIndex = 8
         Me.btnWindowsSave.Text = "Save ↓"
         Me.btnWindowsSave.UseVisualStyleBackColor = true
         '
@@ -186,7 +186,7 @@ Partial Class DirectoryImage
         Me.btnWindowsOpenDataFile.Location = New System.Drawing.Point(400, 108)
         Me.btnWindowsOpenDataFile.Name = "btnWindowsOpenDataFile"
         Me.btnWindowsOpenDataFile.Size = New System.Drawing.Size(106, 23)
-        Me.btnWindowsOpenDataFile.TabIndex = 10
+        Me.btnWindowsOpenDataFile.TabIndex = 9
         Me.btnWindowsOpenDataFile.Text = "Open desktop.ini..."
         Me.btnWindowsOpenDataFile.UseVisualStyleBackColor = true
         '
@@ -196,7 +196,7 @@ Partial Class DirectoryImage
         Me.optWindowsRel.Location = New System.Drawing.Point(140, 68)
         Me.optWindowsRel.Name = "optWindowsRel"
         Me.optWindowsRel.Size = New System.Drawing.Size(67, 17)
-        Me.optWindowsRel.TabIndex = 8
+        Me.optWindowsRel.TabIndex = 3
         Me.optWindowsRel.TabStop = true
         Me.optWindowsRel.Text = "Relative:"
         Me.optWindowsRel.UseVisualStyleBackColor = true
@@ -209,7 +209,7 @@ Partial Class DirectoryImage
         Me.grpWindowsRel.Location = New System.Drawing.Point(140, 70)
         Me.grpWindowsRel.Name = "grpWindowsRel"
         Me.grpWindowsRel.Size = New System.Drawing.Size(150, 65)
-        Me.grpWindowsRel.TabIndex = 9
+        Me.grpWindowsRel.TabIndex = 4
         Me.grpWindowsRel.TabStop = false
         '
         'optWindowsRelContained
@@ -219,7 +219,7 @@ Partial Class DirectoryImage
         Me.optWindowsRelContained.Location = New System.Drawing.Point(6, 19)
         Me.optWindowsRelContained.Name = "optWindowsRelContained"
         Me.optWindowsRelContained.Size = New System.Drawing.Size(113, 17)
-        Me.optWindowsRelContained.TabIndex = 2
+        Me.optWindowsRelContained.TabIndex = 0
         Me.optWindowsRelContained.TabStop = true
         Me.optWindowsRelContained.Text = "Contained in folder"
         Me.optWindowsRelContained.UseVisualStyleBackColor = true
@@ -230,7 +230,7 @@ Partial Class DirectoryImage
         Me.optWindowsRelExternal.Location = New System.Drawing.Point(6, 42)
         Me.optWindowsRelExternal.Name = "optWindowsRelExternal"
         Me.optWindowsRelExternal.Size = New System.Drawing.Size(142, 17)
-        Me.optWindowsRelExternal.TabIndex = 7
+        Me.optWindowsRelExternal.TabIndex = 1
         Me.optWindowsRelExternal.TabStop = true
         Me.optWindowsRelExternal.Text = "Relative outside of folder"
         Me.optWindowsRelExternal.UseVisualStyleBackColor = true
@@ -254,7 +254,7 @@ Partial Class DirectoryImage
         Me.txtWindowsIconPath.Location = New System.Drawing.Point(140, 19)
         Me.txtWindowsIconPath.Name = "txtWindowsIconPath"
         Me.txtWindowsIconPath.Size = New System.Drawing.Size(366, 20)
-        Me.txtWindowsIconPath.TabIndex = 4
+        Me.txtWindowsIconPath.TabIndex = 1
         '
         'optWindowsAbsolute
         '
@@ -262,7 +262,7 @@ Partial Class DirectoryImage
         Me.optWindowsAbsolute.Location = New System.Drawing.Point(140, 45)
         Me.optWindowsAbsolute.Name = "optWindowsAbsolute"
         Me.optWindowsAbsolute.Size = New System.Drawing.Size(66, 17)
-        Me.optWindowsAbsolute.TabIndex = 3
+        Me.optWindowsAbsolute.TabIndex = 2
         Me.optWindowsAbsolute.TabStop = true
         Me.optWindowsAbsolute.Text = "Absolute"
         Me.optWindowsAbsolute.UseVisualStyleBackColor = true
@@ -319,7 +319,7 @@ Partial Class DirectoryImage
         Me.chkLinuxHidden.Location = New System.Drawing.Point(380, 137)
         Me.chkLinuxHidden.Name = "chkLinuxHidden"
         Me.chkLinuxHidden.Size = New System.Drawing.Size(60, 17)
-        Me.chkLinuxHidden.TabIndex = 17
+        Me.chkLinuxHidden.TabIndex = 9
         Me.chkLinuxHidden.Text = "Hidden"
         Me.chkLinuxHidden.UseVisualStyleBackColor = true
         '
@@ -331,7 +331,7 @@ Partial Class DirectoryImage
         Me.chkLinuxSystem.Location = New System.Drawing.Point(446, 137)
         Me.chkLinuxSystem.Name = "chkLinuxSystem"
         Me.chkLinuxSystem.Size = New System.Drawing.Size(60, 17)
-        Me.chkLinuxSystem.TabIndex = 18
+        Me.chkLinuxSystem.TabIndex = 10
         Me.chkLinuxSystem.Text = "System"
         Me.chkLinuxSystem.UseVisualStyleBackColor = true
         '
@@ -343,7 +343,7 @@ Partial Class DirectoryImage
         Me.btnLinuxSave.Location = New System.Drawing.Point(431, 79)
         Me.btnLinuxSave.Name = "btnLinuxSave"
         Me.btnLinuxSave.Size = New System.Drawing.Size(75, 23)
-        Me.btnLinuxSave.TabIndex = 16
+        Me.btnLinuxSave.TabIndex = 7
         Me.btnLinuxSave.Text = "Save ↓"
         Me.btnLinuxSave.UseVisualStyleBackColor = true
         '
@@ -353,7 +353,7 @@ Partial Class DirectoryImage
         Me.optLinuxSystemImage.Location = New System.Drawing.Point(140, 135)
         Me.optLinuxSystemImage.Name = "optLinuxSystemImage"
         Me.optLinuxSystemImage.Size = New System.Drawing.Size(91, 17)
-        Me.optLinuxSystemImage.TabIndex = 15
+        Me.optLinuxSystemImage.TabIndex = 5
         Me.optLinuxSystemImage.TabStop = true
         Me.optLinuxSystemImage.Text = "System Image"
         Me.optLinuxSystemImage.UseVisualStyleBackColor = true
@@ -366,7 +366,7 @@ Partial Class DirectoryImage
         Me.btnLinuxOpenDataFile.Location = New System.Drawing.Point(408, 108)
         Me.btnLinuxOpenDataFile.Name = "btnLinuxOpenDataFile"
         Me.btnLinuxOpenDataFile.Size = New System.Drawing.Size(98, 23)
-        Me.btnLinuxOpenDataFile.TabIndex = 14
+        Me.btnLinuxOpenDataFile.TabIndex = 8
         Me.btnLinuxOpenDataFile.Text = "Open .directory..."
         Me.btnLinuxOpenDataFile.UseVisualStyleBackColor = true
         '
@@ -376,7 +376,7 @@ Partial Class DirectoryImage
         Me.optLinuxRel.Location = New System.Drawing.Point(140, 68)
         Me.optLinuxRel.Name = "optLinuxRel"
         Me.optLinuxRel.Size = New System.Drawing.Size(67, 17)
-        Me.optLinuxRel.TabIndex = 8
+        Me.optLinuxRel.TabIndex = 3
         Me.optLinuxRel.TabStop = true
         Me.optLinuxRel.Text = "Relative:"
         Me.optLinuxRel.UseVisualStyleBackColor = true
@@ -389,7 +389,7 @@ Partial Class DirectoryImage
         Me.grpLinuxRel.Location = New System.Drawing.Point(140, 70)
         Me.grpLinuxRel.Name = "grpLinuxRel"
         Me.grpLinuxRel.Size = New System.Drawing.Size(150, 65)
-        Me.grpLinuxRel.TabIndex = 13
+        Me.grpLinuxRel.TabIndex = 4
         Me.grpLinuxRel.TabStop = false
         '
         'optLinuxRelContained
@@ -399,7 +399,7 @@ Partial Class DirectoryImage
         Me.optLinuxRelContained.Location = New System.Drawing.Point(6, 19)
         Me.optLinuxRelContained.Name = "optLinuxRelContained"
         Me.optLinuxRelContained.Size = New System.Drawing.Size(113, 17)
-        Me.optLinuxRelContained.TabIndex = 2
+        Me.optLinuxRelContained.TabIndex = 0
         Me.optLinuxRelContained.TabStop = true
         Me.optLinuxRelContained.Text = "Contained in folder"
         Me.optLinuxRelContained.UseVisualStyleBackColor = true
@@ -410,7 +410,7 @@ Partial Class DirectoryImage
         Me.optLinuxRelExternal.Location = New System.Drawing.Point(6, 42)
         Me.optLinuxRelExternal.Name = "optLinuxRelExternal"
         Me.optLinuxRelExternal.Size = New System.Drawing.Size(142, 17)
-        Me.optLinuxRelExternal.TabIndex = 7
+        Me.optLinuxRelExternal.TabIndex = 1
         Me.optLinuxRelExternal.TabStop = true
         Me.optLinuxRelExternal.Text = "Relative outside of folder"
         Me.optLinuxRelExternal.UseVisualStyleBackColor = true
@@ -423,7 +423,7 @@ Partial Class DirectoryImage
         Me.btnLinuxIconSet.Location = New System.Drawing.Point(431, 42)
         Me.btnLinuxIconSet.Name = "btnLinuxIconSet"
         Me.btnLinuxIconSet.Size = New System.Drawing.Size(75, 23)
-        Me.btnLinuxIconSet.TabIndex = 12
+        Me.btnLinuxIconSet.TabIndex = 6
         Me.btnLinuxIconSet.Text = "Set Image..."
         Me.btnLinuxIconSet.UseVisualStyleBackColor = true
         '
@@ -434,7 +434,7 @@ Partial Class DirectoryImage
         Me.txtLinuxImagePath.Location = New System.Drawing.Point(140, 19)
         Me.txtLinuxImagePath.Name = "txtLinuxImagePath"
         Me.txtLinuxImagePath.Size = New System.Drawing.Size(366, 20)
-        Me.txtLinuxImagePath.TabIndex = 11
+        Me.txtLinuxImagePath.TabIndex = 1
         '
         'optLinuxAbsolute
         '
@@ -442,7 +442,7 @@ Partial Class DirectoryImage
         Me.optLinuxAbsolute.Location = New System.Drawing.Point(140, 45)
         Me.optLinuxAbsolute.Name = "optLinuxAbsolute"
         Me.optLinuxAbsolute.Size = New System.Drawing.Size(66, 17)
-        Me.optLinuxAbsolute.TabIndex = 10
+        Me.optLinuxAbsolute.TabIndex = 2
         Me.optLinuxAbsolute.TabStop = true
         Me.optLinuxAbsolute.Text = "Absolute"
         Me.optLinuxAbsolute.UseVisualStyleBackColor = true
@@ -464,7 +464,7 @@ Partial Class DirectoryImage
         Me.lblLinuxCurrent.Location = New System.Drawing.Point(6, 16)
         Me.lblLinuxCurrent.Name = "lblLinuxCurrent"
         Me.lblLinuxCurrent.Size = New System.Drawing.Size(76, 13)
-        Me.lblLinuxCurrent.TabIndex = 2
+        Me.lblLinuxCurrent.TabIndex = 0
         Me.lblLinuxCurrent.Text = "Current Image:"
         '
         'FolderBrowserDialog
