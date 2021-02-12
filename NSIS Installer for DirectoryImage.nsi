@@ -2,13 +2,22 @@
 ; get NSIS at http://nsis.sourceforge.net/Download
 
 !define ProgramName "DirectoryImage"
+!define ProgramVersion 1.5.0.0
 Icon "My Project\Shell32(#326).ico"
 
 Name "${ProgramName}"
 Caption "${ProgramName} Installer"
 XPStyle on
+Unicode true
 ShowInstDetails show
 AutoCloseWindow true
+
+VIProductVersion ${ProgramVersion}
+VIAddVersionKey "ProductVersion" "${ProgramVersion}"
+VIAddVersionKey "ProductName" "${ProgramName}"
+VIAddVersionKey "FileVersion" "${ProgramVersion}"
+VIAddVersionKey "LegalCopyright" "FOSS Walkman"
+VIAddVersionKey "FileDescription" "${ProgramName} Installer"
 
 LicenseBkColor /windows
 LicenseData "LICENSE.md"
@@ -47,6 +56,7 @@ Section "Add to Windows Programs & Features"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ProgramName}" "DisplayIcon" "$INSTDIR\${ProgramName}.exe"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ProgramName}" "InstallLocation" "$INSTDIR\"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ProgramName}" "UninstallString" "$INSTDIR\${ProgramName}-Uninst.exe"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ProgramName}" "DisplayVersion" "${ProgramVersion}"
   
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ProgramName}" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ProgramName}" "NoRepair" 1

@@ -12,6 +12,7 @@
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <LangVersion>11</LangVersion>
     <NoWin32Manifest>False</NoWin32Manifest>
     <OptionCompare>Binary</OptionCompare>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
