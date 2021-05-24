@@ -787,8 +787,47 @@ Public Class DirectoryImage
             End If
         End If
         
+        If optWindowsRel.Checked Then
+            If optWindowsRelContained.Checked Then
+                selectedFilePath = txtDirectoryPath.Text & Path.DirectorySeparatorChar & selectedFilePath
+            ElseIf optWindowsRelExternal.Checked
+                selectedFilePath = txtDirectoryPath.Text.Remove(txtDirectoryPath.Text.LastIndexOf(Path.DirectorySeparatorChar)) & Path.DirectorySeparatorChar & selectedFilePath
+            End If
+        End If
+        
         If WalkmanLib.PickIconDialogShow(selectedFilePath, selectedIconIndex, Me.Handle) Then
-            txtWindowsIconPath.Text = selectedFilePath & "," & selectedIconIndex
+            Dim combinedIconPath As String = selectedFilePath & "," & selectedIconIndex
+            
+            imgWindowsCurrent.ImageLocation = Environment.ExpandEnvironmentVariables(combinedIconPath)
+            btnWindowsSave.Enabled = True
+            If optWindowsAbsolute.Checked Then
+                If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
+                    txtWindowsIconPath.Text = combinedIconPath
+                End If
+            ElseIf optWindowsRelContained.Checked Then
+                If txtDirectoryPath.Text.EndsWith(":\") Then
+                    txtWindowsIconPath.Text = combinedIconPath.Substring(txtDirectoryPath.Text.Length)
+                Else
+                    txtWindowsIconPath.Text = combinedIconPath.Substring(txtDirectoryPath.Text.Length + 1).Replace("/", "\")
+                End If
+            ElseIf optWindowsRelExternal.Checked Then
+                txtWindowsIconPath.Text = ".."
+                Dim scanText As String
+                Try
+                    scanText = txtDirectoryPath.Text.Substring(combinedIconPath.Replace("/", "\").LastIndexOf("\") +1).Replace("/", "\")
+                    If scanText.Contains("\") Then
+                        For Each character As Char In scanText
+                            If character = "\" Then
+                                txtWindowsIconPath.Text &= "\.."
+                            End If
+                        Next
+                    End If
+                Catch
+                End Try
+                txtWindowsIconPath.Text &= combinedIconPath.Substring(combinedIconPath.Replace("/", "\").LastIndexOf("\"))
+            Else
+                MsgBox("Please select an option!", MsgBoxStyle.Exclamation)
+            End If
         End If
     End Sub
     
