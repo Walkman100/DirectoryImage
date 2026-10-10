@@ -91,15 +91,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="WalkmanLib\WalkmanLibDotNet.vb">
-      <Link>WalkmanLibDotNet.vb</Link>
-    </Compile>
-    <Compile Include="WalkmanLib\WalkmanLibWin32.vb">
-      <Link>WalkmanLibWin32.vb</Link>
-    </Compile>
-    <Compile Include="WalkmanLib\WalkmanLibWinVersion.vb">
-      <Link>WalkmanLibWinVersion.vb</Link>
-    </Compile>
+    <Compile Include="WalkmanLib\NativeErrorCodes.vb" />
+    <Compile Include="WalkmanLib\WalkmanLibDotNet.vb" />
+    <Compile Include="WalkmanLib\WalkmanLibWin32.vb" />
+    <Compile Include="WalkmanLib\WalkmanLibWinVersion.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
