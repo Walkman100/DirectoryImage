@@ -1,10 +1,16 @@
+Imports System
+Imports System.Diagnostics
+Imports System.IO
 Imports System.IO.File
-Imports System.Runtime.InteropServices
+Imports System.Windows.Forms
+Imports System.Xml
+Imports Microsoft.VisualBasic
+
 Public Class DirectoryImage
     Dim configFileName As String = "DirectoryImage.xml"
     Dim configFilePath As String = ""
     Dim windowsCustomizeTab As String = "Customize"
-    
+
     Sub LoadDirectoryImage() Handles MyBase.Load
         lblVersion.Text = My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor & "." & My.Application.Info.Version.Build
         If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
@@ -12,7 +18,7 @@ Public Class DirectoryImage
                 Directory.CreateDirectory(Path.Combine(Environment.GetEnvironmentVariable("AppData"), "WalkmanOSS"))
             End If
             configFilePath =              Path.Combine(Environment.GetEnvironmentVariable("AppData"), "WalkmanOSS", configFileName)
-            
+
             If WalkmanLib.GetWindowsVersion >= WindowsVersion.Windows8 Then
                 windowsCustomizeTab = "Customise"
             End If
@@ -21,51 +27,51 @@ Public Class DirectoryImage
                 Directory.CreateDirectory(Path.Combine(Environment.GetEnvironmentVariable("HOME"), ".config", "WalkmanOSS"))
             End If
             configFilePath =              Path.Combine(Environment.GetEnvironmentVariable("HOME"), ".config", "WalkmanOSS", configFileName)
-            
-            grpWindows.Location = New System.Drawing.Point(12, 210)
-            grpLinux.Location = New System.Drawing.Point(12, 38)
+
+            grpWindows.Location = New Drawing.Point(12, 210)
+            grpLinux.Location = New Drawing.Point(12, 38)
             btnWindowsProperties.Visible = False
             btnWindowsPickIcon.Visible = False
         End If
-        
+
         If       File.Exists(Path.Combine(Application.StartupPath, configFileName)) Then
             configFilePath = Path.Combine(Application.StartupPath, configFileName)
         ElseIf File.Exists(configFileName) Then
             configFilePath = (New FileInfo(configFileName)).FullName
         End If
-        
+
         If File.Exists(configFilePath) Then
             ReadConfig(configFilePath)
         End If
-        
+
         If WalkmanLib.IsAdmin Then Me.Text = "[Admin] Windows and Linux directory image setter"
-        
+
         If My.Application.CommandLineArgs.Count = 0 Then
-            timerDelayedBrowse.Start
+            timerDelayedBrowse.Start()
         Else
             txtDirectoryPath.Text = My.Application.CommandLineArgs(0)
             grpLinux.Enabled = True
             grpWindows.Enabled = True
-            
+
             If txtDirectoryPath.Text.EndsWith("""") Then
                 txtDirectoryPath.Text = txtDirectoryPath.Text.Remove(txtDirectoryPath.Text.Length - 1) & IO.Path.DirectorySeparatorChar
             End If
             ParseFiles(txtDirectoryPath.Text)
         End If
     End Sub
-    
+
     Sub timerDelayedBrowse_Tick() Handles timerDelayedBrowse.Tick
-        timerDelayedBrowse.Stop
-        btnDirectoryBrowse_Click
+        timerDelayedBrowse.Stop()
+        btnDirectoryBrowse_Click()
     End Sub
-    
+
     Sub btnDirectoryBrowse_Click() Handles btnDirectoryBrowse.Click
         If txtDirectoryPath.Text <> "" Then
             FolderBrowserDialog.SelectedPath = txtDirectoryPath.Text
         End If
         If FolderBrowserDialog.ShowDialog = DialogResult.OK Then
             txtDirectoryPath.Text = FolderBrowserDialog.SelectedPath
-            
+
             'GUI elements
             grpLinux.Enabled = True
             grpWindows.Enabled = True
@@ -82,13 +88,13 @@ Public Class DirectoryImage
             optLinuxRelExternal.Checked = False
             optLinuxSystemImage.Checked = False
             imgLinuxCurrent.Image = My.Resources.Resources.OxygenFolder128px
-            
+
             ParseFiles(txtDirectoryPath.Text)
         End If
     End Sub
-    
+
     ' ==================== Reading Files ====================
-    
+
     Dim alreadyGotIcon, lookingForIconIndex As Boolean
     Sub ParseFiles(Directory As String)
         If Directory.EndsWith(":\") Then
@@ -144,7 +150,7 @@ Public Class DirectoryImage
                 chkWindowsSystem.Checked = False
             End If
         End If
-        
+
         If Exists(Path.Combine(Directory, ".directory")) Then
             btnLinuxOpenDataFile.Enabled = True
             chkLinuxHidden.Enabled = True
@@ -165,16 +171,16 @@ Public Class DirectoryImage
             chkLinuxSystem.Checked = False
         End If
     End Sub
-    
+
     ' ==================== Parsing paths for absolute/relative ====================
-    
-    Sub ParseWindows
+
+    Sub ParseWindows()
         Dim isAbsolute As New Boolean
         If txtWindowsIconPath.Text.StartsWith("%") Then
             isAbsolute = True
         Else
             For i = 1 To 26 ' The Chr() below will give all letters from A to Z
-                If txtWindowsIconPath.Text.StartsWith( Chr(i+64) & ":\", True, Nothing) Then
+                If txtWindowsIconPath.Text.StartsWith(Chr(i + 64) & ":\", True, Nothing) Then
                     isAbsolute = True
                     Exit For
                 End If
@@ -192,21 +198,21 @@ Public Class DirectoryImage
             optWindowsRelContained.Checked = True
             imgWindowsCurrent.ImageLocation = Path.Combine(txtDirectoryPath.Text, txtWindowsIconPath.Text.Replace("\", "/"))
         End If
-        
+
         If imgWindowsCurrent.ImageLocation.EndsWith(",0") Then
             If Environment.GetEnvironmentVariable("OS") <> "Windows_NT" Then Threading.Thread.Sleep(100) ' otherwise it crashes with "System.NotSupportedException: WebClient does not support concurrent I/O operations." at this point
-            imgWindowsCurrent.ImageLocation = imgWindowsCurrent.ImageLocation.Remove(imgWindowsCurrent.ImageLocation.Length-2)
+            imgWindowsCurrent.ImageLocation = imgWindowsCurrent.ImageLocation.Remove(imgWindowsCurrent.ImageLocation.Length - 2)
         End If
-        
+
         If Environment.GetEnvironmentVariable("OS") = "Windows_NT" AndAlso imgWindowsCurrent.ImageLocation.StartsWith("%") Then
             imgWindowsCurrent.ImageLocation = imgWindowsCurrent.ImageLocation.Substring(1)
             If imgWindowsCurrent.ImageLocation.Contains("%") Then
                 imgWindowsCurrent.ImageLocation = Environment.GetEnvironmentVariable(imgWindowsCurrent.ImageLocation.Remove(imgWindowsCurrent.ImageLocation.IndexOf("%"))) _
-                  & imgWindowsCurrent.ImageLocation.Substring(imgWindowsCurrent.ImageLocation.IndexOf("%")+1)
+                  & imgWindowsCurrent.ImageLocation.Substring(imgWindowsCurrent.ImageLocation.IndexOf("%") + 1)
             End If
         End If
     End Sub
-    
+
     Sub imgWindowsCurrent_LoadCompleted(sender As Object, e As System.ComponentModel.AsyncCompletedEventArgs) Handles imgWindowsCurrent.LoadCompleted
         If Not IsNothing(e.Error) Then
             Try
@@ -214,15 +220,15 @@ Public Class DirectoryImage
             Catch
                 Dim filePath As String = imgWindowsCurrent.ImageLocation
                 Dim iconIndex As Integer = 0
-                
+
                 If filePath.Contains(",") Then
-                    If IsNumeric(filePath.Substring( filePath.LastIndexOf(",") +1 )) Then
-                        iconIndex = filePath.Substring( filePath.LastIndexOf(",") +1 )
-                        
+                    If IsNumeric(filePath.Substring(filePath.LastIndexOf(",") + 1)) Then
+                        iconIndex = filePath.Substring(filePath.LastIndexOf(",") + 1)
+
                         filePath = filePath.Remove(filePath.LastIndexOf(","))
                     End If
                 End If
-                
+
                 Try
                     imgWindowsCurrent.Image = WalkmanLib.ExtractIconByIndex(filePath, iconIndex, imgWindowsCurrent.Width).ToBitmap
                 Catch
@@ -230,14 +236,14 @@ Public Class DirectoryImage
             End Try
         End If
     End Sub
-    
-    Sub ParseLinux
+
+    Sub ParseLinux()
         If txtLinuxImagePath.Text.StartsWith("/", True, Nothing) Then
             optLinuxAbsolute.Checked = True
             If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
                 imgLinuxCurrent.ImageLocation = txtLinuxImagePath.Text
             Else
-                LinuxPathToWindowsPath.ShowDialog '<- That sets the image
+                LinuxPathToWindowsPath.ShowDialog() '<- That sets the image
             End If
         ElseIf txtLinuxImagePath.Text.StartsWith("./../", True, Nothing) Then
             optLinuxRel.Checked = True
@@ -249,25 +255,25 @@ Public Class DirectoryImage
             imgLinuxCurrent.ImageLocation = txtDirectoryPath.Text & txtLinuxImagePath.Text.Substring(1).Replace("/", "\")
         Else
             optLinuxSystemImage.Checked = True
-            
+
             If Environment.GetEnvironmentVariable("OS") <> "Windows_NT" Then
                 Dim tmpString As String = Path.Combine(Environment.GetEnvironmentVariable("HOME"), ".local/share/icons/hicolor/256x256/apps")
-                
+
                 If OokiiDialogsLoaded() Then
                     OokiiInputBox(tmpString, "Enter Location", "System images location:")
-                                ' tmpString above is ByRef, so OokiiInputBox() updates it
+                    ' tmpString above is ByRef, so OokiiInputBox() updates it
                 Else
                     tmpString = InputBox("System images location:", "Enter Location", tmpString)
                 End If
-                
+
                 imgLinuxCurrent.ImageLocation = Path.Combine(tmpString, txtLinuxImagePath.Text)
             End If
         End If
     End Sub
-    
+
     ' ==================== GUI actions - Windows ====================
-    
-    Sub WindowsOptionSelected() Handles optWindowsAbsolute.CheckedChanged, optWindowsRel.CheckedChanged, _
+
+    Sub WindowsOptionSelected() Handles optWindowsAbsolute.CheckedChanged, optWindowsRel.CheckedChanged,
                                     optWindowsRelContained.CheckedChanged, optWindowsRelExternal.CheckedChanged
         btnWindowsSave.Enabled = False
         If optWindowsAbsolute.Checked Then
@@ -275,7 +281,7 @@ Public Class DirectoryImage
         ElseIf optWindowsRel.Checked Then
             If optWindowsRelContained.Checked Then
                 btnWindowsIconSet.Enabled = True
-            ElseIf optWindowsRelExternal.Checked
+            ElseIf optWindowsRelExternal.Checked Then
                 btnWindowsIconSet.Enabled = True
             Else
                 btnWindowsIconSet.Enabled = False
@@ -284,18 +290,18 @@ Public Class DirectoryImage
             btnWindowsIconSet.Enabled = False
         End If
     End Sub
-    
+
     Sub optWindowsRel_CheckedChanged() Handles optWindowsRel.CheckedChanged
         grpWindowsRel.Enabled = optWindowsRel.Checked
     End Sub
-    
+
     Sub WindowsIconPathChanged() Handles txtWindowsIconPath.TextChanged
         If optWindowsAbsolute.Checked Then
             btnWindowsSave.Enabled = True
         ElseIf optWindowsRel.Checked Then
             If optWindowsRelContained.Checked Then
                 btnWindowsSave.Enabled = True
-            ElseIf optWindowsRelExternal.Checked
+            ElseIf optWindowsRelExternal.Checked Then
                 btnWindowsSave.Enabled = True
             Else
                 btnWindowsSave.Enabled = False
@@ -304,10 +310,10 @@ Public Class DirectoryImage
             btnWindowsSave.Enabled = False
         End If
     End Sub
-    
+
     ' selecting icon
     Sub btnWindowsIconSet_Click() Handles btnWindowsIconSet.Click
-        SetInitialDirectories
+        SetInitialDirectories()
         If OpenFileDialogWindows.ShowDialog = DialogResult.OK Then
             imgWindowsCurrent.ImageLocation = OpenFileDialogWindows.FileName
             btnWindowsSave.Enabled = True
@@ -316,8 +322,8 @@ Public Class DirectoryImage
                     txtWindowsIconPath.Text = OpenFileDialogWindows.FileName
                 Else
                     txtWindowsIconPath.Text = OpenFileDialogWindows.FileName.Replace("/", "\")
-                    
-                    LinuxPathToWindowsDrive.ShowDialog
+
+                    LinuxPathToWindowsDrive.ShowDialog()
                 End If
             ElseIf optWindowsRelContained.Checked Then
                 If txtDirectoryPath.Text.EndsWith(":\") Then
@@ -329,7 +335,7 @@ Public Class DirectoryImage
                 txtWindowsIconPath.Text = ".."
                 Dim scanText As String
                 Try
-                    scanText = txtDirectoryPath.Text.Substring(OpenFileDialogWindows.FileName.Replace("/", "\").LastIndexOf("\") +1).Replace("/", "\")
+                    scanText = txtDirectoryPath.Text.Substring(OpenFileDialogWindows.FileName.Replace("/", "\").LastIndexOf("\") + 1).Replace("/", "\")
                     If scanText.Contains("\") Then
                         For Each character As Char In scanText
                             If character = "\" Then
@@ -345,7 +351,7 @@ Public Class DirectoryImage
             End If
         End If
     End Sub
-    
+
     ' Writing windows icon file
     Dim lineNo, headerLine As Byte
     Dim SetIcon, HasHeader As Boolean
@@ -372,20 +378,20 @@ Public Class DirectoryImage
                         WriteAllLines(Path.Combine(txtDirectoryPath.Text, "Autorun.inf"), FileContents)
                     Else
                         If HasHeader Then
-                            If FileContents.Length < headerLine +2 Then
-                                Array.Resize(FileContents, FileContents.Length+1)
+                            If FileContents.Length < headerLine + 2 Then
+                                Array.Resize(FileContents, FileContents.Length + 1)
                             Else
                                 Do Until FileContents(headerLine + 1) = ""
                                     headerLine += 1
-                                    If FileContents.Length < headerLine +2 Then
-                                        Array.Resize(FileContents, FileContents.Length +1)
+                                    If FileContents.Length < headerLine + 2 Then
+                                        Array.Resize(FileContents, FileContents.Length + 1)
                                     End If
                                 Loop
                             End If
-                            FileContents(headerLine +1) = "Icon=" & txtWindowsIconPath.Text
+                            FileContents(headerLine + 1) = "Icon=" & txtWindowsIconPath.Text
                             WriteAllLines(Path.Combine(txtDirectoryPath.Text, "Autorun.inf"), FileContents)
                         Else
-                            AppendAllText(Path.Combine(txtDirectoryPath.Text, "Autorun.inf"), _
+                            AppendAllText(Path.Combine(txtDirectoryPath.Text, "Autorun.inf"),
                                 vbNewLine & "[.ShellClassInfo]" & vbNewLine & "Icon=" & txtWindowsIconPath.Text & vbNewLine)
                         End If
                     End If
@@ -419,20 +425,20 @@ Public Class DirectoryImage
                         WriteAllLines(Path.Combine(txtDirectoryPath.Text, "desktop.ini"), FileContents)
                     Else
                         If HasHeader Then
-                            If FileContents.Length < headerLine +2 Then
-                                Array.Resize(FileContents, FileContents.Length +1)
+                            If FileContents.Length < headerLine + 2 Then
+                                Array.Resize(FileContents, FileContents.Length + 1)
                             Else
-                                Do Until FileContents(headerLine +1) = ""
+                                Do Until FileContents(headerLine + 1) = ""
                                     headerLine += 1
-                                    If FileContents.Length < headerLine +2 Then
-                                        Array.Resize(FileContents, FileContents.Length +1)
+                                    If FileContents.Length < headerLine + 2 Then
+                                        Array.Resize(FileContents, FileContents.Length + 1)
                                     End If
                                 Loop
                             End If
-                            FileContents(headerLine +1) = "IconResource=" & txtWindowsIconPath.Text
+                            FileContents(headerLine + 1) = "IconResource=" & txtWindowsIconPath.Text
                             WriteAllLines(Path.Combine(txtDirectoryPath.Text, "desktop.ini"), FileContents)
                         Else
-                            AppendAllText(Path.Combine(txtDirectoryPath.Text, "desktop.ini"), _
+                            AppendAllText(Path.Combine(txtDirectoryPath.Text, "desktop.ini"),
                                 vbNewLine & "[.ShellClassInfo]" & vbNewLine & "IconResource=" & txtWindowsIconPath.Text & vbNewLine)
                         End If
                     End If
@@ -447,7 +453,7 @@ Public Class DirectoryImage
         End Try
         ParseFiles(txtDirectoryPath.Text)
     End Sub
-    
+
     Sub btnWindowsOpenDataFile_Click() Handles btnWindowsOpenDataFile.Click
         If txtDirectoryPath.Text.EndsWith(":\") Then
             If Exists(Path.Combine(txtDirectoryPath.Text, "Autorun.inf")) Then
@@ -479,7 +485,7 @@ Public Class DirectoryImage
             End If
         End If
     End Sub
-    
+
     Sub chkWindowsHidden_CheckedChanged() Handles chkWindowsHidden.Click 'CheckedChanged
         If txtDirectoryPath.Text.EndsWith(":\") Then
             WalkmanLib.ChangeAttribute(Path.Combine(txtDirectoryPath.Text, "Autorun.inf"), FileAttributes.Hidden, chkWindowsHidden.Checked, AddressOf ErrorParser)
@@ -488,7 +494,7 @@ Public Class DirectoryImage
         End If
         ParseFiles(txtDirectoryPath.Text)
     End Sub
-    
+
     Sub chkWindowsSystem_CheckedChanged() Handles chkWindowsSystem.Click 'CheckedChanged
         If txtDirectoryPath.Text.EndsWith(":\") Then
             WalkmanLib.ChangeAttribute(Path.Combine(txtDirectoryPath.Text, "Autorun.inf"), FileAttributes.System, chkWindowsSystem.Checked, AddressOf ErrorParser)
@@ -497,7 +503,7 @@ Public Class DirectoryImage
         End If
         ParseFiles(txtDirectoryPath.Text)
     End Sub
-    
+
     ' ==================== Called before selecting icon for both types ====================
     Sub SetInitialDirectories()
         If optWindowsAbsolute.Checked Then
@@ -507,14 +513,14 @@ Public Class DirectoryImage
         ElseIf optWindowsRel.Checked Then
             If optWindowsRelContained.Checked Then
                 OpenFileDialogWindows.InitialDirectory = txtDirectoryPath.Text
-            ElseIf optWindowsRelExternal.Checked
+            ElseIf optWindowsRelExternal.Checked Then
                 OpenFileDialogWindows.InitialDirectory = txtDirectoryPath.Text.Remove(txtDirectoryPath.Text.LastIndexOf(Path.DirectorySeparatorChar))
             End If
         End If
         If imgWindowsCurrent.ImageLocation <> "" Then
             OpenFileDialogWindows.FileName = imgWindowsCurrent.ImageLocation
         End If
-        
+
         If optLinuxAbsolute.Checked Then
             If OpenFileDialogLinux.InitialDirectory = "" Then
                 OpenFileDialogLinux.InitialDirectory = txtDirectoryPath.Text
@@ -522,7 +528,7 @@ Public Class DirectoryImage
         ElseIf optLinuxRel.Checked Then
             If optLinuxRelContained.Checked Then
                 OpenFileDialogLinux.InitialDirectory = txtDirectoryPath.Text
-            ElseIf optLinuxRelExternal.Checked
+            ElseIf optLinuxRelExternal.Checked Then
                 OpenFileDialogLinux.InitialDirectory = txtDirectoryPath.Text.Remove(txtDirectoryPath.Text.LastIndexOf(Path.DirectorySeparatorChar))
             End If
         End If
@@ -530,10 +536,10 @@ Public Class DirectoryImage
             OpenFileDialogLinux.FileName = imgLinuxCurrent.ImageLocation
         End If
     End Sub
-    
+
     ' ==================== GUI actions - Linux ====================
-    
-    Sub LinuxOptionSelected() Handles optLinuxAbsolute.CheckedChanged, optLinuxRel.CheckedChanged, _
+
+    Sub LinuxOptionSelected() Handles optLinuxAbsolute.CheckedChanged, optLinuxRel.CheckedChanged,
                 optLinuxRelContained.CheckedChanged, optLinuxRelExternal.CheckedChanged, optLinuxSystemImage.CheckedChanged
         btnLinuxSave.Enabled = False
         If optLinuxAbsolute.Checked Then
@@ -541,56 +547,56 @@ Public Class DirectoryImage
         ElseIf optLinuxRel.Checked Then
             If optLinuxRelContained.Checked Then
                 btnLinuxIconSet.Enabled = True
-            ElseIf optLinuxRelExternal.Checked
+            ElseIf optLinuxRelExternal.Checked Then
                 btnLinuxIconSet.Enabled = True
             Else
                 btnLinuxIconSet.Enabled = False
             End If
-        ElseIf optLinuxSystemImage.Checked
+        ElseIf optLinuxSystemImage.Checked Then
             btnLinuxIconSet.Enabled = True
         Else
             btnLinuxIconSet.Enabled = False
         End If
     End Sub
-    
+
     Sub optLinuxRel_CheckedChanged() Handles optLinuxRel.CheckedChanged
         grpLinuxRel.Enabled = optLinuxRel.Checked
     End Sub
-    
+
     Sub LinuxImagePathChanged() Handles txtLinuxImagePath.TextChanged
         If optLinuxAbsolute.Checked Then
             btnLinuxSave.Enabled = True
         ElseIf optLinuxRel.Checked Then
             If optLinuxRelContained.Checked Then
                 btnLinuxSave.Enabled = True
-            ElseIf optLinuxRelExternal.Checked
+            ElseIf optLinuxRelExternal.Checked Then
                 btnLinuxSave.Enabled = True
             Else
                 btnLinuxSave.Enabled = False
             End If
-        ElseIf optlinuxsystemimage.checked
-            btnlinuxsave.enabled = True
+        ElseIf optLinuxSystemImage.Checked Then
+            btnLinuxSave.Enabled = True
         End If
     End Sub
-    
+
     ' selecting icon
     Sub btnLinuxIconSet_Click() Handles btnLinuxIconSet.Click
-        SetInitialDirectories
+        SetInitialDirectories()
         If OpenFileDialogLinux.ShowDialog = DialogResult.OK Then
             imgLinuxCurrent.ImageLocation = OpenFileDialogLinux.FileName
             btnLinuxSave.Enabled = True
             If optLinuxAbsolute.Checked Then
                 If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
                     txtLinuxImagePath.Text = OpenFileDialogLinux.FileName.Substring(2).Replace("\", "/")
-                    
+
                     Dim tmpString As String = "/media/" & Environment.GetEnvironmentVariable("UserName") & "/MountPath"
                     If OokiiDialogsLoaded() Then
-                        OokiiInputBox(tmpString, "Linux Drive Mountpoint", "Please enter the path in Linux where drive """& OpenFileDialogLinux.FileName.Remove(2)&""" is mounted:")
-                                    ' tmpString above is ByRef, so OokiiInputBox() updates it
+                        OokiiInputBox(tmpString, "Linux Drive Mountpoint", "Please enter the path in Linux where drive """ & OpenFileDialogLinux.FileName.Remove(2) & """ is mounted:")
+                        '             tmpString above is ByRef, so OokiiInputBox() updates it
                     Else
-                        tmpString = InputBox("Please enter the path in Linux where drive """& OpenFileDialogLinux.FileName.Remove(2)&""" is mounted:", "Linux Drive Mountpoint", tmpString)
+                        tmpString = InputBox("Please enter the path in Linux where drive """ & OpenFileDialogLinux.FileName.Remove(2) & """ is mounted:", "Linux Drive Mountpoint", tmpString)
                     End If
-                    
+
                     txtLinuxImagePath.Text = tmpString & txtLinuxImagePath.Text
                 Else
                     txtLinuxImagePath.Text = OpenFileDialogLinux.FileName
@@ -605,7 +611,7 @@ Public Class DirectoryImage
                 txtLinuxImagePath.Text = "./.."
                 Dim scanText As String
                 Try
-                    scanText = txtDirectoryPath.Text.Substring(OpenFileDialogLinux.FileName.Replace("\", "/").LastIndexOf("/")+1).Replace("\", "/")
+                    scanText = txtDirectoryPath.Text.Substring(OpenFileDialogLinux.FileName.Replace("\", "/").LastIndexOf("/") + 1).Replace("\", "/")
                     If scanText.Contains("/") Then
                         For Each character As Char In scanText
                             If character = "/" Then
@@ -621,19 +627,19 @@ Public Class DirectoryImage
             End If
         End If
     End Sub
-    
+
     ' Writing linux icon file
     Sub btnLinuxSave_Click() Handles btnLinuxSave.Click
         Try
             If Exists(Path.Combine(txtDirectoryPath.Text, ".directory")) Then
                 lineNo = 0 ' Actually the index of the line
                 SetIcon = False  ' Index starts at 0, count/length/number starts at 1
-                HasHeader = false
+                HasHeader = False
                 Dim FileContents As String() = ReadAllLines(Path.Combine(txtDirectoryPath.Text, ".directory"))
                 For Each line As String In FileContents
                     If line.StartsWith("Icon=", True, Nothing) Then
                         FileContents(lineNo) = "Icon=" & txtLinuxImagePath.Text
-                        SetIcon = true
+                        SetIcon = True
                     ElseIf line = "[Desktop Entry]" Then
                         HasHeader = True
                         headerLine = lineNo ' therefore it is the header index not line
@@ -646,20 +652,20 @@ Public Class DirectoryImage
                 Else
                     If HasHeader Then
                         ' account for index -> length conversion, and that less than will have to be less than or equal to without another addition
-                        If FileContents.Length < headerLine +2 Then
-                            Array.Resize(FileContents, FileContents.Length +1)
+                        If FileContents.Length < headerLine + 2 Then
+                            Array.Resize(FileContents, FileContents.Length + 1)
                         Else
-                            Do Until FileContents(headerLine +1) = ""
+                            Do Until FileContents(headerLine + 1) = ""
                                 headerLine += 1
-                                If FileContents.Length < headerLine +2 Then
-                                    Array.Resize(FileContents, FileContents.Length +1)
+                                If FileContents.Length < headerLine + 2 Then
+                                    Array.Resize(FileContents, FileContents.Length + 1)
                                 End If
                             Loop
                         End If
-                        FileContents(headerLine +1) = "Icon=" & txtLinuxImagePath.Text
+                        FileContents(headerLine + 1) = "Icon=" & txtLinuxImagePath.Text
                         WriteAllLines(Path.Combine(txtDirectoryPath.Text, ".directory"), FileContents)
                     Else
-                        AppendAllText(Path.Combine(txtDirectoryPath.Text, ".directory"), _
+                        AppendAllText(Path.Combine(txtDirectoryPath.Text, ".directory"),
                             vbNewLine & "[Desktop Entry]" & vbNewLine & "Icon=" & txtLinuxImagePath.Text & vbNewLine)
                     End If
                 End If
@@ -673,7 +679,7 @@ Public Class DirectoryImage
         End Try
         ParseFiles(txtDirectoryPath.Text)
     End Sub
-    
+
     Sub btnLinuxOpenDataFile_Click() Handles btnLinuxOpenDataFile.Click
         If Exists(Path.Combine(txtDirectoryPath.Text, ".directory")) Then
             If chkCustomEditor.Checked Then
@@ -689,19 +695,19 @@ Public Class DirectoryImage
             btnLinuxOpenDataFile.Enabled = False
         End If
     End Sub
-    
+
     Sub chkLinuxHidden_CheckedChanged() Handles chkLinuxHidden.Click 'CheckedChanged
         WalkmanLib.ChangeAttribute(Path.Combine(txtDirectoryPath.Text, ".directory"), FileAttributes.Hidden, chkLinuxHidden.Checked, AddressOf ErrorParser)
         ParseFiles(txtDirectoryPath.Text)
     End Sub
-    
+
     Sub chkLinuxSystem_CheckedChanged() Handles chkLinuxSystem.Click 'CheckedChanged
         WalkmanLib.ChangeAttribute(Path.Combine(txtDirectoryPath.Text, ".directory"), FileAttributes.System, chkLinuxSystem.Checked, AddressOf ErrorParser)
         ParseFiles(txtDirectoryPath.Text)
     End Sub
-    
+
     ' ==================== Custom Editor managing ====================
-    
+
     Sub chkCustomEditor_Click() Handles chkCustomEditor.Click
         txtEditorPath.Enabled = False
         btnEditorPathCustom.Text = "Edit..."
@@ -710,7 +716,7 @@ Public Class DirectoryImage
         End If
         WriteConfig(configFilePath)
     End Sub
-    
+
     Sub btnEditorBrowse_Click() Handles btnEditorBrowse.Click
         If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
             OpenFileDialogEditor.InitialDirectory = Environment.GetEnvironmentVariable("ProgramFiles")
@@ -729,7 +735,7 @@ Public Class DirectoryImage
         End If
         WriteConfig(configFilePath)
     End Sub
-    
+
     Sub btnEditorPathCustom_Click() Handles btnEditorPathCustom.Click
         If btnEditorPathCustom.Text = "Edit..." Then
             txtEditorPath.Enabled = True
@@ -745,9 +751,9 @@ Public Class DirectoryImage
             End If
         End If
     End Sub
-    
+
     ' ==================== Extra Windows buttons ====================
-    
+
     Sub btnWindowsProperties_Click() Handles btnWindowsProperties.Click
         If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
             If WalkmanLib.ShowProperties(txtDirectoryPath.Text, windowsCustomizeTab) = False Then
@@ -755,11 +761,11 @@ Public Class DirectoryImage
             End If
         End If
     End Sub
-    
+
     Sub btnWindowsProperties_MouseUp(sender As Object, e As MouseEventArgs) Handles btnWindowsProperties.MouseUp
         If e.Button = MouseButtons.Right Then
             Dim tmpInput As String = windowsCustomizeTab
-            
+
             If OokiiDialogsLoaded() Then
                 If OokiiInputBox(tmpInput, "Set customise tab name", "Enter customise tab name:") <> DialogResult.OK Then
                     tmpInput = "" ' tmpInput above is ByRef, so OokiiInputBox() updates it
@@ -767,37 +773,37 @@ Public Class DirectoryImage
             Else
                 tmpInput = InputBox("Enter customise tab name:", "Set customise tab name", tmpInput)
             End If
-            
+
             If tmpInput <> "" Then
                 windowsCustomizeTab = tmpInput
                 WriteConfig(configFilePath)
             End If
         End If
     End Sub
-    
+
     Sub btnWindowsPickIcon_Click() Handles btnWindowsPickIcon.Click
         Dim selectedFilePath As String = txtWindowsIconPath.Text
         Dim selectedIconIndex As Integer
-        
+
         If selectedFilePath.Contains(",") Then
-            If IsNumeric(selectedFilePath.Substring( selectedFilePath.LastIndexOf(",") +1 )) Then
-                selectedIconIndex = selectedFilePath.Substring( selectedFilePath.LastIndexOf(",") +1 )
-                
+            If IsNumeric(selectedFilePath.Substring(selectedFilePath.LastIndexOf(",") + 1)) Then
+                selectedIconIndex = selectedFilePath.Substring(selectedFilePath.LastIndexOf(",") + 1)
+
                 selectedFilePath = selectedFilePath.Remove(selectedFilePath.LastIndexOf(","))
             End If
         End If
-        
+
         If optWindowsRel.Checked Then
             If optWindowsRelContained.Checked Then
                 selectedFilePath = txtDirectoryPath.Text & Path.DirectorySeparatorChar & selectedFilePath
-            ElseIf optWindowsRelExternal.Checked
+            ElseIf optWindowsRelExternal.Checked Then
                 selectedFilePath = txtDirectoryPath.Text.Remove(txtDirectoryPath.Text.LastIndexOf(Path.DirectorySeparatorChar)) & Path.DirectorySeparatorChar & selectedFilePath
             End If
         End If
-        
+
         If WalkmanLib.PickIconDialogShow(selectedFilePath, selectedIconIndex, Me.Handle) Then
             Dim combinedIconPath As String = selectedFilePath & "," & selectedIconIndex
-            
+
             imgWindowsCurrent.ImageLocation = Environment.ExpandEnvironmentVariables(combinedIconPath)
             btnWindowsSave.Enabled = True
             If optWindowsAbsolute.Checked Then
@@ -814,7 +820,7 @@ Public Class DirectoryImage
                 txtWindowsIconPath.Text = ".."
                 Dim scanText As String
                 Try
-                    scanText = txtDirectoryPath.Text.Substring(combinedIconPath.Replace("/", "\").LastIndexOf("\") +1).Replace("/", "\")
+                    scanText = txtDirectoryPath.Text.Substring(combinedIconPath.Replace("/", "\").LastIndexOf("\") + 1).Replace("/", "\")
                     If scanText.Contains("\") Then
                         For Each character As Char In scanText
                             If character = "\" Then
@@ -830,31 +836,31 @@ Public Class DirectoryImage
             End If
         End If
     End Sub
-    
+
     Sub btnExit_Click() Handles btnExit.Click
         Application.Exit()
     End Sub
-    
+
     ' ==================== Helper methods ====================
-    
+
     Sub ErrorParser(ex As Exception)
         If ex.GetType.ToString = "System.UnauthorizedAccessException" AndAlso Not WalkmanLib.IsAdmin Then
             If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
-                If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching DirectoryImage As Administrator?", _
+                If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching DirectoryImage As Administrator?",
                         MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
                     WalkmanLib.RunAsAdmin(Path.Combine(Application.StartupPath, Process.GetCurrentProcess.ProcessName & ".exe"), """" & txtDirectoryPath.Text & """")
-                    Application.Exit
+                    Application.Exit()
                 End If
             Else
-                If MsgBox(ex.message & vbnewline & vbnewline & "Try launching DirectoryImage As root?", _
+                If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching DirectoryImage As root?",
                         MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
                     Process.Start("kdesudo", "mono " & Path.Combine(Application.StartupPath, Process.GetCurrentProcess.ProcessName & ".exe") & " """ & txtDirectoryPath.Text & """")
-                    Application.Exit
+                    Application.Exit()
                 End If
             End If
         Else
-            If MsgBox("There was an error! Error message: " & ex.Message & vbNewLine & "Show full stacktrace? (For sending to developer/making bugreport)", _
-                MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Error!") = MsgBoxresult.Yes Then
+            If MsgBox("There was an error! Error message: " & ex.Message & vbNewLine & "Show full stacktrace? (For sending to developer/making bugreport)",
+                MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Error!") = MsgBoxResult.Yes Then
                 Dim frmBugReport As New Form()
                 frmBugReport.Width = 600
                 frmBugReport.Height = 525
@@ -868,29 +874,29 @@ Public Class DirectoryImage
                 txtBugReport.ScrollBars = ScrollBars.Vertical
                 frmBugReport.Controls.Add(txtBugReport)
                 txtBugReport.Dock = DockStyle.Fill
-                txtBugReport.Text = "ToString:" & vbNewLine & ex.ToString & vbNewLine & vbNewLine & _
-                                    "Data:" & vbNewLine & ex.Data.ToString & vbNewLine & vbNewLine & _
-                                    "BaseException:" & vbNewLine & ex.GetBaseException.ToString & vbNewLine & vbNewLine & _
-                                    "HashCode:" & vbNewLine & ex.GetHashCode.ToString & vbNewLine & vbNewLine & _
-                                    "Type:" & vbNewLine & ex.GetType.ToString & vbNewLine & vbNewLine & _
-                                    "HResult:" & vbNewLine & ex.HResult.ToString & vbNewLine & vbNewLine & _
-                                    "Message:" & vbNewLine & ex.Message.ToString & vbNewLine & vbNewLine & _
-                                    "Source:" & vbNewLine & ex.Source.ToString & vbNewLine & vbNewLine & _
-                                    "StackTrace:" & vbNewLine & ex.StackTrace.ToString & vbNewLine & vbNewLine & _
+                txtBugReport.Text = "ToString:" & vbNewLine & ex.ToString & vbNewLine & vbNewLine &
+                                    "Data:" & vbNewLine & ex.Data.ToString & vbNewLine & vbNewLine &
+                                    "BaseException:" & vbNewLine & ex.GetBaseException.ToString & vbNewLine & vbNewLine &
+                                    "HashCode:" & vbNewLine & ex.GetHashCode.ToString & vbNewLine & vbNewLine &
+                                    "Type:" & vbNewLine & ex.GetType.ToString & vbNewLine & vbNewLine &
+                                    "HResult:" & vbNewLine & ex.HResult.ToString & vbNewLine & vbNewLine &
+                                    "Message:" & vbNewLine & ex.Message.ToString & vbNewLine & vbNewLine &
+                                    "Source:" & vbNewLine & ex.Source.ToString & vbNewLine & vbNewLine &
+                                    "StackTrace:" & vbNewLine & ex.StackTrace.ToString & vbNewLine & vbNewLine &
                                     "TargetSite:" & vbNewLine & ex.TargetSite.ToString
-                                    '"InnerException:" & vbNewLine & ex.InnerException.ToString & vbNewLine & vbNewLine & _
+                '                    "InnerException:" & vbNewLine & ex.InnerException.ToString & vbNewLine & vbNewLine & _
                 frmBugReport.Show()
             End If
         End If
     End Sub
-    
+
     Function OokiiInputBox(ByRef input As String, Optional windowTitle As String = Nothing, Optional header As String = Nothing, Optional content As String = Nothing) As DialogResult
         Dim ooInput = New Ookii.Dialogs.InputDialog
         ooInput.WindowTitle = windowTitle
         ooInput.MainInstruction = header
         ooInput.Content = content
         ooInput.Input = input
-        
+
         Dim returnResult = ooInput.ShowDialog()
         input = ooInput.Input
         Return returnResult
@@ -912,7 +918,7 @@ Public Class DirectoryImage
     Sub OokiiDialogsLoadedDelegate() ' because calling a not found class will fail the caller of the method not directly in the method
         Dim test = Ookii.Dialogs.TaskDialogIcon.Information
     End Sub
-    
+
     Private Sub ReadConfig(path As String)
         Dim reader As XmlReader = XmlReader.Create(path)
         Try
@@ -921,7 +927,7 @@ Public Class DirectoryImage
             reader.Close
             Exit Sub
         End Try
-        
+
         If reader.IsStartElement() AndAlso reader.Name = "DirectoryImage" Then
             If reader.Read AndAlso reader.IsStartElement() AndAlso reader.Name = "Settings" Then
                 Dim attribute As String
@@ -932,7 +938,7 @@ Public Class DirectoryImage
                             If attribute IsNot Nothing Then
                                 txtEditorPath.Text = attribute
                             End If
-                            
+
                             attribute = reader("enabled")
                             If attribute IsNot Nothing Then
                                 chkCustomEditor.Checked = attribute
@@ -947,18 +953,18 @@ Public Class DirectoryImage
                 End While
             End If
         End If
-        
+
         reader.Close
     End Sub
-    
+
     Private Sub WriteConfig(path As String)
         Dim XMLwSettings As New XmlWriterSettings()
         XMLwSettings.Indent = True
         Dim writer As XmlWriter = XmlWriter.Create(path, XMLwSettings)
-        
+
         writer.WriteStartDocument()
         writer.WriteStartElement("DirectoryImage")
-        
+
         writer.WriteStartElement("Settings")
             writer.WriteStartElement("CustomEditor")
                 writer.WriteAttributeString("path", txtEditorPath.Text)
@@ -968,10 +974,10 @@ Public Class DirectoryImage
                 writer.WriteAttributeString("name", windowsCustomizeTab)
             writer.WriteEndElement()
         writer.WriteEndElement()
-        
+
         writer.WriteEndElement()
         writer.WriteEndDocument()
-        
+
         writer.Close
     End Sub
 End Class

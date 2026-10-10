@@ -1,8 +1,10 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Imports System.Windows.Forms
+
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Public Class LinuxPathToWindowsPath
     Inherits System.Windows.Forms.Form
     Private components As System.ComponentModel.IContainer
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         If disposing Then
             If components IsNot Nothing Then
@@ -11,7 +13,7 @@ Public Class LinuxPathToWindowsPath
         End If
         MyBase.Dispose(disposing)
     End Sub
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.cbxWinLetter = New System.Windows.Forms.ComboBox()
         Me.txtMntLen = New System.Windows.Forms.NumericUpDown()
@@ -22,85 +24,85 @@ Public Class LinuxPathToWindowsPath
         Me.btnSave = New System.Windows.Forms.Button()
         Me.btnBrowse = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
-        CType(Me.txtMntLen,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.SuspendLayout
+        CType(Me.txtMntLen, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SuspendLayout()
         'cbxWinLetter
-        Me.cbxWinLetter.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.cbxWinLetter.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbxWinLetter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbxWinLetter.FormattingEnabled = true
+        Me.cbxWinLetter.FormattingEnabled = True
         Me.cbxWinLetter.Items.AddRange(New Object() {"A:", "B:", "C:", "D:", "E:", "F:", "G:", "H:", "I:", "J:", "K:", "L:", "M:", "N:", "O:", "P:"})
         Me.cbxWinLetter.Location = New System.Drawing.Point(12, 103)
         Me.cbxWinLetter.Name = "cbxWinLetter"
         Me.cbxWinLetter.Size = New System.Drawing.Size(255, 21)
         Me.cbxWinLetter.TabIndex = 0
         'txtMntLen
-        Me.txtMntLen.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.txtMntLen.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtMntLen.Location = New System.Drawing.Point(12, 25)
         Me.txtMntLen.Name = "txtMntLen"
         Me.txtMntLen.Size = New System.Drawing.Size(255, 20)
         Me.txtMntLen.TabIndex = 1
         Me.txtMntLen.Value = New Decimal(New Integer() {24, 0, 0, 0})
         'txtMnt
-        Me.txtMnt.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.txtMnt.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtMnt.Location = New System.Drawing.Point(12, 64)
         Me.txtMnt.Name = "txtMnt"
-        Me.txtMnt.ReadOnly = true
+        Me.txtMnt.ReadOnly = True
         Me.txtMnt.Size = New System.Drawing.Size(255, 20)
         Me.txtMnt.TabIndex = 2
         'lblMntLen
-        Me.lblMntLen.AutoSize = true
+        Me.lblMntLen.AutoSize = True
         Me.lblMntLen.Location = New System.Drawing.Point(12, 9)
         Me.lblMntLen.Name = "lblMntLen"
         Me.lblMntLen.Size = New System.Drawing.Size(111, 13)
         Me.lblMntLen.TabIndex = 3
         Me.lblMntLen.Text = "Length of mount path:"
         'lblMnt
-        Me.lblMnt.AutoSize = true
+        Me.lblMnt.AutoSize = True
         Me.lblMnt.Location = New System.Drawing.Point(12, 48)
         Me.lblMnt.Name = "lblMnt"
         Me.lblMnt.Size = New System.Drawing.Size(40, 13)
         Me.lblMnt.TabIndex = 4
         Me.lblMnt.Text = "Result:"
         'lblWinLetter
-        Me.lblWinLetter.AutoSize = true
+        Me.lblWinLetter.AutoSize = True
         Me.lblWinLetter.Location = New System.Drawing.Point(12, 87)
         Me.lblWinLetter.Name = "lblWinLetter"
         Me.lblWinLetter.Size = New System.Drawing.Size(108, 13)
         Me.lblWinLetter.TabIndex = 5
         Me.lblWinLetter.Text = "Windows Drive letter:"
         'btnSave
-        Me.btnSave.Enabled = false
+        Me.btnSave.Enabled = False
         Me.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.btnSave.Location = New System.Drawing.Point(12, 130)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(75, 23)
         Me.btnSave.TabIndex = 6
         Me.btnSave.Text = "Save"
-        Me.btnSave.UseVisualStyleBackColor = true
+        Me.btnSave.UseVisualStyleBackColor = True
         'btnBrowse
-        Me.btnBrowse.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnBrowse.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnBrowse.Location = New System.Drawing.Point(93, 130)
         Me.btnBrowse.Name = "btnBrowse"
         Me.btnBrowse.Size = New System.Drawing.Size(93, 23)
         Me.btnBrowse.TabIndex = 7
         Me.btnBrowse.Text = "Re-Browse..."
-        Me.btnBrowse.UseVisualStyleBackColor = true
+        Me.btnBrowse.UseVisualStyleBackColor = True
         'btnCancel
-        Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Location = New System.Drawing.Point(192, 130)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 8
         Me.btnCancel.Text = "Cancel"
-        Me.btnCancel.UseVisualStyleBackColor = true
+        Me.btnCancel.UseVisualStyleBackColor = True
         'LinuxPathToWindowsPath
         Me.AcceptButton = Me.btnSave
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(279, 165)
-        Me.ControlBox = false
+        Me.ControlBox = False
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnBrowse)
         Me.Controls.Add(Me.btnSave)
@@ -111,16 +113,16 @@ Public Class LinuxPathToWindowsPath
         Me.Controls.Add(Me.txtMntLen)
         Me.Controls.Add(Me.cbxWinLetter)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-        Me.MaximizeBox = false
-        Me.MinimizeBox = false
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "LinuxPathToWindowsPath"
-        Me.ShowIcon = false
+        Me.ShowIcon = False
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Set Windows drive letter for Linux mount point:"
-        CType(Me.txtMntLen,System.ComponentModel.ISupportInitialize).EndInit
-        Me.ResumeLayout(false)
-        Me.PerformLayout
+        CType(Me.txtMntLen, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
     End Sub
     Friend WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents btnBrowse As System.Windows.Forms.Button
@@ -131,33 +133,33 @@ Public Class LinuxPathToWindowsPath
     Friend WithEvents txtMnt As System.Windows.Forms.TextBox
     Friend WithEvents txtMntLen As System.Windows.Forms.NumericUpDown
     Friend WithEvents cbxWinLetter As System.Windows.Forms.ComboBox
-    
+
     Sub LinuxPathToWindowsPath_Load() Handles MyBase.Load
-        txtMntLen.Maximum = DirectoryImage.txtLinuxImagePath.Text.Length-1
+        txtMntLen.Maximum = DirectoryImage.txtLinuxImagePath.Text.Length - 1
         txtMntLen_ValueChanged()
     End Sub
-    
+
     Sub txtMntLen_ValueChanged() Handles txtMntLen.ValueChanged
         txtMnt.Text = DirectoryImage.txtLinuxImagePath.Text.Remove(txtMntLen.Value)
     End Sub
-    
+
     Sub cbxWinLetter_SelectedIndexChanged() Handles cbxWinLetter.SelectedIndexChanged
         If cbxWinLetter.SelectedIndex <> -1 Then
             cbxWinLetter.DropDownStyle = ComboBoxStyle.DropDown
             btnSave.Enabled = True
         End If
     End Sub
-    
+
     Sub btnSave_Click() Handles btnSave.Click
         DirectoryImage.imgLinuxCurrent.ImageLocation = cbxWinLetter.Text & DirectoryImage.txtLinuxImagePath.Text.Substring(txtMntLen.Value).Replace("/", "\")
-        Me.Close
+        Me.Close()
     End Sub
-    
+
     Sub btnBrowse_Click() Handles btnBrowse.Click
-        Me.Close
+        Me.Close()
         DirectoryImage.btnDirectoryBrowse_Click()
     End Sub
-    
+
     Sub btnCancel_Click() Handles btnCancel.Click
         Me.Close
     End Sub
