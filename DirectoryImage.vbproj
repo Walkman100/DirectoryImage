@@ -11,7 +11,7 @@
     <AssemblyName>DirectoryImage</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <LangVersion>11</LangVersion>
     <NoWin32Manifest>False</NoWin32Manifest>
     <OptionCompare>Binary</OptionCompare>
