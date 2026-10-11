@@ -470,7 +470,7 @@ Public Class DirectoryImage
                     Process.Start(txtEditorPath.Text, """" & Path.Combine(txtDirectoryPath.Text, "Autorun.inf") & """")
                 Else
                     If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
-                        Process.Start(Path.Combine(Environment.GetEnvironmentVariable("windir"), "notepad.exe"), """" & Path.Combine(txtDirectoryPath.Text, "Autorun.inf") & """")
+                        Process.Start(Path.Combine(Environment.GetEnvironmentVariable("windir"), "System32", "notepad.exe"), """" & Path.Combine(txtDirectoryPath.Text, "Autorun.inf") & """")
                     Else
                         Process.Start("xdg-open", """" & Path.Combine(txtDirectoryPath.Text & "Autorun.inf") & """")
                     End If
@@ -484,7 +484,7 @@ Public Class DirectoryImage
                     Process.Start(txtEditorPath.Text, """" & Path.Combine(txtDirectoryPath.Text, "desktop.ini") & """")
                 Else
                     If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
-                        Process.Start(Path.Combine(Environment.GetEnvironmentVariable("windir"), "notepad.exe"), """" & Path.Combine(txtDirectoryPath.Text, "desktop.ini") & """")
+                        Process.Start(Path.Combine(Environment.GetEnvironmentVariable("windir"), "System32", "notepad.exe"), """" & Path.Combine(txtDirectoryPath.Text, "desktop.ini") & """")
                     Else
                         Process.Start("xdg-open", """" & Path.Combine(txtDirectoryPath.Text, "desktop.ini") & """")
                     End If
@@ -695,7 +695,7 @@ Public Class DirectoryImage
                 Process.Start(txtEditorPath.Text, """" & Path.Combine(txtDirectoryPath.Text, ".directory") & """")
             Else
                 If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
-                    Process.Start(Path.Combine(Environment.GetEnvironmentVariable("windir"), "notepad.exe"), """" & Path.Combine(txtDirectoryPath.Text, ".directory") & """")
+                    Process.Start(Path.Combine(Environment.GetEnvironmentVariable("windir"), "System32", "notepad.exe"), """" & Path.Combine(txtDirectoryPath.Text, ".directory") & """")
                 Else
                     Process.Start("xdg-open", """" & Path.Combine(txtDirectoryPath.Text, ".directory") & """")
                 End If
@@ -856,8 +856,8 @@ Public Class DirectoryImage
         If ex.GetType.ToString = "System.UnauthorizedAccessException" AndAlso Not WalkmanLib.IsAdmin Then
             If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
                 If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching DirectoryImage As Administrator?",
-                        MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    WalkmanLib.RunAsAdmin(Path.Combine(Application.StartupPath, Process.GetCurrentProcess.ProcessName & ".exe"), """" & txtDirectoryPath.Text & """")
+                        MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes _
+                        AndAlso WalkmanLib.RunAsAdmin(Path.Combine(Application.StartupPath, Process.GetCurrentProcess.ProcessName & ".exe"), """" & txtDirectoryPath.Text & """") Then
                     Application.Exit()
                 End If
             Else
