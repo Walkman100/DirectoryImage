@@ -14,6 +14,15 @@ Public Class DirectoryImage
     Sub LoadDirectoryImage() Handles MyBase.Load
         lblVersion.Text = My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor & "." & My.Application.Info.Version.Build
         If Environment.GetEnvironmentVariable("OS") = "Windows_NT" Then
+            If WalkmanLib.GetDarkThemeEnabled() Then
+                Dim theme = WalkmanLib.Theme.Dark
+                WalkmanLib.InitCustomRenderers(Me.Controls)
+                WalkmanLib.SetPreferredAppMode(theme.SystemAppMode)
+                WalkmanLib.ApplyThemeRenderer(theme, Me.Controls)
+                WalkmanLib.ApplyTheme(theme, Me, True)
+                If Me.components IsNot Nothing Then WalkmanLib.ApplyTheme(theme, Me.components.Components, True)
+            End If
+
             If Not       Directory.Exists(Path.Combine(Environment.GetEnvironmentVariable("AppData"), "WalkmanOSS")) Then
                 Directory.CreateDirectory(Path.Combine(Environment.GetEnvironmentVariable("AppData"), "WalkmanOSS"))
             End If
